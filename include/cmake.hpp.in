@@ -1,0 +1,2 @@
+#define VERSION_MAJOR @fortune-hyperbolic_VERSION_MAJOR@
+#define VERSION_MINOR @fortune-hyperbolic_VERSION_MINOR@
