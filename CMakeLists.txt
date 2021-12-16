@@ -17,4 +17,4 @@ add_subdirectory(src)
 
 add_executable(main main.cpp)
 target_link_libraries(main fortune_hyperbolic)
-target_compile_options(main PRIVATE -Wall)
+target_compile_options(main PUBLIC -Wall)
