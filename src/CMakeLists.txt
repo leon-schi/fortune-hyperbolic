@@ -1,18 +1,22 @@
-set(HEADER_LIST "${fortune-hyperbolic_SOURCE_DIR}/include/lib.hpp")
+FILE(GLOB HEADER_LIST "${fortune-hyperbolic_SOURCE_DIR}/include/*.hpp")
+FILE(GLOB SOURCE_LIST "${fortune-hyperbolic_SOURCE_DIR}/src/*.cpp")
 
-add_library(fortune_hyperbolic lib.cpp ${HEADER_LIST})
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+add_library(fortune_hyperbolic ${SOURCE_LIST} ${HEADER_LIST})
 target_include_directories(fortune_hyperbolic PUBLIC ../include)
 target_include_directories(fortune_hyperbolic PUBLIC "${PROJECT_BINARY_DIR}/include")
 
 if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         target_compile_options(fortune_hyperbolic PUBLIC
-                -Wall -Wextra -Wshadow -Wfloat-equal -Wconversion
+                -Wall -Wextra -Wfloat-equal -Wconversion
                 -fsanitize=address,undefined
                 -fno-omit-frame-pointer
                 -fno-sanitize-recover=all
         )
-        target_link_options( fortune_hyperbolic PUBLIC
+        target_link_options(fortune_hyperbolic PUBLIC
                 -fsanitize=address,undefined
                 -fno-omit-frame-pointer)
     endif()
