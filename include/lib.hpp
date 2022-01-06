@@ -7,40 +7,24 @@ namespace hyperbolic {
 
     typedef double _float_t;
 
-#ifndef NDEBUG
-    static int nextID = 0;
-#endif
-
-    struct Site {
-#ifndef NDEBUG
-        int ID;
-#endif
-        const _float_t theta, r;
-        Site(_float_t theta, _float_t r) : theta(theta), r(r) {
-#ifndef NDEBUG
-            ID = nextID++;
-#endif
-        }
+    struct Point {
+        _float_t r = 0, theta = 0;
+        Point() = default;
+        Point(_float_t r, _float_t theta) : r(r), theta(theta) {}
     };
-
-    typedef const Site * pSite;
-    typedef const Site & rSite;
-
-    struct Vertex {
-        _float_t r, theta;
-        Vertex(_float_t r, _float_t theta) : r(r), theta(theta) {}
-    };
-    typedef const Vertex* pVertex;
+    typedef const Point* pPoint;
+    typedef const Point& rPoint;
 
     struct Edge {
-        rSite a, b;
-        pVertex first= nullptr, second = nullptr;
-        Edge(rSite a, rSite b) : a(a), b(b) {};
+        rPoint siteA, siteB;
+        _float_t theta_start = 0, theta_end = 0;
+        pPoint firstVertex= nullptr, secondVertex = nullptr;
+        Edge(rPoint a, rPoint b) : siteA(a), siteB(b) {};
     };
 
     class VoronoiDiagram {
     public:
-        std::vector<Vertex> vertices;
+        std::vector<Point> vertices;
         std::vector<Edge> edges;
     };
 
@@ -50,5 +34,5 @@ namespace hyperbolic {
         virtual void calculate() = 0;
     };
 
-    std::unique_ptr<FortuneHyperbolic> getInstance(VoronoiDiagram& diagram, std::vector<Site>& sites);
+    std::unique_ptr<FortuneHyperbolic> getInstance(VoronoiDiagram& diagram, const std::vector<Point>& sites);
 }

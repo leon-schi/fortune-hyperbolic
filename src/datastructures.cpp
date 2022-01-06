@@ -108,13 +108,31 @@ namespace hyperbolic {
     void BeachLineElement::del(pBeachLineElement t) {
         if (!t) return;
         del(t->leftChild);
+        t->leftChild = nullptr;
         del(t->rightChild);
+        t->rightChild = nullptr;
         delete t;
     }
 
+    void BeachLineElement::getLeftmostChild(pBeachLineElement& result, pBeachLineElement e) {
+        if (!e) {
+            result = nullptr;
+            return;
+        }
+        BeachLineElement::find(result, e, 0);
+    };
+
+    void BeachLineElement::getRightmostChild(pBeachLineElement &result, pBeachLineElement e) {
+        if (!e) {
+            result = nullptr;
+            return;
+        }
+        BeachLineElement::find(result, e, getCount(e)-1);
+    };
+
     BeachLinePosition BeachLine::search(const SiteEvent & s) {
         pBeachLineElement first; int position_first;
-        BeachLineElement::find(first, position_first, root, s.site.theta, s.r);
+        BeachLineElement::find(first, position_first, root, s.site.point.theta, s.r);
 
         auto size = BeachLineElement::getCount(root);
         if (!first) {
@@ -131,16 +149,17 @@ namespace hyperbolic {
     void BeachLine::insert(int position, rBeachLineElement firstNew, rBeachLineElement secondNew) {
         // inserts the beach line elements firstNew and second new after position positionFirst and rearranges the order such that firstNew is the first element and secondNew is the last element
         auto size = BeachLineElement::getCount(root);
+        position = (size > 0) ? (position + 1) % size : 0;
 
         pBeachLineElement left, right;
-        BeachLineElement::split(root, left, right, (position + 1) % size);
+        BeachLineElement::split(root, left, right, position);
 
         BeachLineElement::merge(right, &firstNew, right);
         BeachLineElement::merge(left, left, &secondNew);
         BeachLineElement::merge(root, right, left);
     }
 
-    void BeachLine::replace(const CircleEvent & e, rBeachLineElement newElement) {
+    void BeachLine::replace(const CircleEvent & e, rBeachLineElement newElement, pBeachLineElement& leftNeighbor, pBeachLineElement& rightNeighbor) {
         // replaces the elements specified in e and replaces them with newElement
         // Note that we can safely assume that e does not refer to the last and first element as our arrangement can never have these two involved in a circle event
 
@@ -151,6 +170,12 @@ namespace hyperbolic {
 
         delete middle;
 
+        // get left and right neighbors
+        BeachLineElement::getRightmostChild(leftNeighbor, left);
+        BeachLineElement::getLeftmostChild(rightNeighbor, right);
+        if (leftNeighbor == nullptr) BeachLineElement::getRightmostChild(leftNeighbor, right);
+        if (rightNeighbor == nullptr) BeachLineElement::getLeftmostChild(rightNeighbor, left);
+
         BeachLineElement::merge(left, left, &newElement);
         BeachLineElement::merge(root, left, right);
     }
@@ -160,12 +185,16 @@ namespace hyperbolic {
     }
 
 #ifndef NDEBUG
+    void BeachLine::print() {
+        print(root);
+        std::cout << std::endl;
+    }
+
     void BeachLine::print(pBeachLineElement t) {
         if (!t) return;
         print(t->leftChild);
-        std::cout << "(" << t->first.ID  << ") ";
+        std::cout << "(" << t->first.ID << ", " << t->second.ID << ") ";
         print(t->rightChild);
-        std::cout << std::endl;
     };
 #endif
 }

@@ -9,7 +9,7 @@ int main() {
     print_version();
 
     VoronoiDiagram v;
-    vector<Site> sites = {Site(4, 2.43), Site(2, 2.19), Site(7, 0.87)};
+    vector<Point> sites = {Point(3, 2.43), Point(2, 2.19), Point(6, 0.87)};
     auto fortune = getInstance(v, sites);
 
     fortune->calculate();
