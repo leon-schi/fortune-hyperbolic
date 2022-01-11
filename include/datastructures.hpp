@@ -3,11 +3,12 @@
 #include <vector>
 #include <queue>
 #include <random>
+#include <algorithm>
 #include <type_traits>
 
 #include <lib.hpp>
 
-using std::is_base_of, std::unique_ptr, std::vector, std::priority_queue;
+using std::is_base_of, std::unique_ptr, std::shared_ptr, std::vector, std::priority_queue, std::size_t, std::string, std::to_string, std::hash, std::unordered_map;
 
 namespace hyperbolic {
     class BeachLineElement;
@@ -58,18 +59,40 @@ namespace hyperbolic {
             return e1->r > e2->r;
         }
 
-        bool operator()(const unique_ptr<T>& e1, const unique_ptr<T> &e2) {
+        bool operator()(const shared_ptr<T>& e1, const shared_ptr<T> &e2) {
             return compare(e1.get(), e2.get());
         }
     };
 
     template <class T>
-    class EventQueue : public priority_queue<unique_ptr<T>, vector<unique_ptr<T>>, CmpEvent<T>> {
+    class EventQueue : public priority_queue<shared_ptr<T>, vector<shared_ptr<T>>, CmpEvent<T>> {
     public:
         const T* getTop() {
             return (this->empty()) ? nullptr : this->top().get();
         }
     };
+
+    struct SiteTriple {
+        unsigned long long ID1, ID2, ID3;
+        SiteTriple(rSite a, rSite b, rSite c) {
+            vector<unsigned long long> ids = {a.ID, b.ID, c.ID};
+            std::sort(ids.begin(), ids.end());
+            ID1 = ids[0], ID2 = ids[1], ID3 = ids[2];
+        }
+    };
+
+    struct CmpSiteTriple {
+        bool operator ()(const SiteTriple& a, const SiteTriple& b) const {
+            return a.ID1 == b.ID1 && a.ID2 == b.ID2 && a.ID3 == b.ID3;
+        }
+    };
+    struct HashSiteTriple {
+        size_t operator ()(const SiteTriple& a) const {
+            string s = to_string(a.ID1) + to_string(a.ID2) + to_string(a.ID3);
+            return hash<string>{}(s);
+        }
+    };
+    using SiteTripleMap = unordered_map<SiteTriple, Point, HashSiteTriple, CmpSiteTriple>;
 
     struct BeachLinePosition {
         pBeachLineElement first, second;
@@ -83,10 +106,12 @@ namespace hyperbolic {
         friend class BeachLine;
     public:
         rSite first, second;
-        CircleEvent *next = nullptr, *previous = nullptr;
-        BeachLineElement(rSite first, rSite second, Edge& edge, pPoint& v) : first(first), second(second), edge(edge), assignableVertex(v) {
+        shared_ptr<CircleEvent> next = nullptr, previous = nullptr;
+        Edge* const edge;
+        BeachLineElement(rSite first, rSite second, Edge* edge, pPoint& v) : first(first), second(second), edge(edge), assignableVertex(v) {
             std::random_device d;
             std::mt19937 rng(d());
+            //rng.seed(14232645);
             std::uniform_int_distribution<uint32_t> uint_dist;
             priority = uint_dist(rng);
         };
@@ -96,7 +121,7 @@ namespace hyperbolic {
         }
         void assignVertex(rPoint v) {assignableVertex = &v;}
     private:
-        const Edge & edge;
+        static void del(pBeachLineElement e);
         pPoint& assignableVertex;
 
         pBeachLineElement leftChild = nullptr, rightChild = nullptr;
@@ -104,28 +129,32 @@ namespace hyperbolic {
 
         int count = 0;
         uint32_t priority;
-
-        [[nodiscard]] _float_t calculateAngularCoordinate(_float_t r_sweep);
-
-        static void setParent(pBeachLineElement e, pBeachLineElement p);
-        [[nodiscard]] static int getCount(const BeachLineElement* e);
-        static void update(pBeachLineElement e);
-        static void split(pBeachLineElement t, pBeachLineElement& l, pBeachLineElement& r, int pos, int add);
-        static void merge(pBeachLineElement& t, pBeachLineElement l, pBeachLineElement r);
-        // search by known position in beach line
-        static void find(pBeachLineElement& result, pBeachLineElement t, int pos, int add);
-        // binary search for handling site events
-        static void find(pBeachLineElement& result, int& position, pBeachLineElement t, _float_t theta, _float_t r_sweep, int add);
-        static int getPosition(pBeachLineElement e);
-        static void del(pBeachLineElement);
-
-        static void getLeftmostChild(pBeachLineElement& result, pBeachLineElement e);
-        static void getRightmostChild(pBeachLineElement& result, pBeachLineElement e);
     };
 
     class BeachLine {
     private:
         pBeachLineElement root = nullptr;
+        _float_t reference_angle = 0; // angular coordinate of the reference point used for searching on the beach line
+
+        static void setParent(pBeachLineElement e, pBeachLineElement p);
+        [[nodiscard]] static int getCount(const BeachLineElement* e);
+        static void update(pBeachLineElement e);
+
+        static void split(pBeachLineElement t, pBeachLineElement& l, pBeachLineElement& r, int pos, int add);
+        static void merge(pBeachLineElement& t, pBeachLineElement l, pBeachLineElement r);
+
+        static int getPosition(pBeachLineElement e);
+
+        static void getRemainingElements(pBeachLineElement e, vector<pBeachLineElement>& v);
+
+        [[nodiscard]]  _float_t calculateAngularCoordinate(pBeachLineElement e, _float_t r_sweep, int pos) const;
+        // search by known position in beach line
+        void find(pBeachLineElement& result, pBeachLineElement t, int pos, int add);
+        // binary search for handling site events
+        void find(pBeachLineElement& result, int& position, pBeachLineElement t, _float_t theta, _float_t r_sweep, int add);
+
+        void getLeftmostChild(pBeachLineElement& result, pBeachLineElement e);
+        void getRightmostChild(pBeachLineElement& result, pBeachLineElement e);
     public:
         BeachLine() = default;
         ~BeachLine() {
@@ -134,11 +163,13 @@ namespace hyperbolic {
         BeachLinePosition search(const SiteEvent & s);
         void insert(int position, rBeachLineElement firstNew, rBeachLineElement secondNew);
         void replace(const CircleEvent & e, rBeachLineElement newElement, pBeachLineElement& leftNeighbor, pBeachLineElement& rightNeighbor);
-        int size();
+        [[nodiscard]] int size() const;
+
+        void getRemainingElements(vector<pBeachLineElement>& elements);
 
 #ifndef NDEBUG
-        void print();
-        void print(pBeachLineElement t);
+        void print(_float_t r_sweep);
+        void print(pBeachLineElement t, _float_t r_sweep, int add);
 #endif
     };
 }

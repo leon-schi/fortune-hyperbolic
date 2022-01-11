@@ -2,30 +2,26 @@
 #include <vector>
 #include <memory>
 
+#include <geometry.hpp>
+
+using std::vector, std::unique_ptr;
+
 namespace hyperbolic {
     void print_version();
 
-    typedef double _float_t;
-
-    struct Point {
-        _float_t r = 0, theta = 0;
-        Point() = default;
-        Point(_float_t r, _float_t theta) : r(r), theta(theta) {}
-    };
-    typedef const Point* pPoint;
-    typedef const Point& rPoint;
-
     struct Edge {
         rPoint siteA, siteB;
+        Point last_known_position;
+        const Bisector bisector;
         _float_t theta_start = 0, theta_end = 0;
-        pPoint firstVertex= nullptr, secondVertex = nullptr;
-        Edge(rPoint a, rPoint b) : siteA(a), siteB(b) {};
+        pPoint firstVertex = nullptr, secondVertex = nullptr;
+        Edge(rPoint a, rPoint b) : siteA(a), siteB(b), bisector(Bisector(&a, &b)) {};
     };
 
     class VoronoiDiagram {
     public:
-        std::vector<Point> vertices;
-        std::vector<Edge> edges;
+        vector<unique_ptr<Point>> vertices;
+        vector<unique_ptr<Edge>> edges;
     };
 
     class FortuneHyperbolic {
@@ -34,5 +30,6 @@ namespace hyperbolic {
         virtual void calculate() = 0;
     };
 
-    std::unique_ptr<FortuneHyperbolic> getInstance(VoronoiDiagram& diagram, const std::vector<Point>& sites);
+    std::unique_ptr<FortuneHyperbolic> getNewInstance(VoronoiDiagram& diagram, const vector<Point>& sites);
+    void draw_diagram(VoronoiDiagram& voronoiDiagram, vector<Point>& sites);
 }

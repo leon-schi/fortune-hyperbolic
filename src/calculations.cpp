@@ -3,6 +3,11 @@
 
 #include <lib.hpp>
 #include <calculations.hpp>
+#include <fortune.hpp>
+#include <geometry.hpp>
+
+#include <iostream>
+#include <cassert>
 
 namespace hyperbolic {
     _float_t clip(_float_t x);
@@ -57,17 +62,18 @@ namespace hyperbolic {
         }
 
         cosine combined =
-                cosine((cosh(r_sweep) - cosh(t->r))*sinh(s->r), 0, (cosh(t->r)-cosh(s->r))*sinh(r_sweep)) +
-                cosine(-(cosh(r_sweep) - cosh(s->r))*sinh(t->r), s->theta-t->theta, 0);
-        auto [z1, z2] = combined.zeros();
+                cosine((cosh(r_sweep) - cosh(t->r)) * sinh(s->r), 0, (cosh(t->r) - cosh(s->r)) * sinh(r_sweep)) +
+                cosine(-(cosh(r_sweep) - cosh(s->r)) * sinh(t->r), s->theta - t->theta, 0);
+        auto[z1, z2] = combined.zeros();
         if (z1 > z2) std::swap(z1, z2);
 
-        if (return_second)
-            return z2;
-        return z1;
+        z1 = clip(z1 + s->theta);
+        z2 = clip(z2 + s->theta);
+
+        return (return_second) ? z2 : z1;
     }
 
-    void Bisector::calc_phi() {
+    void Bisector::calc_definition() {
         // returns two angular coordinates between which the bisector is defined
         _float_t phi = acos(numerator/denominator.amp); // phi is in [0, pi/2]
         theta_start = clip(2*M_PI - phi - denominator.phase);
@@ -78,10 +84,17 @@ namespace hyperbolic {
         if (s->r > t->r)
             std::swap(s, t);
         numerator = cosh(t->r) - cosh(s->r);
-        denominator =
-                cosine(sinh(t->r), -t->theta, 0) +
-                cosine(-sinh(s->r), -s->theta, 0);
-        calc_phi();
+
+        if (numerator == 0.0) {
+            is_straight = true;
+            straight_angle = (s->theta + t->theta) / 2.0;
+        } else {
+            is_straight = false;
+            denominator =
+                    cosine(sinh(t->r), -t->theta, 0) +
+                    cosine(-sinh(s->r), -s->theta, 0);
+            calc_definition();
+        }
     }
 
     _float_t Bisector::operator()(_float_t theta) const {
@@ -96,6 +109,7 @@ namespace hyperbolic {
 
     bool onActiveSide(rBeachLineElement a, rPoint p) {
         // checks if p is on the active side of the beach line intersection a
+        if (p.r == 0.0) return true;
 
         rPoint s = a.first.point, t = a.second.point;
         _float_t outer_theta = (s.r >= t.r) ? s.theta : t.theta;
@@ -103,7 +117,12 @@ namespace hyperbolic {
         return (s.r >= t.r) ? p_theta <= M_PI : p_theta >= M_PI;
     }
 
-    bool check_inside(Point& result, Bisector& rs, Bisector& st, _float_t z) {
+    _float_t distance(rPoint s, rPoint t) {
+        auto x = cosh(s.r)*cosh(t.r) - sinh(s.r)*cos(s.theta - t.theta)*sinh(t.r);
+        return acosh(x);
+    }
+
+    bool assign_result_if_in_definiton(Point& result, Bisector& rs, Bisector& st, _float_t z) {
         if (rs.in_definition(z) && st.in_definition(z)) {
             result.r = rs(z);
             result.theta = z;
@@ -112,29 +131,63 @@ namespace hyperbolic {
         return false;
     }
 
-    bool predict_circle_event(Point& result, pSite r, pSite s, pSite t) {
-        if (!((r != s) && (s != t))) return false;
+    bool assign_result_for_straight_bisector_if_exists(Point& result, Bisector& straight, Bisector& not_straight) {
+        // assigns the coordinate of the intersection of straight and not_straight to result if it exists
+        // straight is a straight line and not_straight is not
 
-        // TODO: memorize already calculated values
-        // TODO: use the hyperboloid model for more precise predictions
+        assert(straight.is_straight);
+        assert(!not_straight.is_straight);
+
+        if (not_straight.in_definition(straight.straight_angle)) {
+            result.r = not_straight(straight.straight_angle);
+            result.theta = straight.straight_angle;
+            return true;
+        }
+        return false;
+    }
+
+    bool predict_circle_event(Point& result, pSite r, pSite s, pSite t) {
+        // TODO: maybe use hyperboloid model for predictions
 
         Bisector rs(&r->point, &s->point);
         Bisector st(&s->point, &t->point);
 
-        auto [z1, z2] = (rs.denominator*st.numerator - st.denominator*rs.numerator).zeros();
+        // if one of the bisectors is a straight line, intersection calculation becomes straightforward
+        if (rs.is_straight) {
+            if (st.is_straight) {
+                result = {0, 0};
+                return true;
+            }
+            if (assign_result_for_straight_bisector_if_exists(result, rs, st)) return true;
+        } else if (st.is_straight) {
+            if (assign_result_for_straight_bisector_if_exists(result, st, rs)) return true;
+        } else {
+            auto [z1, z2] = (rs.denominator*st.numerator - st.denominator*rs.numerator).zeros();
 
-        if (check_inside(result, rs, st, z1)) return true;
-        if (check_inside(result, rs, st, z2)) return true;
+            if (assign_result_if_in_definiton(result, rs, st, z1))
+                return true;
+            if (assign_result_if_in_definiton(result, rs, st, z2))
+                return true;
+        }
         return false;
     }
 
-    bool predict_circle_event(Point& result, rBeachLineElement a, rBeachLineElement b) {
-        if (!predict_circle_event(result, &a.first, &a.second, &b.second)) return false;
-        return onActiveSide(a, result) && onActiveSide(b, result);
-    }
+    bool FortuneHyperbolicImplementation::predict_circle_event(Point& result, rBeachLineElement a, rBeachLineElement b) {
+        rSite r = a.first, s = a.second, t = b.second;
+        auto siteTriple = SiteTriple(r, s, t);
+        if (siteTriple.ID1 == siteTriple.ID2 || siteTriple.ID2 == siteTriple.ID3) return false;
 
-    _float_t distance(rPoint s, rPoint t) {
-        auto x = cosh(s.r)*cosh(t.r) - sinh(s.r)*cos(s.theta - t.theta)*sinh(t.r);
-        return acosh(x);
+        auto it = siteTripleMap.find(siteTriple);
+        if (it != siteTripleMap.end()) {
+            // use cached value
+            result = it->second;
+        } else {
+            // calculate point and cache it if existent
+            if (hyperbolic::predict_circle_event(result, &r, &s, &t))
+                siteTripleMap[siteTriple] = result;
+            else return false;
+        }
+
+        return onActiveSide(a, result) && onActiveSide(b, result);
     }
 }

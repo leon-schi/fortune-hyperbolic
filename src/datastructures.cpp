@@ -5,27 +5,34 @@
 #include <calculations.hpp>
 
 namespace hyperbolic {
-    _float_t BeachLineElement::calculateAngularCoordinate(_float_t r_sweep) {
-        return calculate_beach_line_intersection(&first, &second, r_sweep);
+    _float_t BeachLine::calculateAngularCoordinate(pBeachLineElement e, _float_t r_sweep, int pos) const {
+        if (pos == 0 && r_sweep == e->first.point.r)
+            return 0;
+        else if (pos == size() - 1 && r_sweep == e->second.point.r)
+            return 2*M_PI;
+
+        _float_t theta = calculate_beach_line_intersection(&e->first, &e->second, r_sweep);
+        return clip(theta - reference_angle);
     }
 
-    int BeachLineElement::getCount(const BeachLineElement * const e) {
+    int BeachLine::getCount(const BeachLineElement * const e) {
         return (e) ? e->count : 0;
     }
 
-    void BeachLineElement::setParent(pBeachLineElement e, BeachLineElement * p) {
+    void BeachLine::setParent(pBeachLineElement e, BeachLineElement * p) {
         if (e) e->parent = p;
     }
 
-    void BeachLineElement::update(pBeachLineElement e) {
+    void BeachLine::update(pBeachLineElement e) {
         if (e) {
             e->count = 1 + getCount(e->leftChild) + getCount(e->rightChild);
             setParent(e->leftChild, e);
             setParent(e->rightChild, e);
+            e->parent = nullptr;
         }
     }
 
-    void BeachLineElement::split(pBeachLineElement t, pBeachLineElement& l, pBeachLineElement& r, int pos, int add=0) {
+    void BeachLine::split(pBeachLineElement t, pBeachLineElement& l, pBeachLineElement& r, int pos, int add=0) {
         // splits such that l holds elements from positions [0 .. pos-1], and r from [pos .. n]
         if (!t) {
             l = r = nullptr;
@@ -36,7 +43,7 @@ namespace hyperbolic {
         if (pos > current_position) {
             split(t->rightChild, t->rightChild, r, pos, current_position + 1);
             l = t;
-        } else if (pos > current_position){
+        } else if (pos < current_position) {
             split(t->leftChild, l, t->leftChild, pos, add);
             r = t;
         } else {
@@ -47,7 +54,7 @@ namespace hyperbolic {
         update(t);
     }
 
-    void BeachLineElement::merge(pBeachLineElement& t, pBeachLineElement l, pBeachLineElement r) {
+    void BeachLine::merge(pBeachLineElement& t, pBeachLineElement l, pBeachLineElement r) {
         if (!l || !r)
             t = l ? l : r;
         else if (l->priority > r->priority) {
@@ -61,7 +68,7 @@ namespace hyperbolic {
         update(t);
     };
 
-    void BeachLineElement::find(pBeachLineElement& result, pBeachLineElement t, int pos, int add=0) {
+    void BeachLine::find(pBeachLineElement& result, pBeachLineElement t, int pos, int add=0) {
         if (!t) {
             result = nullptr;
             return;
@@ -76,14 +83,14 @@ namespace hyperbolic {
             find(result, t->leftChild, pos, add);
     }
 
-    void BeachLineElement::find(pBeachLineElement& result, int& pos, pBeachLineElement t, _float_t theta, _float_t r_sweep, int add=0) {
+    void BeachLine::find(pBeachLineElement& result, int& pos, pBeachLineElement t, _float_t theta, _float_t r_sweep, int add=0) {
         // returns the first element clockwise of theta in t (i.e. with a angular coordinate smaller/equal theta)
         if (!t) {
             result = nullptr;
             return;
         }
         int current_position = getCount(t->leftChild) + add;
-        _float_t current_key = t->calculateAngularCoordinate(r_sweep);
+        _float_t current_key = calculateAngularCoordinate(t, r_sweep, current_position);
         if (theta >= current_key) {
             find(result, pos, t->rightChild, theta, r_sweep, current_position+1);
             if (result == nullptr) {
@@ -96,11 +103,12 @@ namespace hyperbolic {
         }
     }
 
-    int BeachLineElement::getPosition(pBeachLineElement e) {
+    int BeachLine::getPosition(pBeachLineElement e) {
         int pos = getCount(e->leftChild);
         while (e->parent) {
+            if (e->parent->leftChild != e)
+                pos += getCount(e->parent->leftChild) + 1;
             e = e->parent;
-            pos += getCount(e->leftChild) + 1;
         }
         return pos;
     }
@@ -114,87 +122,102 @@ namespace hyperbolic {
         delete t;
     }
 
-    void BeachLineElement::getLeftmostChild(pBeachLineElement& result, pBeachLineElement e) {
+    void BeachLine::getLeftmostChild(pBeachLineElement& result, pBeachLineElement e) {
         if (!e) {
             result = nullptr;
             return;
         }
-        BeachLineElement::find(result, e, 0);
+        find(result, e, 0);
     };
 
-    void BeachLineElement::getRightmostChild(pBeachLineElement &result, pBeachLineElement e) {
+    void BeachLine::getRightmostChild(pBeachLineElement &result, pBeachLineElement e) {
         if (!e) {
             result = nullptr;
             return;
         }
-        BeachLineElement::find(result, e, getCount(e)-1);
+        find(result, e, getCount(e)-1);
     };
 
     BeachLinePosition BeachLine::search(const SiteEvent & s) {
         pBeachLineElement first; int position_first;
-        BeachLineElement::find(first, position_first, root, s.site.point.theta, s.r);
+        _float_t theta = clip(s.site.point.theta - reference_angle);
+        BeachLine::find(first, position_first, root, theta, s.r);
 
-        auto size = BeachLineElement::getCount(root);
+        auto size = BeachLine::getCount(root);
         if (!first) {
-            BeachLineElement::find(first, root, 0);
+            BeachLine::find(first, root, 0);
             position_first = 0;
         }
 
         pBeachLineElement second;
-        BeachLineElement::find(second, root, (position_first+1) % size);
+        BeachLine::find(second, root, (position_first+1) % size);
 
         return BeachLinePosition(first, second, position_first);
     }
 
     void BeachLine::insert(int position, rBeachLineElement firstNew, rBeachLineElement secondNew) {
-        // inserts the beach line elements firstNew and second new after position positionFirst and rearranges the order such that firstNew is the first element and secondNew is the last element
-        auto size = BeachLineElement::getCount(root);
+        // inserts the neighboring beach line elements firstNew and second new after position positionFirst and rearranges the order such that firstNew is the first element and secondNew is the last element
+        auto size = BeachLine::getCount(root);
         position = (size > 0) ? (position + 1) % size : 0;
 
         pBeachLineElement left, right;
-        BeachLineElement::split(root, left, right, position);
+        BeachLine::split(root, left, right, position);
 
-        BeachLineElement::merge(right, &firstNew, right);
-        BeachLineElement::merge(left, left, &secondNew);
-        BeachLineElement::merge(root, right, left);
+        BeachLine::merge(right, &firstNew, right);
+        BeachLine::merge(left, left, &secondNew);
+        BeachLine::merge(root, right, left);
+
+        reference_angle = firstNew.first.point.theta;
     }
 
     void BeachLine::replace(const CircleEvent & e, rBeachLineElement newElement, pBeachLineElement& leftNeighbor, pBeachLineElement& rightNeighbor) {
         // replaces the elements specified in e and replaces them with newElement
         // Note that we can safely assume that e does not refer to the last and first element as our arrangement can never have these two involved in a circle event
 
-        int position = BeachLineElement::getPosition(&e.first);
+        int position = BeachLine::getPosition(&e.first);
         pBeachLineElement left, middle, right;
-        BeachLineElement::split(root, left, middle, position);
-        BeachLineElement::split(middle, middle, right, 2);
+        BeachLine::split(root, left, middle, position);
+        BeachLine::split(middle, middle, right, 2);
 
         delete middle;
 
         // get left and right neighbors
-        BeachLineElement::getRightmostChild(leftNeighbor, left);
-        BeachLineElement::getLeftmostChild(rightNeighbor, right);
-        if (leftNeighbor == nullptr) BeachLineElement::getRightmostChild(leftNeighbor, right);
-        if (rightNeighbor == nullptr) BeachLineElement::getLeftmostChild(rightNeighbor, left);
+        BeachLine::getRightmostChild(leftNeighbor, left);
+        BeachLine::getLeftmostChild(rightNeighbor, right);
+        if (leftNeighbor == nullptr) BeachLine::getRightmostChild(leftNeighbor, right);
+        if (rightNeighbor == nullptr) BeachLine::getLeftmostChild(rightNeighbor, left);
 
-        BeachLineElement::merge(left, left, &newElement);
-        BeachLineElement::merge(root, left, right);
+        BeachLine::merge(left, left, &newElement);
+        BeachLine::merge(root, left, right);
     }
 
-    int BeachLine::size() {
-        return BeachLineElement::getCount(root);
+    int BeachLine::size() const {
+        return BeachLine::getCount(root);
+    }
+
+    void BeachLine::getRemainingElements(pBeachLineElement e, vector<pBeachLineElement>& v) {
+        if (!e) return;
+        getRemainingElements(e->leftChild, v);
+        v.push_back(e);
+        getRemainingElements(e->rightChild, v);
+    }
+
+    void BeachLine::getRemainingElements(vector<pBeachLineElement>& v) {
+        getRemainingElements(root, v);
     }
 
 #ifndef NDEBUG
-    void BeachLine::print() {
-        print(root);
+    void BeachLine::print(_float_t r_sweep) {
+        print(root, r_sweep, 0);
         std::cout << std::endl;
     }
 
-    void BeachLine::print(pBeachLineElement t) {
+    void BeachLine::print(pBeachLineElement t, _float_t r_sweep, int add=0) {
         if (!t) return;
-        print(t->leftChild);
-        std::cout << "(" << t->first.ID << ", " << t->second.ID << ") ";
-        print(t->rightChild);
+        print(t->leftChild, r_sweep, add);
+        int cur_pos = getCount(t->leftChild) + add;
+        std::cout << "((" << t->first.ID << ", " << t->second.ID << "), " << cur_pos << ", " << calculateAngularCoordinate(t, r_sweep, cur_pos) << ") ";
+        print(t->rightChild, r_sweep, cur_pos + 1);
     };
 #endif
 }

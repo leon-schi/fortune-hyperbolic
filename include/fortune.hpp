@@ -16,6 +16,7 @@ namespace hyperbolic {
     class FortuneHyperbolicImplementation : public FortuneHyperbolic {
         private:
             BeachLine beachLine;
+            _float_t r_sweep;
 
             EventQueue<SiteEvent> siteEventQueue;
             EventQueue<CircleEvent> circleEventQueue;
@@ -30,10 +31,15 @@ namespace hyperbolic {
             void handleSiteEvent(const SiteEvent& e);
             void handleCircleEvent(const CircleEvent& e);
             void initializeBeachLine();
+            void sanitizeEdges();
 
             bool eventsRemaining();
-            Edge& getNewEdge(rSite a, rSite b);
-            Point& getNewVertex(rPoint p);
+
+            SiteTripleMap siteTripleMap;
+            bool predict_circle_event(Point& result, rBeachLineElement a, rBeachLineElement b);
+
+            Edge* getNewEdge(rSite a, rSite b);
+            Point* getNewVertex(rPoint p);
         public:
             FortuneHyperbolicImplementation(VoronoiDiagram& v, const vector<Point>& sites);
 
