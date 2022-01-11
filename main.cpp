@@ -20,7 +20,8 @@ int main() {
             Point(2, 2.5),
             Point(2, 1.5),
             Point(2, 1.7),
-            Point(1, 5)
+            Point(1, 5),
+            Point(0.2, 0)
     };
     VoronoiDiagram v;
     auto fortune = getNewInstance(v, sites);

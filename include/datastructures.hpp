@@ -5,6 +5,7 @@
 #include <random>
 #include <algorithm>
 #include <type_traits>
+#include <unordered_map>
 
 #include <lib.hpp>
 

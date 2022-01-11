@@ -106,10 +106,7 @@ namespace hyperbolic {
         rSite b = siteEventQueue.top()->site;
         siteEventQueue.pop();
         r_sweep = b.point.r;
-
-        Bisector b_ab(&a.point, &b.point);
-        Point q = (b_ab.is_straight) ? Point(0, 0) : Point(b_ab(b.point.theta), b.point.theta);
-
+        
         Edge* edge = getNewEdge(a, b);
         auto first = new BeachLineElement(b, a, edge, edge->firstVertex);
         auto last = new BeachLineElement(a, b, edge, edge->secondVertex);
