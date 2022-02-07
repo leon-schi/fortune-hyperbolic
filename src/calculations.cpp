@@ -6,11 +6,69 @@
 #include <fortune.hpp>
 #include <geometry.hpp>
 
-#include <iostream>
 #include <cassert>
 
+/*
+ * implementation of geometric calculations
+ * */
+
 namespace hyperbolic {
-    _float_t clip(_float_t x);
+    HyperboloidVec HyperboloidVec::cross(HyperboloidVec& v) const {
+        return HyperboloidVec(y*v.z - v.y*z, v.x*z - x*v.z, y*v.x - v.y*x);
+    }
+
+    void HyperboloidVec::normalize() {
+        _float_t a_sq = z*z - x*x - y*y;
+        if (a_sq < 0) a_sq *= -1;
+        _float_t a = sqrt(a_sq);
+        if (z < 0) a = -a;
+        x /= a; y /= a; z/= a;
+    }
+
+    HyperboloidVec::HyperboloidVec(const Point& p) {
+        x = sinh(p.r) * cos(p.theta);
+        y = sinh(p.r) * sin(p.theta);
+        z = cosh(p.r);
+    }
+
+    HyperboloidVec HyperboloidVec::operator+(const HyperboloidVec& v) const {
+        return HyperboloidVec(x + v.x, y + v.y, z + v.z);
+    }
+
+    HyperboloidVec HyperboloidVec::operator-(const HyperboloidVec& v) const {
+        return HyperboloidVec(x - v.x, y - v.y, z - v.z);
+    }
+
+    HyperboloidVec HyperboloidVec::operator*(double a) const {
+        return HyperboloidVec(a*x, a*y, a*z);
+    }
+
+    _float_t HyperboloidVec::dot(const HyperboloidVec& v) const {
+        return x*v.x + y*v.y - z*v.z;
+    }
+
+    void HyperboloidBisector::find_u(pPoint a, pPoint b) {
+        if (a->r > b->r) std::swap(a, b);
+        HyperboloidVec v_a(*a), v_b(*b);
+
+        HyperboloidVec p_b(-v_b.y, v_b.x, 0);
+        HyperboloidVec p_ab = v_a - v_b;
+
+        u = p_b.cross(p_ab);
+        u.normalize();
+    }
+
+    HyperboloidBisector::HyperboloidBisector(pPoint a, pPoint b) {
+        find_u(a,b);
+        HyperboloidVec v_a(*a), v_b(*b);
+        HyperboloidVec v_ab = v_b - v_a;
+        v = u.cross(v_ab);
+        v.normalize();
+    }
+
+    Point::Point(const HyperboloidVec& p) {
+        r = acosh(p.z); theta = clip(atan2(p.y, p.x));
+    }
 
     cosine cosine::operator +(const cosine& a) const {
         // the phase returned is always in [0, 2pi]
@@ -107,8 +165,8 @@ namespace hyperbolic {
         return theta <= end;
     }
 
+    // checks if p is on the active side of the beach line intersection a
     bool onActiveSide(rBeachLineElement a, rPoint p) {
-        // checks if p is on the active side of the beach line intersection a
         if (p.r == 0.0) return true;
 
         rPoint s = a.first.point, t = a.second.point;
@@ -172,19 +230,19 @@ namespace hyperbolic {
         return false;
     }
 
-    bool FortuneHyperbolicImplementation::predict_circle_event(Point& result, rBeachLineElement a, rBeachLineElement b) {
+    bool FortuneHyperbolicImplementation::predictCircleEvent(Point& result, rBeachLineElement a, rBeachLineElement b) {
         rSite r = a.first, s = a.second, t = b.second;
         auto siteTriple = SiteTriple(r, s, t);
         if (siteTriple.ID1 == siteTriple.ID2 || siteTriple.ID2 == siteTriple.ID3) return false;
 
-        auto it = siteTripleMap.find(siteTriple);
-        if (it != siteTripleMap.end()) {
+        auto it = circleEventCache.find(siteTriple);
+        if (it != circleEventCache.end()) {
             // use cached value
             result = it->second;
         } else {
             // calculate point and cache it if existent
             if (hyperbolic::predict_circle_event(result, &r, &s, &t))
-                siteTripleMap[siteTriple] = result;
+                circleEventCache[siteTriple] = result;
             else return false;
         }
 

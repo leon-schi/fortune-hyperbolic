@@ -20,6 +20,7 @@ namespace hyperbolic {
 
             EventQueue<SiteEvent> siteEventQueue;
             EventQueue<CircleEvent> circleEventQueue;
+            bool eventsRemaining();
 
             VoronoiDiagram& voronoiDiagram;
             vector<Site> sites;
@@ -28,21 +29,19 @@ namespace hyperbolic {
 
             void addCircleEvent(rBeachLineElement first, rBeachLineElement second);
 
-            void handleSiteEvent(const SiteEvent& e);
-            void handleCircleEvent(const CircleEvent& e);
             void initializeBeachLine();
             void sanitizeEdges();
 
-            bool eventsRemaining();
+            void handleSiteEvent(const SiteEvent& e);
+            void handleCircleEvent(const CircleEvent& e);
 
-            SiteTripleMap siteTripleMap;
-            bool predict_circle_event(Point& result, rBeachLineElement a, rBeachLineElement b);
+            SiteTripleMap circleEventCache;
+            bool predictCircleEvent(Point& result, rBeachLineElement a, rBeachLineElement b);
 
-            Edge* getNewEdge(rSite a, rSite b);
+            Edge* getNewEdge(rSite a, rSite b, EdgeType edgeType);
             Point* getNewVertex(rPoint p);
         public:
             FortuneHyperbolicImplementation(VoronoiDiagram& v, const vector<Point>& sites);
-
             void calculate() override;
     };
 }

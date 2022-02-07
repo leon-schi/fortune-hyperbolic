@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <fstream>
 
 #include <lib.hpp>
 #include <fortune.hpp>
@@ -11,11 +12,7 @@ using std::cout, std::endl, std::make_shared, std::make_unique, std::vector;
 using namespace hyperbolic;
 
 namespace hyperbolic {
-    void print_version() {
-        cout << VERSION_MAJOR << endl;
-    }
-
-    FortuneHyperbolicImplementation::FortuneHyperbolicImplementation(VoronoiDiagram &v, const vector<Point> &sites) : voronoiDiagram(v) {
+    FortuneHyperbolicImplementation::FortuneHyperbolicImplementation(VoronoiDiagram &v, const vector<Point> &sites) : r_sweep(0), voronoiDiagram(v) {
         unsigned long long id = 0;
         for (const Point& p : sites) {
             this->sites.emplace_back(Site(p, id));
@@ -35,7 +32,7 @@ namespace hyperbolic {
         invalidateCircleEvent(first.next.get());
         invalidateCircleEvent(second.previous.get());
         Point centerCircleEvent;
-        if (predict_circle_event(centerCircleEvent, first, second)) {
+        if (predictCircleEvent(centerCircleEvent, first, second)) {
             _float_t radius = distance(centerCircleEvent, first.first.point);
             shared_ptr<CircleEvent> ce = make_shared<CircleEvent>(first, second, centerCircleEvent, radius);
             if (ce->r >= r_sweep) {
@@ -52,28 +49,30 @@ namespace hyperbolic {
 #endif
         r_sweep = e.r;
 
-        BeachLinePosition p = beachLine.search(e);
-        rSite hitSite = p.first->second;
+        pBeachLineElement first, second;
+        int positionFirst = beachLine.search(e.site.point, e.r, first, second);
+        rSite hitSite = first->second;
 
-        Bisector b(&e.site.point, &hitSite.point);
+        Edge* edge = getNewEdge(e.site, hitSite, EdgeType::BIDIRECTIONAL);
+        auto firstNew = new BeachLineElement(e.site, hitSite, edge, edge->firstVertex);
+        auto secondNew = new BeachLineElement(hitSite, e.site, edge, edge->secondVertex);
 
-        Edge* edge = getNewEdge(e.site, hitSite);
-        auto first = new BeachLineElement(e.site, hitSite, edge, edge->firstVertex);
-        auto last = new BeachLineElement(hitSite, e.site, edge, edge->secondVertex);
+        addCircleEvent(*first, *secondNew);
+        addCircleEvent(*firstNew, *second);
 
-        addCircleEvent(*p.first, *last);
-        addCircleEvent(*first, *p.second);
-
-        beachLine.insert(p.positionFirst, *first, *last);
+        beachLine.insert(positionFirst, *firstNew, *secondNew);
     }
 
     void FortuneHyperbolicImplementation::handleCircleEvent(const CircleEvent& e) {
+#ifndef NDEBUG
+        if (!e.isValid())
+            cout << "Skipping invalid circle event" << endl;
+        else
+            cout << "Handling Circle Event with radius " << e.r << " concerning beach line elements (" << e.first.first.ID << ", " << e.first.second.ID << ") and (" << e.second.first.ID << ", " << e.second.second.ID << ")" << endl;
+#endif
+
         if (!e.isValid()) return;
         r_sweep = e.r;
-
-#ifndef NDEBUG
-        cout << "Handling Circle Event with radius " << e.r << " concerning beach line elements (" << e.first.first.ID << ", " << e.first.second.ID << ") and (" << e.second.first.ID << ", " << e.second.second.ID << ")" << endl;
-#endif
 
         pPoint v = getNewVertex(e.center);
 
@@ -82,7 +81,7 @@ namespace hyperbolic {
 
         // replace first and second with new beach line element
         rSite a = e.first.first, b = e.second.second;
-        Edge* edge = getNewEdge(a, b);
+        Edge* edge = getNewEdge(a, b, (a.point.r >= b.point.r) ? EdgeType::CCW : EdgeType::CW);
         edge->firstVertex = v;
         auto newElement = new BeachLineElement(a, b, edge, edge->secondVertex);
 
@@ -106,8 +105,8 @@ namespace hyperbolic {
         rSite b = siteEventQueue.top()->site;
         siteEventQueue.pop();
         r_sweep = b.point.r;
-        
-        Edge* edge = getNewEdge(a, b);
+
+        Edge* edge = getNewEdge(b, a, EdgeType::BIDIRECTIONAL);
         auto first = new BeachLineElement(b, a, edge, edge->firstVertex);
         auto last = new BeachLineElement(a, b, edge, edge->secondVertex);
         beachLine.insert(0, *first, *last);
@@ -132,7 +131,7 @@ namespace hyperbolic {
             const SiteEvent* se = siteEventQueue.getTop();
             const CircleEvent* ce = circleEventQueue.getTop();
 
-            if (!ce || (se && se->r <= ce->r)) {
+            if (!ce || (se && CmpEvent<Event>::greater_equal(ce, se))) {
                 handleSiteEvent(*se);
                 siteEventQueue.pop();
             } else {
@@ -158,8 +157,8 @@ namespace hyperbolic {
         }
     }
 
-    Edge* FortuneHyperbolicImplementation::getNewEdge(rSite a, rSite b) {
-        voronoiDiagram.edges.emplace_back(make_unique<Edge>(a.point, b.point));
+    Edge* FortuneHyperbolicImplementation::getNewEdge(rSite a, rSite b, EdgeType edgeType) {
+        voronoiDiagram.edges.emplace_back(make_unique<Edge>(a, b, edgeType));
         return voronoiDiagram.edges.back().get();
     }
 

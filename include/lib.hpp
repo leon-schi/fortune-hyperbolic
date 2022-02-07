@@ -1,21 +1,32 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <string>
 
 #include <geometry.hpp>
 
-using std::vector, std::unique_ptr;
+using std::vector, std::unique_ptr, std::string;
 
 namespace hyperbolic {
-    void print_version();
+    string get_version();
 
+    enum EdgeType {CCW, CW, BIDIRECTIONAL};
+
+    /*
+     * represents an edge of the Voronoi diagram
+     * */
     struct Edge {
-        rPoint siteA, siteB;
+        EdgeType edgeType;
+        // the sites that define the bisector corresponding to the edge
+        rSite siteA, siteB;
+        // A point that is on the edge
         Point last_known_position;
+        // the bisector corresponding to the edge
         const Bisector bisector;
-        _float_t theta_start = 0, theta_end = 0;
+        // the vertices of the Voronoi diagram the edge is adjacent to
         pPoint firstVertex = nullptr, secondVertex = nullptr;
-        Edge(rPoint a, rPoint b) : siteA(a), siteB(b), bisector(Bisector(&a, &b)) {};
+        Edge(rSite a, rSite b, EdgeType edgeType) :
+            edgeType(edgeType), siteA(a), siteB(b), bisector(Bisector(&a.point, &b.point)) {};
     };
 
     class VoronoiDiagram {
@@ -30,6 +41,9 @@ namespace hyperbolic {
         virtual void calculate() = 0;
     };
 
+
+    /*
+     * returns an instance of the class that implements the algorithm
+     * */
     std::unique_ptr<FortuneHyperbolic> getNewInstance(VoronoiDiagram& diagram, const vector<Point>& sites);
-    void draw_diagram(VoronoiDiagram& voronoiDiagram, vector<Point>& sites);
 }

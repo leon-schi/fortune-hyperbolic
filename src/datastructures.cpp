@@ -4,15 +4,24 @@
 #include <datastructures.hpp>
 #include <calculations.hpp>
 
+#define epsilon 1e-20
+
 namespace hyperbolic {
+    _float_t BeachLine::transformAngle(_float_t theta) const {
+        return clip(theta - reference_angle);
+    }
+
     _float_t BeachLine::calculateAngularCoordinate(pBeachLineElement e, _float_t r_sweep, int pos) const {
-        if (pos == 0 && r_sweep == e->first.point.r)
-            return 0;
-        else if (pos == size() - 1 && r_sweep == e->second.point.r)
-            return 2*M_PI;
+        // if e is the first or last element and if the sweep circle is very close to one of its sites, we have to be careful
+        rPoint outer = (e->first.point.r >= e->second.point.r) ? e->first.point : e->second.point;
+        if (r_sweep - outer.r <= epsilon) {
+            if (pos == 0) return 0;
+            else if (pos == size() -1) return 2*M_PI;
+            else return outer.theta;
+        }
 
         _float_t theta = calculate_beach_line_intersection(&e->first, &e->second, r_sweep);
-        return clip(theta - reference_angle);
+        return transformAngle(theta);
     }
 
     int BeachLine::getCount(const BeachLineElement * const e) {
@@ -138,21 +147,21 @@ namespace hyperbolic {
         find(result, e, getCount(e)-1);
     };
 
-    BeachLinePosition BeachLine::search(const SiteEvent & s) {
-        pBeachLineElement first; int position_first;
-        _float_t theta = clip(s.site.point.theta - reference_angle);
-        BeachLine::find(first, position_first, root, theta, s.r);
+    int BeachLine::search(rPoint s, _float_t r_sweep, pBeachLineElement& first, pBeachLineElement& second) {
+        first = nullptr;
+        int position_first;
+        BeachLine::find(first, position_first, root, transformAngle(s.theta), r_sweep);
 
         auto size = BeachLine::getCount(root);
         if (!first) {
-            BeachLine::find(first, root, 0);
-            position_first = 0;
+            position_first = getCount(root)-1;
+            BeachLine::find(first, root, position_first);
         }
 
-        pBeachLineElement second;
+        second = nullptr;
         BeachLine::find(second, root, (position_first+1) % size);
 
-        return BeachLinePosition(first, second, position_first);
+        return position_first;
     }
 
     void BeachLine::insert(int position, rBeachLineElement firstNew, rBeachLineElement secondNew) {
@@ -170,7 +179,7 @@ namespace hyperbolic {
         reference_angle = firstNew.first.point.theta;
     }
 
-    void BeachLine::replace(const CircleEvent & e, rBeachLineElement newElement, pBeachLineElement& leftNeighbor, pBeachLineElement& rightNeighbor) {
+    void BeachLine::replace(const CircleEvent& e, rBeachLineElement newElement, pBeachLineElement& leftNeighbor, pBeachLineElement& rightNeighbor) {
         // replaces the elements specified in e and replaces them with newElement
         // Note that we can safely assume that e does not refer to the last and first element as our arrangement can never have these two involved in a circle event
 
