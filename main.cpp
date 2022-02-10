@@ -7,12 +7,15 @@
 #include <geometry.hpp>
 #include <utils.hpp>
 
+#include <kernels.hpp>
+
 #include "cxxopts.hpp"
 
 using namespace std;
 using namespace hyperbolic;
 
 int main(int argc, char* argv[]) {
+
     cxxopts::Options options(
             argv[0], "Calculates a hyperbolic voronoi diagram from a set of sites using the hyperbolic version of Fortune's Algorithm. Version " + get_version());
 

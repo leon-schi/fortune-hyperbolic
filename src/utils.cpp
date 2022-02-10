@@ -43,65 +43,17 @@ namespace hyperbolic {
 
         };
 
-        /*
-         * Transforms the bisector b in the interval [start, end] to a Path.
-         *  resolution is an angle that describes the steps in angular coordinates at which points are sampled from the bisector
-         * */
-        void add_path_from_straight_edge(const Edge& e, Path& p) const {
-            const Bisector& b = e.bisector;
-            if (e.firstVertex && e.secondVertex) {
-                p.push_back(CartesianPoint(*e.firstVertex));
-                p.push_back(CartesianPoint(*e.secondVertex));
-            } else if (e.firstVertex || e.secondVertex) {
-                pPoint v = (e.firstVertex) ? e.firstVertex : e.secondVertex;
-                p.push_back(CartesianPoint(*v));
-                p.push_back(CartesianPoint(Point(width*width, e.last_known_position.theta)));
-            } else {
-                p.push_back(CartesianPoint(Point(width*width, b.straight_angle + M_PI)));
-                p.push_back(CartesianPoint(Point(width*width, b.straight_angle)));
-            }
-        }
-
-        void add_path_from_curved_edge(const Edge& e, double resolution, Path& p) const {
-            const Bisector& b = e.bisector;
-            double start = b.theta_start, end = b.theta_end;
-
-            if (e.firstVertex && e.secondVertex) {
-                start = e.firstVertex->theta; end = e.secondVertex->theta;
-                if (clip(start - b.theta_start) > clip(end - b.theta_start))
-                    std::swap(start, end);
-            } else if (e.firstVertex || e.secondVertex) {
-                pPoint v = (e.firstVertex) ? e.firstVertex : e.secondVertex;
-                if (clip(v->theta - b.theta_start) < clip(e.last_known_position.theta - b.theta_start)) {
-                    start = v->theta;
-                    end = b.theta_end-resolution;
-                } else {
-                    start = b.theta_start+resolution;
-                    end = v->theta;
-                }
-            } else {
-                start = b.theta_start+resolution; end = b.theta_end-resolution;
-            }
-
-            end = clip(end - start);
-            double current = 0;
-            while (current <= end) {
-                p.push_back(CartesianPoint(Point(b(current + start), current + start)));
-                current += resolution;
-            }
-        }
-
         void add_delaunay_edge(const Edge& e, Path& p) const {
             p.push_back(CartesianPoint(e.siteA.point));
             p.push_back(CartesianPoint(e.siteB.point));
         }
 
-        void render_edge(pPoint from, pPoint to, HyperboloidBisector& b, list<CartesianPoint>& p, bool ccw=true) const {
+        void render_edge(pPoint from, pPoint to, HyperboloidBisector<double>& b, list<CartesianPoint>& p, bool ccw=true) const {
             double dt = 0.05;
-            double t = (from) ? distance(*from, Point(b.u)) : 0;
-            double t_end = (to) ? distance(*to, Point(b.u)) : DBL_MAX;
+            double t = (from) ? distance<double>(*from, Point(b.u)) : 0;
+            double t_end = (to) ? distance<double>(*to, Point(b.u)) : DBL_MAX;
 
-            HyperboloidVec v = b.v;
+            HyperboloidVec<double> v = b.v;
             Point v_polar(v);
             Point u_polar(b.u);
             double theta = clip(v_polar.theta - u_polar.theta);
@@ -122,7 +74,7 @@ namespace hyperbolic {
         }
 
         void add_edge(const Edge& e, Path& p) const {
-            HyperboloidBisector b(&e.siteA.point, &e.siteB.point);
+            HyperboloidBisector<double> b(e.siteA.point, e.siteB.point);
             Point q(b.u);
             if (e.edgeType == EdgeType::BIDIRECTIONAL) {
                 list<CartesianPoint> cw, ccw;
@@ -210,7 +162,7 @@ namespace hyperbolic {
                     path_representation += std::string("L ") + std::to_string(point.x) + ", " + std::to_string(point.y) + " ";
                 }
 
-                double path_width = 0.02 * scale;
+                double path_width = 0.01 * scale;
                 path_representation +=
                         std::string("\" stroke = \"") + color + "\" stroke-width = \"" +
                         std::to_string(path_width) + R"(" fill="none"/>)";

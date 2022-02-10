@@ -6,7 +6,6 @@
 #include <fortune.hpp>
 #include <datastructures.hpp>
 #include <calculations.hpp>
-#include <cmake.hpp>
 
 using std::cout, std::endl, std::make_shared, std::make_unique, std::vector;
 using namespace hyperbolic;
@@ -33,7 +32,7 @@ namespace hyperbolic {
         invalidateCircleEvent(second.previous.get());
         Point centerCircleEvent;
         if (predictCircleEvent(centerCircleEvent, first, second)) {
-            _float_t radius = distance(centerCircleEvent, first.first.point);
+            _float_t radius = distance<_float_t>(centerCircleEvent, first.first.point);
             shared_ptr<CircleEvent> ce = make_shared<CircleEvent>(first, second, centerCircleEvent, radius);
             if (ce->r >= r_sweep) {
                 first.next = ce;
@@ -142,18 +141,6 @@ namespace hyperbolic {
 #ifndef NDEBUG
             beachLine.print(r_sweep);
 #endif
-        }
-
-        sanitizeEdges();
-    }
-
-    void FortuneHyperbolicImplementation::sanitizeEdges() {
-        vector<pBeachLineElement> remaining;
-        beachLine.getRemainingElements(remaining);
-        for (pBeachLineElement e : remaining) {
-            _float_t theta = calculate_beach_line_intersection(&e->first, &e->second, r_sweep + 1);
-            Bisector b(&e->first.point, &e->second.point);
-            e->edge->last_known_position = Point(b(theta), theta);
         }
     }
 

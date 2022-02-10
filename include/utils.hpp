@@ -1,5 +1,7 @@
+#pragma once
+
 #include <string>
-#include "lib.hpp"
+#include <lib.hpp>
 
 namespace hyperbolic {
     /*

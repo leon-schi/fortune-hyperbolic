@@ -19,14 +19,10 @@ namespace hyperbolic {
         EdgeType edgeType;
         // the sites that define the bisector corresponding to the edge
         rSite siteA, siteB;
-        // A point that is on the edge
-        Point last_known_position;
-        // the bisector corresponding to the edge
-        const Bisector bisector;
         // the vertices of the Voronoi diagram the edge is adjacent to
         pPoint firstVertex = nullptr, secondVertex = nullptr;
         Edge(rSite a, rSite b, EdgeType edgeType) :
-            edgeType(edgeType), siteA(a), siteB(b), bisector(Bisector(&a.point, &b.point)) {};
+            edgeType(edgeType), siteA(a), siteB(b) {};
     };
 
     class VoronoiDiagram {
@@ -40,7 +36,6 @@ namespace hyperbolic {
         virtual ~FortuneHyperbolic() = default;
         virtual void calculate() = 0;
     };
-
 
     /*
      * returns an instance of the class that implements the algorithm
