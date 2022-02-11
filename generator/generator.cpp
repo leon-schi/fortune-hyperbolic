@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include <random>
 #include <fstream>
@@ -14,8 +15,9 @@ int main(int argc, char* argv[]) {
     options.add_options()
             ("o,output", "Output Filename", cxxopts::value<std::string>()->default_value("sample.txt"))
             ("N", "Number of points to sample", cxxopts::value<int>()->default_value("100")) // a bool parameter
-            ("R", "Radius within which points are sampled", cxxopts::value<double>()->default_value("5"))
+            ("R", "Radius within which points are sampled", cxxopts::value<double>()->default_value("-1"))
             ("a,alpha", "Parameter alpha of the distribution from which we sample",cxxopts::value<double>()->default_value("1"))
+            ("d", "Desired average degree",cxxopts::value<double>()->default_value("8"))
             ("h,help", "Print usage");
 
     auto result = options.parse(argc, argv);
@@ -28,7 +30,14 @@ int main(int argc, char* argv[]) {
     int N = result["N"].as<int>();
     string filename = result["o"].as<string>();
     double R = result["R"].as<double>();
+
     double alpha = result["alpha"].as<double>();
+
+    if (R < 0) {
+      double d = result["d"].as<double>();
+      double alpha_fraction = alpha / (alpha - 0.5);
+      R = 2.0 * log(2.0 * N / (M_PI * d) * (alpha_fraction * alpha_fraction));
+    }
 
     std::random_device rd;
     std::mt19937 gen(rd());
