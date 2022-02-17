@@ -11,6 +11,7 @@
  * */
 
 namespace hyperbolic {
+
     // represents a vector in the hyperboloid model
     template<typename _float_T>
     struct HyperboloidVec {
@@ -31,7 +32,7 @@ namespace hyperbolic {
         HyperboloidVec operator-(const HyperboloidVec& v) const {
             return *this + v*(-1);
         };
-        _float_t dot(const HyperboloidVec& v) const {
+        _float_T dot(const HyperboloidVec& v) const {
             return x*v.x + y*v.y - z*v.z;
         };
         HyperboloidVec cross(HyperboloidVec& v) const {
@@ -120,8 +121,8 @@ namespace hyperbolic {
         [[nodiscard]] std::pair<_float_T, _float_T> zeros() const {
             // returns zeros of the cosine function a in the interval [0, 2 pi)
             _float_T z = acos(-c/amp);
-            _float_T z1 = clip(z - phase);
-            _float_T z2 = clip(2*M_PI - z - phase);
+            _float_T z1 = clip<_float_T>(z - phase);
+            _float_T z2 = clip<_float_T>(2*M_PI - z - phase);
             return {z1, z2};
         }
     };
@@ -138,7 +139,7 @@ namespace hyperbolic {
         cosine<_float_T> denominator = {0, 0, 0};
 
         // the angular coordinates between which the bisector is defined in case it is not a straight bisector
-        _float_t theta_start = 0, theta_end = 0;
+        _float_T theta_start = 0, theta_end = 0;
 
         // marks whether the object represents the special case of a straight line and if so at which angular coordinate it is placed
         bool is_straight = false;
@@ -146,13 +147,13 @@ namespace hyperbolic {
 
         void calc_definition() {
             // returns two angular coordinates between which the bisector is defined
-            _float_t phi = acos(numerator/denominator.amp); // phi is in [0, pi/2]
-            theta_start = clip(2*M_PI - phi - denominator.phase);
-            theta_end = clip(phi - denominator.phase);
+            _float_T phi = acos(numerator/denominator.amp); // phi is in [0, pi/2]
+            theta_start = clip<_float_T>(2*M_PI - phi - denominator.phase);
+            theta_end = clip<_float_T>(phi - denominator.phase);
         }
 
         // constructs the object from the two points that define it
-        Bisector(pPoint s, pPoint t) {
+        Bisector(const _Point<_float_T>* s, const _Point<_float_T>* t) {
             if (s->r > t->r)
                 std::swap(s, t);
             numerator = cosh(t->r) - cosh(s->r);
@@ -176,8 +177,8 @@ namespace hyperbolic {
 
         // checks whether the bisector is defined at the angular coordinate theta
         [[nodiscard]] bool in_definition(_float_T theta) const {
-            theta = clip(theta - theta_start);
-            _float_T end = clip(theta_end - theta_start);
+            theta = clip<_float_T>(theta - theta_start);
+            _float_T end = clip<_float_T>(theta_end - theta_start);
             return theta <= end;
         }
     };
@@ -189,4 +190,5 @@ namespace hyperbolic {
 
     // calculates the angular coordinate of the intersection of the beach curves of s and t at a sweep circle radius of r_sweep
     _float_t calculate_beach_line_intersection(pSite s, pSite  t, _float_t r_sweep);
+    bool predict_circle_event(Point& result, pSite r, pSite s, pSite t);
 }

@@ -6,13 +6,18 @@
 #include <lib.hpp>
 #include <geometry.hpp>
 #include <utils.hpp>
-
 #include <kernels.hpp>
+#include <fortune.hpp>
+
+#include <boost/multiprecision/mpfr.hpp>
 
 #include "cxxopts.hpp"
 
 using namespace std;
 using namespace hyperbolic;
+using namespace boost;
+using namespace multiprecision;
+
 
 int main(int argc, char* argv[]) {
 
@@ -59,9 +64,13 @@ int main(int argc, char* argv[]) {
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
+    double y = 42;
+    static_mpfr_float_50 x = static_cast<static_mpfr_float_50>(y);
+    cout << x << endl;
+
     VoronoiDiagram v;
-    auto fortune = getNewInstance(v, sites);
-    fortune->calculate();
+    FortuneHyperbolicImplementation<FullNativeKernel<static_mpfr_float_100>> fortune(v, sites);
+    fortune.calculate();
 
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 

@@ -13,6 +13,6 @@ def compare(adj1, adj2):
     return True
 
 if __name__ == "__main__":
-    adj1 = read_graph('../cmake-build-debug/bin/delaunay.txt')
-    adj2 = read_graph('../cmake-build-debug/bin/delaunay_old.txt')
+    adj1 = read_graph('../cmake-build-debug/bin/delaunay_lp.txt')
+    adj2 = read_graph('../cmake-build-debug/bin/delaunay_hp.txt')
     print(compare(adj1, adj2))

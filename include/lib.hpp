@@ -30,15 +30,4 @@ namespace hyperbolic {
         vector<unique_ptr<Point>> vertices;
         vector<unique_ptr<Edge>> edges;
     };
-
-    class FortuneHyperbolic {
-    public:
-        virtual ~FortuneHyperbolic() = default;
-        virtual void calculate() = 0;
-    };
-
-    /*
-     * returns an instance of the class that implements the algorithm
-     * */
-    std::unique_ptr<FortuneHyperbolic> getNewInstance(VoronoiDiagram& diagram, const vector<Point>& sites);
 }

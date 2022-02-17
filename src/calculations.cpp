@@ -36,16 +36,6 @@ namespace hyperbolic {
         return (return_second) ? z2 : z1;
     }
 
-    // checks if p is on the active side of the beach line intersection a
-    bool onActiveSide(rBeachLineElement a, rPoint p) {
-        if (p.r == 0.0) return true;
-
-        rPoint s = a.first.point, t = a.second.point;
-        _float_t outer_theta = (s.r >= t.r) ? s.theta : t.theta;
-        _float_t p_theta = clip(p.theta - outer_theta);
-        return (s.r >= t.r) ? p_theta <= M_PI : p_theta >= M_PI;
-    }
-
     bool assign_result_if_in_definiton(Point& result, Bisector<double>& rs, Bisector<double>& st, _float_t z) {
         if (rs.in_definition(z) && st.in_definition(z)) {
             result.r = rs(z);
@@ -94,24 +84,5 @@ namespace hyperbolic {
                 return true;
         }
         return false;
-    }
-
-    bool FortuneHyperbolicImplementation::predictCircleEvent(Point& result, rBeachLineElement a, rBeachLineElement b) {
-        rSite r = a.first, s = a.second, t = b.second;
-        auto siteTriple = SiteTriple(r, s, t);
-        if (siteTriple.ID1 == siteTriple.ID2 || siteTriple.ID2 == siteTriple.ID3) return false;
-
-        auto it = circleEventCache.find(siteTriple);
-        if (it != circleEventCache.end()) {
-            // use cached value
-            result = it->second;
-        } else {
-            // calculate point and cache it if existent
-            if (hyperbolic::predict_circle_event(result, &r, &s, &t))
-                circleEventCache[siteTriple] = result;
-            else return false;
-        }
-
-        return onActiveSide(a, result) && onActiveSide(b, result);
     }
 }

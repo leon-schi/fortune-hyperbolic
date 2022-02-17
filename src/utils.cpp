@@ -43,13 +43,13 @@ namespace hyperbolic {
 
         };
 
-        void add_delaunay_edge(const Edge& e, Path& p) const {
+        static void add_delaunay_edge(const Edge& e, Path& p) {
             p.push_back(CartesianPoint(e.siteA.point));
             p.push_back(CartesianPoint(e.siteB.point));
         }
 
         void render_edge(pPoint from, pPoint to, HyperboloidBisector<double>& b, list<CartesianPoint>& p, bool ccw=true) const {
-            double dt = 0.05;
+            double dt = 0.01 * scale;
             double t = (from) ? distance<double>(*from, Point(b.u)) : 0;
             double t_end = (to) ? distance<double>(*to, Point(b.u)) : DBL_MAX;
 
