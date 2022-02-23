@@ -6,8 +6,9 @@ on [this](https://www.researchgate.net/publication/356817081_Computing_Voronoi_D
 You can use the code as a header-only library. Alternatively, you can build an executable that calculates and draws a diagram based on a set of points read from a file. The output then looks like the following picture which shows a 
 Voronoi diagram of N=500 points uniformly distributed across a disk in the hyperbolic plane of radius R=9. The red lines are the Delaunay triangulation that connects points whose Voronoi cells are neighboring.
 
-![](voronoi_example.svg)
-
+<p align="center">
+<img src="voronoi_example.svg" width="600" height="600" />
+</p>
 ## How to use
 
 This is a header only library that you can easily include to your project. Place the `fortune-hyperbolic` folder
