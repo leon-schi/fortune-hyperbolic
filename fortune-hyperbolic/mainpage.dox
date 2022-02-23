@@ -1,0 +1,5 @@
+/*! \mainpage Fortune's algorithm in hyperbolic space
+ *
+ * This is an implementation of Fortune's Algorithm in the polar coordinate model of hyperbolic space.
+ *
+ */

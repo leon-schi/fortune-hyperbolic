@@ -1,0 +1,190 @@
+\hypertarget{calculations_8hpp_source}{}\doxysection{calculations.\+hpp}
+\label{calculations_8hpp_source}\index{include/fortune-\/hyperbolic/calculations.hpp@{include/fortune-\/hyperbolic/calculations.hpp}}
+\mbox{\hyperlink{calculations_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geometry_8hpp}{fortune-\/hyperbolic/geometry.hpp}}>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{datastructures_8hpp}{fortune-\/hyperbolic/datastructures.hpp}}>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{comment}{/*}}
+\DoxyCodeLine{10 \textcolor{comment}{ * functions used for doing important geometric calculations}}
+\DoxyCodeLine{11 \textcolor{comment}{ * */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacehyperbolic}{hyperbolic}} \{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15     \textcolor{comment}{// represents a vector in the hyperboloid model}}
+\DoxyCodeLine{16     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{17     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}} \{}
+\DoxyCodeLine{18         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}, \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}, \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}};}
+\DoxyCodeLine{19         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a38c2c41dd40da4e4f9215e5fd7fc607d}{HyperboloidVec}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{20         \textcolor{keyword}{explicit} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a80c996e34e767f18dd748452f9257502}{HyperboloidVec}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p) \{}
+\DoxyCodeLine{21             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}} = sinh(p.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}) * cos(p.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}});}
+\DoxyCodeLine{22             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}} = sinh(p.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}) * sin(p.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}});}
+\DoxyCodeLine{23             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}} = cosh(p.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}});}
+\DoxyCodeLine{24         \};}
+\DoxyCodeLine{25         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a0d0d0073f91790d4475d78fc5ce2af4d}{HyperboloidVec}}(\_float\_T \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}, \_float\_T \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}, \_float\_T \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}) : \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}(\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}), \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}(\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}), \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}(\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}) \{\};}
+\DoxyCodeLine{26         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a6277a8ba26432bd2d18957dfbb6fdf00}{operator+}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}}\& v)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{27             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a38c2c41dd40da4e4f9215e5fd7fc607d}{HyperboloidVec}}(\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}} + v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}, \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}} + v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}, \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}} + v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}});}
+\DoxyCodeLine{28         \};}
+\DoxyCodeLine{29         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a2547aed530cb513f7ea29410ce440fda}{operator*}}(\textcolor{keywordtype}{double} a)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{30             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a38c2c41dd40da4e4f9215e5fd7fc607d}{HyperboloidVec}}(a*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}, a*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}, a*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}});}
+\DoxyCodeLine{31         \};}
+\DoxyCodeLine{32         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_aeaa130fe46d1b53069a16f44eb0ba5b3}{operator-\/}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}}\& v)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{33             \textcolor{keywordflow}{return} *\textcolor{keyword}{this} + v*(-\/1);}
+\DoxyCodeLine{34         \};}
+\DoxyCodeLine{35         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac59de80fbcc4d1d550df97cf5f73de25}{dot}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}}\& v)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{36             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}*v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}} + \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}*v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}} -\/ \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}*v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}};}
+\DoxyCodeLine{37         \};}
+\DoxyCodeLine{38         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a4b435b33512e68ded4c1c30eee3024fc}{cross}}(\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}}\& v)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{39             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a38c2c41dd40da4e4f9215e5fd7fc607d}{HyperboloidVec}}(\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}*v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}} -\/ v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}, v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}} -\/ \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}*v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}, \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}*v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}} -\/ v.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}});}
+\DoxyCodeLine{40         \};}
+\DoxyCodeLine{41         \textcolor{keywordtype}{void} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af55e0379c473bc636c1be9b4bc0a3afa}{normalize}}() \{}
+\DoxyCodeLine{42             \_float\_T a\_sq = \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}} -\/ \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}} -\/ \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}*\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}};}
+\DoxyCodeLine{43             \textcolor{keywordflow}{if} (a\_sq < 0) a\_sq *= -\/1;}
+\DoxyCodeLine{44             \_float\_T a = sqrt(a\_sq);}
+\DoxyCodeLine{45             \textcolor{keywordflow}{if} (\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}} < 0) a = -\/a;}
+\DoxyCodeLine{46             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}} /= a; \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}} /= a; \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}/= a;}
+\DoxyCodeLine{47         \};}
+\DoxyCodeLine{48     \};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{comment}{// represents a Bisector as a parameterized line in the hyperboloid model}}
+\DoxyCodeLine{51     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{52     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector}{HyperboloidBisector}} \{}
+\DoxyCodeLine{53         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_afb62ef24df03edfe1edfc3aba910a3ec}{u}}, \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_a644d8cc1ccb5f3ca2842c2a58ec23221}{v}};}
+\DoxyCodeLine{54         \textcolor{keywordtype}{void} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_aa40ec5b874c6cfea0a614c88a5ad7722}{find\_u}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}* a, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}* b) \{}
+\DoxyCodeLine{55             \textcolor{keywordflow}{if} (a-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} > b-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}) std::swap(a, b);}
+\DoxyCodeLine{56             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}} v\_a(*a), v\_b(*b);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}} p\_b(-\/v\_b.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}, v\_b.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}, 0);}
+\DoxyCodeLine{59             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}} p\_ab = v\_a -\/ v\_b;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_afb62ef24df03edfe1edfc3aba910a3ec}{u}} = p\_b.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a4b435b33512e68ded4c1c30eee3024fc}{cross}}(p\_ab);}
+\DoxyCodeLine{62             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_afb62ef24df03edfe1edfc3aba910a3ec}{u}}.normalize();}
+\DoxyCodeLine{63         \};}
+\DoxyCodeLine{64         \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_adf11a9da7ca5d79207e41844840eb7f8}{HyperboloidBisector}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& a, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& b) \{}
+\DoxyCodeLine{65             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_aa40ec5b874c6cfea0a614c88a5ad7722}{find\_u}}(\&a, \&b);}
+\DoxyCodeLine{66             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}} v\_a(a), v\_b(b);}
+\DoxyCodeLine{67             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}} v\_ab = v\_b -\/ v\_a;}
+\DoxyCodeLine{68             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_a644d8cc1ccb5f3ca2842c2a58ec23221}{v}} = \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_afb62ef24df03edfe1edfc3aba910a3ec}{u}}.cross(v\_ab);}
+\DoxyCodeLine{69             \mbox{\hyperlink{structhyperbolic_1_1HyperboloidBisector_a644d8cc1ccb5f3ca2842c2a58ec23221}{v}}.normalize();}
+\DoxyCodeLine{70         \};}
+\DoxyCodeLine{71     \};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{comment}{// transforms an angular coordinate into the range [0, 2*M\_PI)}}
+\DoxyCodeLine{74     \textcolor{keyword}{template} <\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{75     \_float\_T \mbox{\hyperlink{namespacehyperbolic_a620ee5feb588ffe86a88672c008e8db9}{clip}}(\_float\_T x) \{}
+\DoxyCodeLine{76         \textcolor{keywordflow}{if} (x < 0) \textcolor{keywordflow}{return} x + 2*M\_PI;}
+\DoxyCodeLine{77         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (x >= 2*M\_PI) \textcolor{keywordflow}{return} x -\/ 2*M\_PI;}
+\DoxyCodeLine{78         \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{79     \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     \textcolor{comment}{// calculates the hyperbolic distance between two points}}
+\DoxyCodeLine{82     \textcolor{keyword}{template} <\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{83     \_float\_T \mbox{\hyperlink{namespacehyperbolic_aede1030ac5d8891dd239416d9d120feb}{distance}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& t) \{}
+\DoxyCodeLine{84         \textcolor{keyword}{auto} x = cosh(s.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}})*cosh(t.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}) -\/ sinh(s.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}})*cos(s.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} -\/ t.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}})*sinh(t.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}});}
+\DoxyCodeLine{85         \textcolor{keywordflow}{return} acosh(x);}
+\DoxyCodeLine{86     \};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{comment}{/*}}
+\DoxyCodeLine{89 \textcolor{comment}{     * struct representing a cosine function for geometric calculations}}
+\DoxyCodeLine{90 \textcolor{comment}{     * */}}
+\DoxyCodeLine{91     \textcolor{keyword}{template} <\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{92     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine}} \{}
+\DoxyCodeLine{93         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}}, \mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}}, \mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}}; \textcolor{comment}{// amplitude, phase, and constant c}}
+\DoxyCodeLine{94         \mbox{\hyperlink{structhyperbolic_1_1cosine_acbce575448ae32cd5a0ad1ad1e3b27cd}{cosine}}(\_float\_T \mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}}, \_float\_T \mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}}, \_float\_T \mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}}) : \mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}}(\mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}}), \mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}}(\mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}}), \mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}}(\mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}}) \{\}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96         \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}} \mbox{\hyperlink{structhyperbolic_1_1cosine_a33d2b5289ad14249977fa4c0a8c30dff}{operator+}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}}\& a)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{97             \textcolor{comment}{// the phase returned is always in [0, 2pi]}}
+\DoxyCodeLine{98             \_float\_T x = cos(a.\mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}})*a.\mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}};}
+\DoxyCodeLine{99             x += cos(\mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}})*\mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}};}
+\DoxyCodeLine{100             \_float\_T y = sin(a.\mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}})*a.\mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}};}
+\DoxyCodeLine{101             y += sin(\mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}})*\mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103             \_float\_T result\_amp = sqrt(pow(x, 2) + pow(y,2));}
+\DoxyCodeLine{104             \_float\_T result\_phase = atan2(y, x);}
+\DoxyCodeLine{105             \textcolor{keywordflow}{if} (result\_phase < 0) result\_phase += 2*M\_PI;}
+\DoxyCodeLine{106             \textcolor{keywordflow}{return} \{result\_amp, result\_phase, a.\mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}} + \mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}}\};}
+\DoxyCodeLine{107         \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109         \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}} \mbox{\hyperlink{structhyperbolic_1_1cosine_a366258a7dc0e84532a26507451d60215}{operator-\/}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}}\& a)\textcolor{keyword}{ const}\{}
+\DoxyCodeLine{110             \textcolor{keywordflow}{return} *\textcolor{keyword}{this} + \mbox{\hyperlink{structhyperbolic_1_1cosine_acbce575448ae32cd5a0ad1ad1e3b27cd}{cosine}}(-\/a.\mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}}, a.\mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}}, -\/a.\mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}});}
+\DoxyCodeLine{111         \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113         \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}} \mbox{\hyperlink{structhyperbolic_1_1cosine_ab457bd6235c01b7aad1207b70ff6c48f}{operator *}}(\textcolor{keyword}{const} \_float\_T a)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{114             \textcolor{keywordflow}{return} \{a * \mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}}, \mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}}, a * \mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}}\};}
+\DoxyCodeLine{115         \}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1cosine_a799bd0e0102102c43196a71b07425e58}{operator ()}}(\_float\_T x)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{118             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}}*cos(x + \mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}}) + \mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}};}
+\DoxyCodeLine{119         \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121         [[nodiscard]] std::pair<\_float\_T, \_float\_T> \mbox{\hyperlink{structhyperbolic_1_1cosine_a079da1895c757b44cd883e5c0bc3c454}{zeros}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{122             \textcolor{comment}{// returns zeros of the cosine function a in the interval [0, 2 pi)}}
+\DoxyCodeLine{123             \_float\_T z = acos(-\/\mbox{\hyperlink{structhyperbolic_1_1cosine_a301c584be7c556edb2ff1605d2f052e2}{c}}/\mbox{\hyperlink{structhyperbolic_1_1cosine_accd71e459e9a5c503dff1ca03b5060f1}{amp}});}
+\DoxyCodeLine{124             \_float\_T z1 = clip<\_float\_T>(z -\/ \mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}});}
+\DoxyCodeLine{125             \_float\_T z2 = clip<\_float\_T>(2*M\_PI -\/ z -\/ \mbox{\hyperlink{structhyperbolic_1_1cosine_a7eac0c22f5feb54979cbacdf02a8f129}{phase}});}
+\DoxyCodeLine{126             \textcolor{keywordflow}{return} \{z1, z2\};}
+\DoxyCodeLine{127         \}}
+\DoxyCodeLine{128     \};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{134     \textcolor{keyword}{template} <\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{135     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}} \{}
+\DoxyCodeLine{136         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}} = 0;}
+\DoxyCodeLine{137         \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}} \mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}} = \{0, 0, 0\};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139         \textcolor{comment}{// the angular coordinates between which the bisector is defined in case it is not a straight bisector}}
+\DoxyCodeLine{140         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1Bisector_a5554c752ac5e49fbdd0bc4e7c591d5c1}{theta\_start}} = 0, \mbox{\hyperlink{structhyperbolic_1_1Bisector_a4fbbaca84a16b3d3253540148dc61b8c}{theta\_end}} = 0;}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142         \textcolor{comment}{// marks whether the object represents the special case of a straight line and if so at which angular coordinate it is placed}}
+\DoxyCodeLine{143         \textcolor{keywordtype}{bool} \mbox{\hyperlink{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}{is\_straight}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{144         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}{straight\_angle}} = 0;}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146         \textcolor{keywordtype}{void} \mbox{\hyperlink{structhyperbolic_1_1Bisector_a138ad818f360fbc4b4e72795f8f2582f}{calc\_definition}}() \{}
+\DoxyCodeLine{147             \textcolor{comment}{// returns two angular coordinates between which the bisector is defined}}
+\DoxyCodeLine{148             \_float\_T phi = acos(\mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}}/\mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}}.amp); \textcolor{comment}{// phi is in [0, pi/2]}}
+\DoxyCodeLine{149             \mbox{\hyperlink{structhyperbolic_1_1Bisector_a5554c752ac5e49fbdd0bc4e7c591d5c1}{theta\_start}} = clip<\_float\_T>(2*M\_PI -\/ phi -\/ \mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}}.phase);}
+\DoxyCodeLine{150             \mbox{\hyperlink{structhyperbolic_1_1Bisector_a4fbbaca84a16b3d3253540148dc61b8c}{theta\_end}} = clip<\_float\_T>(phi -\/ \mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}}.phase);}
+\DoxyCodeLine{151         \}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153         \textcolor{comment}{// constructs the object from the two points that define it}}
+\DoxyCodeLine{154         \mbox{\hyperlink{structhyperbolic_1_1Bisector_a0d38aaa1e35d6aa6cb92c2a4ffbbbbb7}{Bisector}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}* s, \textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}* t) \{}
+\DoxyCodeLine{155             \textcolor{keywordflow}{if} (s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} > t-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}})}
+\DoxyCodeLine{156                 std::swap(s, t);}
+\DoxyCodeLine{157             \mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}} = cosh(t-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}) -\/ cosh(s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}});}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159             \textcolor{keywordflow}{if} (\mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}} == 0.0) \{}
+\DoxyCodeLine{160                 \mbox{\hyperlink{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}{is\_straight}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{161                 \mbox{\hyperlink{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}{straight\_angle}} = (s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} + t-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}) / 2.0;}
+\DoxyCodeLine{162             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{163                 \mbox{\hyperlink{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}{is\_straight}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{164                 \mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}} =}
+\DoxyCodeLine{165                         \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}}(sinh(t-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}), -\/t-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}, 0) +}
+\DoxyCodeLine{166                         \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}}(-\/sinh(s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}), -\/s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}, 0);}
+\DoxyCodeLine{167                 \mbox{\hyperlink{structhyperbolic_1_1Bisector_a138ad818f360fbc4b4e72795f8f2582f}{calc\_definition}}();}
+\DoxyCodeLine{168             \}}
+\DoxyCodeLine{169         \}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171         \textcolor{comment}{// returns the radial coordinate at angular coordinate theta}}
+\DoxyCodeLine{172         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1Bisector_ab98aa7c473df7abc86dc1cbd26a6776c}{operator()}}(\_float\_T theta)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{173             \textcolor{keywordflow}{return} atanh(\mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}}/\mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}}(theta));}
+\DoxyCodeLine{174         \}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176         \textcolor{comment}{// checks whether the bisector is defined at the angular coordinate theta}}
+\DoxyCodeLine{177         [[nodiscard]] \textcolor{keywordtype}{bool} \mbox{\hyperlink{structhyperbolic_1_1Bisector_aeb42676ea449adda899e6cba7da709bc}{in\_definition}}(\_float\_T theta)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{178             theta = clip<\_float\_T>(theta -\/ \mbox{\hyperlink{structhyperbolic_1_1Bisector_a5554c752ac5e49fbdd0bc4e7c591d5c1}{theta\_start}});}
+\DoxyCodeLine{179             \_float\_T end = clip<\_float\_T>(\mbox{\hyperlink{structhyperbolic_1_1Bisector_a4fbbaca84a16b3d3253540148dc61b8c}{theta\_end}} -\/ \mbox{\hyperlink{structhyperbolic_1_1Bisector_a5554c752ac5e49fbdd0bc4e7c591d5c1}{theta\_start}});}
+\DoxyCodeLine{180             \textcolor{keywordflow}{return} theta <= end;}
+\DoxyCodeLine{181         \}}
+\DoxyCodeLine{182     \};}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{185     \mbox{\hyperlink{structhyperbolic_1_1Point_a23108abf8a3a2ae423fe3d7cf1d039e7}{Point<\_float\_T>::Point}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}}\& p) \{}
+\DoxyCodeLine{186         r = acosh(p.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_a09e8c7eace97029bf30ad4aaafbe82c3}{z}}); theta = \mbox{\hyperlink{namespacehyperbolic_a620ee5feb588ffe86a88672c008e8db9}{clip}}(atan2(p.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_af554ed120190b72ac72bee79e6fc5ca5}{y}}, p.\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec_ac7b8d591cc125b660c18fb8561bb6714}{x}}));}
+\DoxyCodeLine{187     \}}
+\DoxyCodeLine{188 \}}
+
+\end{DoxyCode}

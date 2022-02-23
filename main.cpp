@@ -75,6 +75,7 @@ int main(int argc, char* argv[]) {
     cout << "Finished calculating Voronoi diagram after " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " microseconds" << endl;
 
     VoronoiCanvasOptions canvas_options;
+    canvas_options.width = 500;
     VoronoiCanvas canvas(v, sites);
     if (result.count("d")) {
         string output_file = result["d"].as<string>();

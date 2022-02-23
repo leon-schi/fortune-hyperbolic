@@ -22,6 +22,10 @@ namespace hyperbolic {
         }
     };
 
+    /**
+     * Main class that implements the algorithm. Requires a kernel K and a floating point type _float_T to use.
+     * The kernel floating point type must match _float_T
+     * */
     template<class K, typename _float_T>
     class FortuneHyperbolicImplementation {
     private:
@@ -52,6 +56,9 @@ namespace hyperbolic {
                 if (e) e->invalidate();
             }
 
+            /**
+             * method that predicts and assigns new circle events
+             * */
             void addCircleEvent(rBeachLineElement first, rBeachLineElement second) {
                 invalidateCircleEvent(first.next.get());
                 invalidateCircleEvent(second.previous.get());
@@ -67,9 +74,10 @@ namespace hyperbolic {
                 }
             };
 
+            /**
+             * Initializes the first elements in the beach line.
+             * */
             void initializeBeachLine() {
-                // TODO: handle speicial case that the three closest sites are equidistant from the origin
-
                 rSite a = siteEventQueue.top()->site;
                 siteEventQueue.pop();
                 rSite b = siteEventQueue.top()->site;
@@ -82,6 +90,9 @@ namespace hyperbolic {
                 beachLine.insert(0, *first, *last);
             };
 
+            /**
+             * Called when a site event is handled.
+             * */
             void handleSiteEvent(const SiteEvent<_float_T>& e) {
 #ifndef NDEBUG
                 if (verbose)
@@ -103,6 +114,9 @@ namespace hyperbolic {
                 beachLine.insert(positionFirst, *firstNew, *secondNew);
             };
 
+            /**
+             * Called when a circle event is handled.
+             * */
             void handleCircleEvent(const CircleEvent<_float_T>& e) {
 #ifndef NDEBUG
                 if (verbose) {
@@ -145,6 +159,13 @@ namespace hyperbolic {
                 return voronoiDiagram.vertices.back().get();
             };
         public:
+            /**
+             * Instantiate the class.
+             *
+             * @param v Reference to the Voronoi Diagram to be computed
+             * @param sites A vector of sites used as input
+             * @param verbose Whether to print the beach line in each iteration or not
+             */
             FortuneHyperbolicImplementation(VoronoiDiagram& v, const vector<Point<double>>& sites, bool verbose=false) : verbose(verbose), beachLine(kernel), voronoiDiagram(v) {
                 unsigned long long id = 0;
                 for (const Point<double>& p : sites) {
@@ -154,6 +175,9 @@ namespace hyperbolic {
                 r_sweep = 0;
             };
 
+            /**
+             * calculates the Voronoi diagram.
+             * */
             void calculate() {
                 if (isCalculated) return;
                 isCalculated = true;

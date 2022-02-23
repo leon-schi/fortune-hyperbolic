@@ -1,0 +1,54 @@
+\hypertarget{classhyperbolic_1_1FortuneHyperbolicImplementation}{}\doxysection{hyperbolic\+::Fortune\+Hyperbolic\+Implementation\texorpdfstring{$<$}{<} K, \+\_\+float\+\_\+T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classhyperbolic_1_1FortuneHyperbolicImplementation}\index{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$@{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$}}
+
+
+{\ttfamily \#include $<$fortune.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1FortuneHyperbolicImplementation_a407bb7865d6b54c20dc5783c241949b4}{Fortune\+Hyperbolic\+Implementation}} (\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram}{Voronoi\+Diagram}} \&v, const vector$<$ \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ double $>$ $>$ \&sites, bool verbose=false)
+\item 
+void \mbox{\hyperlink{classhyperbolic_1_1FortuneHyperbolicImplementation_a4e014364c68fa03d5234c2a7afdac663}{calculate}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class K, typename \+\_\+float\+\_\+T$>$\newline
+class hyperbolic\+::\+Fortune\+Hyperbolic\+Implementation$<$ K, \+\_\+float\+\_\+\+T $>$}
+Main class that implements the algorithm. Requires a kernel K and a floating point type \+\_\+float\+\_\+T to use. The kernel floating point type must match \+\_\+float\+\_\+T 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classhyperbolic_1_1FortuneHyperbolicImplementation_a407bb7865d6b54c20dc5783c241949b4}\label{classhyperbolic_1_1FortuneHyperbolicImplementation_a407bb7865d6b54c20dc5783c241949b4}} 
+\index{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$@{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$}!FortuneHyperbolicImplementation@{FortuneHyperbolicImplementation}}
+\index{FortuneHyperbolicImplementation@{FortuneHyperbolicImplementation}!hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$@{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{FortuneHyperbolicImplementation()}{FortuneHyperbolicImplementation()}}
+{\footnotesize\ttfamily template$<$class K , typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1FortuneHyperbolicImplementation}{hyperbolic\+::\+Fortune\+Hyperbolic\+Implementation}}$<$ K, \+\_\+float\+\_\+T $>$\+::\+Fortune\+Hyperbolic\+Implementation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram}{Voronoi\+Diagram}} \&}]{v,  }\item[{const vector$<$ \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ double $>$ $>$ \&}]{sites,  }\item[{bool}]{verbose = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Instantiate the class.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Reference to the Voronoi Diagram to be computed \\
+\hline
+{\em sites} & A vector of sites used as input \\
+\hline
+{\em verbose} & Whether to print the beach line in each iteration or not \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperbolic_1_1FortuneHyperbolicImplementation_a4e014364c68fa03d5234c2a7afdac663}\label{classhyperbolic_1_1FortuneHyperbolicImplementation_a4e014364c68fa03d5234c2a7afdac663}} 
+\index{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$@{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$}!calculate@{calculate}}
+\index{calculate@{calculate}!hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$@{hyperbolic::FortuneHyperbolicImplementation$<$ K, \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{calculate()}{calculate()}}
+{\footnotesize\ttfamily template$<$class K , typename \+\_\+float\+\_\+T $>$ \\
+void \mbox{\hyperlink{classhyperbolic_1_1FortuneHyperbolicImplementation}{hyperbolic\+::\+Fortune\+Hyperbolic\+Implementation}}$<$ K, \+\_\+float\+\_\+T $>$\+::calculate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+calculates the Voronoi diagram. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/fortune-\/hyperbolic/\mbox{\hyperlink{fortune_8hpp}{fortune.\+hpp}}\end{DoxyCompactItemize}

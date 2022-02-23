@@ -14,6 +14,9 @@
 using std::string, std::max_element, std::list;
 
 namespace hyperbolic {
+    /**
+    * Drawing options that can be provided to the VoronoiCanvas class
+    * */
     struct VoronoiCanvasOptions {
         double width = 300, height = 300;
         double line_width = 0.01, point_width = 0.02;
@@ -40,6 +43,9 @@ namespace hyperbolic {
 
     using Path = vector<CartesianPoint>;
 
+    /**
+     * Class used for drawing Voronoi diagrams and Delaunay triangulations
+     * */
     class VoronoiCanvas {
     private:
         VoronoiDiagram& voronoiDiagram;
@@ -57,8 +63,8 @@ namespace hyperbolic {
 
         bool out_of_bounds(Point<double>& p) const {
             return
-                (std::abs(cos(p.theta)*p.r) + offset.x > options.width) ||
-                (std::abs(sin(p.theta)*p.r) + offset.y > options.height);
+                (std::abs(cos(p.theta)*p.r*scale) + offset.x > options.width) ||
+                (std::abs(sin(p.theta)*p.r*scale) + offset.y > options.height);
         }
 
         void render_edge(Point<double>* from, Point<double>* to, HyperboloidBisector<double>& b, list<CartesianPoint>& p, bool ccw=true) const {
@@ -207,7 +213,7 @@ namespace hyperbolic {
             options = opt;
         }
 
-        /*
+        /**
         * writes a calculated Voronoi diagram and the corresponding sites to a file
         * */
         void draw_diagram(string filename) {
@@ -218,7 +224,7 @@ namespace hyperbolic {
             save_to_file(filename);
         }
 
-        /*
+        /**
          * writes the Delaunay triangulation of a Voronoi diagram to a file
          * */
         void write_delaunay_triangulation(string filename) {

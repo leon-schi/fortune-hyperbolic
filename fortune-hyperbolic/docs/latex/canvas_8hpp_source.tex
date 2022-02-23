@@ -1,0 +1,231 @@
+\hypertarget{canvas_8hpp_source}{}\doxysection{canvas.\+hpp}
+\label{canvas_8hpp_source}\index{include/fortune-\/hyperbolic/canvas.hpp@{include/fortune-\/hyperbolic/canvas.hpp}}
+\mbox{\hyperlink{canvas_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <cfloat>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geometry_8hpp}{fortune-\/hyperbolic/geometry.hpp}}>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{calculations_8hpp}{fortune-\/hyperbolic/calculations.hpp}}>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{using} std::string, std::max\_element, std::list;}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacehyperbolic}{hyperbolic}} \{}
+\DoxyCodeLine{20     \textcolor{keyword}{struct }VoronoiCanvasOptions \{}
+\DoxyCodeLine{21         \textcolor{keywordtype}{double} width = 300, height = 300;}
+\DoxyCodeLine{22         \textcolor{keywordtype}{double} line\_width = 0.01, point\_width = 0.02;}
+\DoxyCodeLine{23         \textcolor{keywordtype}{double} resolution = 0.01;}
+\DoxyCodeLine{24         \textcolor{keywordtype}{string} voronoi\_edge\_color = \textcolor{stringliteral}{"{}black"{}};}
+\DoxyCodeLine{25         \textcolor{keywordtype}{string} delaunay\_edge\_color = \textcolor{stringliteral}{"{}red"{}};}
+\DoxyCodeLine{26         \textcolor{keywordtype}{string} point\_color = \textcolor{stringliteral}{"{}black"{}};}
+\DoxyCodeLine{27         \textcolor{keywordtype}{bool} draw\_delaunay = \textcolor{keyword}{true};}
+\DoxyCodeLine{28     \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{keyword}{struct }CartesianPoint \{}
+\DoxyCodeLine{31         \textcolor{keywordtype}{double} x, y;}
+\DoxyCodeLine{32         CartesianPoint() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{33         \textcolor{keyword}{explicit} CartesianPoint(Point<double> p) \{}
+\DoxyCodeLine{34             x = cos(p.theta)*p.r;}
+\DoxyCodeLine{35             y = sin(p.theta)*p.r;}
+\DoxyCodeLine{36         \}}
+\DoxyCodeLine{37         CartesianPoint(\textcolor{keyword}{const} CartesianPoint\& p) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{38         CartesianPoint(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y) : x(x), y(y) \{\}}
+\DoxyCodeLine{39         CartesianPoint operator *(\textcolor{keyword}{const} \textcolor{keywordtype}{double} scale)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{40             \textcolor{keywordflow}{return} \{x*scale, y*scale\};}
+\DoxyCodeLine{41         \}}
+\DoxyCodeLine{42     \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{keyword}{using} Path = vector<CartesianPoint>;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{49     \textcolor{keyword}{class }VoronoiCanvas \{}
+\DoxyCodeLine{50     \textcolor{keyword}{private}:}
+\DoxyCodeLine{51         VoronoiDiagram\& voronoiDiagram;}
+\DoxyCodeLine{52         vector<Point<double>>\& sites;}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54         VoronoiCanvasOptions options;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56         \textcolor{keywordtype}{double} max\_r = 0, scale = 0;}
+\DoxyCodeLine{57         CartesianPoint offset = \{0, 0\};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59         \textcolor{keyword}{static} \textcolor{keywordtype}{void} add\_delaunay\_edge(\textcolor{keyword}{const} Edge\& e, Path\& p) \{}
+\DoxyCodeLine{60             p.push\_back(CartesianPoint(e.siteA.point));}
+\DoxyCodeLine{61             p.push\_back(CartesianPoint(e.siteB.point));}
+\DoxyCodeLine{62         \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64         \textcolor{keywordtype}{bool} out\_of\_bounds(Point<double>\& p)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{65             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{66                 (std::abs(cos(p.theta)*p.r*scale) + offset.x > options.width) ||}
+\DoxyCodeLine{67                 (std::abs(sin(p.theta)*p.r*scale) + offset.y > options.height);}
+\DoxyCodeLine{68         \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70         \textcolor{keywordtype}{void} render\_edge(Point<double>* from, Point<double>* to, HyperboloidBisector<double>\& b, list<CartesianPoint>\& p, \textcolor{keywordtype}{bool} ccw=\textcolor{keyword}{true})\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{71             \textcolor{keywordtype}{double} dt = options.resolution * scale;}
+\DoxyCodeLine{72             Point u\_native(b.u);}
+\DoxyCodeLine{73             \textcolor{keywordtype}{double} t = (from) ? distance<double>(*from, u\_native) : 0;}
+\DoxyCodeLine{74             \textcolor{keywordtype}{double} t\_end = (to) ? distance<double>(*to, u\_native) : DBL\_MAX;}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76             HyperboloidVec<double> v = b.v;}
+\DoxyCodeLine{77             Point v\_polar(v);}
+\DoxyCodeLine{78             Point u\_polar(b.u);}
+\DoxyCodeLine{79             \textcolor{keywordtype}{double} theta = \mbox{\hyperlink{namespacehyperbolic_a620ee5feb588ffe86a88672c008e8db9}{clip}}(v\_polar.theta -\/ u\_polar.theta);}
+\DoxyCodeLine{80             \textcolor{keywordflow}{if} ((ccw \&\& theta >= M\_PI) || (!ccw \&\& theta <= M\_PI))}
+\DoxyCodeLine{81                 v = v*(-\/1);}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83             \textcolor{keywordflow}{while} (t < t\_end) \{}
+\DoxyCodeLine{84                 Point point(b.u*cosh(t) + v*sinh(t));}
+\DoxyCodeLine{85                 p.emplace\_back(point);}
+\DoxyCodeLine{86                 t += dt;}
+\DoxyCodeLine{87                 \textcolor{keywordflow}{if} (out\_of\_bounds(point)) \textcolor{keywordflow}{break};}
+\DoxyCodeLine{88                 \textcolor{comment}{//if (point.r*scale*1.414 > width) break;}}
+\DoxyCodeLine{89             \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91             \textcolor{keywordflow}{if} (from)}
+\DoxyCodeLine{92                 p.emplace\_front(*from);}
+\DoxyCodeLine{93             \textcolor{keywordflow}{if} (to)}
+\DoxyCodeLine{94                 p.emplace\_back(*to);}
+\DoxyCodeLine{95         \}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97         \textcolor{keywordtype}{void} add\_edge(Edge\& e, Path\& p)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{98             HyperboloidBisector<double> b(e.siteA.point, e.siteB.point);}
+\DoxyCodeLine{99             Point q(b.u);}
+\DoxyCodeLine{100             \textcolor{keywordflow}{if} (e.edgeType == \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda64184813df6e60f07c5e9c502fdd46c1}{EdgeType::BIDIRECTIONAL}}) \{}
+\DoxyCodeLine{101                 list<CartesianPoint> cw, ccw;}
+\DoxyCodeLine{102                 render\_edge(\textcolor{keyword}{nullptr}, e.firstVertex, b, ccw, \textcolor{keyword}{true});}
+\DoxyCodeLine{103                 render\_edge(\textcolor{keyword}{nullptr}, e.secondVertex, b, cw, \textcolor{keyword}{false});}
+\DoxyCodeLine{104                 cw.emplace\_front(q);}
+\DoxyCodeLine{105                 cw.reverse();}
+\DoxyCodeLine{106                 p.insert(p.begin(), ccw.begin(), ccw.end());}
+\DoxyCodeLine{107                 p.insert(p.begin(), cw.begin(), cw.end());}
+\DoxyCodeLine{108             \}}
+\DoxyCodeLine{109             \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{110                 list<CartesianPoint> p\_list;}
+\DoxyCodeLine{111                 render\_edge(e.firstVertex, e.secondVertex, b, p\_list, e.edgeType == \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda4541f9306170e76aa7d00797ff2bdcdd}{EdgeType::CCW}});}
+\DoxyCodeLine{112                 p.insert(p.begin(), p\_list.begin(), p\_list.end());}
+\DoxyCodeLine{113             \}}
+\DoxyCodeLine{114         \}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116         \textcolor{keywordtype}{void} save\_to\_file(\textcolor{keywordtype}{string}\& filename)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{117             \textcolor{keywordtype}{string} representation;}
+\DoxyCodeLine{118             to\_svg\_representation(representation);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120             std::fstream output\_file\_stream(filename, std::fstream::out);}
+\DoxyCodeLine{121             output\_file\_stream << representation;}
+\DoxyCodeLine{122         \}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124         \textcolor{keywordtype}{void} to\_svg\_representation(std::string \&svg\_representation)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126             svg\_representation =}
+\DoxyCodeLine{127                     \textcolor{stringliteral}{"{}<?xml version=\(\backslash\)"{}1.0\(\backslash\)"{} encoding=\(\backslash\)"{}UTF-\/8\(\backslash\)"{}?>\(\backslash\)n<!DOCTYPE svg PUBLIC "{}}}
+\DoxyCodeLine{128                     \textcolor{stringliteral}{"{}\(\backslash\)"{}-\///W3C//DTD SVG 1.1//EN\(\backslash\)"{} "{}}}
+\DoxyCodeLine{129                     \textcolor{stringliteral}{"{}\(\backslash\)"{}http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\(\backslash\)"{}>\(\backslash\)n\(\backslash\)n<svg "{}}}
+\DoxyCodeLine{130                     \textcolor{stringliteral}{"{}xmlns=\(\backslash\)"{}http://www.w3.org/2000/svg\(\backslash\)"{}\(\backslash\)nxmlns:xlink=\(\backslash\)"{}http://www.w3.org/"{}}}
+\DoxyCodeLine{131                     \textcolor{stringliteral}{"{}1999/xlink\(\backslash\)"{} "{}}}
+\DoxyCodeLine{132                     \textcolor{stringliteral}{"{}xmlns:ev=\(\backslash\)"{}http://www.w3.org/2001/xml-\/events\(\backslash\)"{}\(\backslash\)nversion=\(\backslash\)"{}1.1\(\backslash\)"{} "{}};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134             svg\_representation += std::string(\textcolor{stringliteral}{"{}baseProfile=\(\backslash\)"{}full\(\backslash\)"{}\(\backslash\)nwidth=\(\backslash\)"{}"{}}) +}
+\DoxyCodeLine{135                                   std::to\_string(options.width) + \textcolor{stringliteral}{"{}\(\backslash\)"{} height=\(\backslash\)"{}"{}} +}
+\DoxyCodeLine{136                                   std::to\_string(options.height) + \textcolor{stringliteral}{"{}\(\backslash\)"{}>\(\backslash\)n\(\backslash\)n"{}};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& e : voronoiDiagram.edges) \{}
+\DoxyCodeLine{140                 std::string path\_representation;}
+\DoxyCodeLine{141                 Path p;}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143                 add\_edge(*e, p);}
+\DoxyCodeLine{144                 svg\_path\_representation(p, path\_representation, offset, scale, options.voronoi\_edge\_color);}
+\DoxyCodeLine{145                 svg\_representation += path\_representation;}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147                 \textcolor{keywordflow}{if} (options.draw\_delaunay) \{}
+\DoxyCodeLine{148                     p.clear();}
+\DoxyCodeLine{149                     add\_delaunay\_edge(*e, p);}
+\DoxyCodeLine{150                     svg\_path\_representation(p, path\_representation, offset, scale, options.delaunay\_edge\_color);}
+\DoxyCodeLine{151                     svg\_representation += path\_representation;}
+\DoxyCodeLine{152                 \}}
+\DoxyCodeLine{153             \}}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155             \textcolor{keywordflow}{for} (\textcolor{keyword}{const} Point<double>\& s : sites) \{}
+\DoxyCodeLine{156                 std::string point\_representation;}
+\DoxyCodeLine{157                 svg\_point\_representation(CartesianPoint(s), options.point\_width, point\_representation, options.point\_color);}
+\DoxyCodeLine{158                 svg\_representation += point\_representation;}
+\DoxyCodeLine{159             \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161             std::string point\_representation;}
+\DoxyCodeLine{162             svg\_point\_representation(CartesianPoint(0, 0), options.point\_width/2, point\_representation, options.point\_color);}
+\DoxyCodeLine{163             svg\_representation += point\_representation;}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165             svg\_representation += \textcolor{stringliteral}{"{}\(\backslash\)n</svg>\(\backslash\)n"{}};}
+\DoxyCodeLine{166         \}}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168         \textcolor{keyword}{static} \textcolor{keywordtype}{void} svg\_path\_representation(\textcolor{keyword}{const} Path\& path, \textcolor{keywordtype}{string}\& path\_representation, \textcolor{keyword}{const} CartesianPoint\& offset, \textcolor{keywordtype}{double} scale, \textcolor{keyword}{const} \textcolor{keywordtype}{string}\& color=\textcolor{stringliteral}{"{}black"{}}) \{}
+\DoxyCodeLine{169             path\_representation = string(\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171             \textcolor{keywordflow}{if} (!path.empty()) \{}
+\DoxyCodeLine{172                 path\_representation = std::string(\textcolor{stringliteral}{"{}<path d =\(\backslash\)"{}"{}});}
+\DoxyCodeLine{173                 \textcolor{comment}{// Print the first point of the path.}}
+\DoxyCodeLine{174                 CartesianPoint point(path.front()*scale);}
+\DoxyCodeLine{175                 point.x += offset.x;}
+\DoxyCodeLine{176                 point.y += offset.y;}
+\DoxyCodeLine{177                 path\_representation += std::string(\textcolor{stringliteral}{"{}M "{}}) + std::to\_string(point.x) +}
+\DoxyCodeLine{178                                        \textcolor{stringliteral}{"{},"{}} + std::to\_string(point.y) + \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180                 \textcolor{comment}{//Print the remaining points.}}
+\DoxyCodeLine{181                 \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} index = 1; index < path.size(); ++index) \{}
+\DoxyCodeLine{182                     point = CartesianPoint(path[index]*scale);}
+\DoxyCodeLine{183                     point.x += offset.x;}
+\DoxyCodeLine{184                     point.y += offset.y;}
+\DoxyCodeLine{185                     path\_representation += std::string(\textcolor{stringliteral}{"{}L "{}}) + std::to\_string(point.x) + \textcolor{stringliteral}{"{}, "{}} + std::to\_string(point.y) + \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{186                 \}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188                 \textcolor{keywordtype}{double} path\_width = 0.01 * scale;}
+\DoxyCodeLine{189                 path\_representation +=}
+\DoxyCodeLine{190                         std::string(\textcolor{stringliteral}{"{}\(\backslash\)"{} stroke = \(\backslash\)"{}"{}}) + color + \textcolor{stringliteral}{"{}\(\backslash\)"{} stroke-\/width = \(\backslash\)"{}"{}} +}
+\DoxyCodeLine{191                         std::to\_string(path\_width) + R\textcolor{stringliteral}{"{}("{} fill="{}none"{}/>)"{};}}
+\DoxyCodeLine{192 \textcolor{stringliteral}{            \}}}
+\DoxyCodeLine{193 \textcolor{stringliteral}{        \}}}
+\DoxyCodeLine{194 \textcolor{stringliteral}{}}
+\DoxyCodeLine{195 \textcolor{stringliteral}{        }\textcolor{keywordtype}{void} svg\_point\_representation(\textcolor{keyword}{const} CartesianPoint\& p, \textcolor{keywordtype}{double} radius, std::string \&svg\_point\_representation, \textcolor{keyword}{const} \textcolor{keywordtype}{string}\& color)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{196             CartesianPoint center(p*scale);}
+\DoxyCodeLine{197             center.x += offset.x;}
+\DoxyCodeLine{198             center.y += offset.y;}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200             \textcolor{keywordtype}{double} stroke\_width = options.line\_width * scale;}
+\DoxyCodeLine{201             svg\_point\_representation =}
+\DoxyCodeLine{202                     std::string(\textcolor{stringliteral}{"{}<circle cx=\(\backslash\)"{}"{}}) + std::to\_string(center.x) + \textcolor{stringliteral}{"{}\(\backslash\)"{} cy=\(\backslash\)"{}"{}} +}
+\DoxyCodeLine{203                     std::to\_string(center.y) + \textcolor{stringliteral}{"{}\(\backslash\)"{} r=\(\backslash\)"{}"{}} +}
+\DoxyCodeLine{204                     std::to\_string(radius * scale) + \textcolor{stringliteral}{"{}\(\backslash\)"{} fill=\(\backslash\)"{}"{}} + color +}
+\DoxyCodeLine{205                     \textcolor{stringliteral}{"{}\(\backslash\)"{} stroke=\(\backslash\)"{}"{}} + color + \textcolor{stringliteral}{"{}\(\backslash\)"{} stroke-\/width=\(\backslash\)"{}"{}} +}
+\DoxyCodeLine{206                     std::to\_string(stroke\_width) + \textcolor{stringliteral}{"{}\(\backslash\)"{}/>\(\backslash\)n"{}};}
+\DoxyCodeLine{207         \}}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209     \textcolor{keyword}{public}:}
+\DoxyCodeLine{210         \textcolor{keyword}{explicit} VoronoiCanvas(VoronoiDiagram\& v, vector<Point<double>>\& sites) : voronoiDiagram(v), sites(sites) \{\};}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212         \textcolor{keywordtype}{void} set\_options(VoronoiCanvasOptions\& opt) \{}
+\DoxyCodeLine{213             options = opt;}
+\DoxyCodeLine{214         \}}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{219         \textcolor{keywordtype}{void} draw\_diagram(\textcolor{keywordtype}{string} filename) \{}
+\DoxyCodeLine{220             max\_r = (max\_element(sites.begin(), sites.end()))-\/>r;}
+\DoxyCodeLine{221             \textcolor{keywordtype}{double} min\_hw = min(options.width, options.height);}
+\DoxyCodeLine{222             scale = min\_hw/(2*max\_r);}
+\DoxyCodeLine{223             offset = CartesianPoint(options.width/2, options.height / 2);}
+\DoxyCodeLine{224             save\_to\_file(filename);}
+\DoxyCodeLine{225         \}}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{230         \textcolor{keywordtype}{void} write\_delaunay\_triangulation(\textcolor{keywordtype}{string} filename) \{}
+\DoxyCodeLine{231             std::fstream output\_file\_stream(filename, std::fstream::out);}
+\DoxyCodeLine{232             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& e : voronoiDiagram.edges) \{}
+\DoxyCodeLine{233                 output\_file\_stream << e-\/>siteA.ID << \textcolor{stringliteral}{"{} "{}} << e-\/>siteB.ID << \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{234             \}}
+\DoxyCodeLine{235         \}}
+\DoxyCodeLine{236     \};}
+\DoxyCodeLine{237 \}}
+
+\end{DoxyCode}

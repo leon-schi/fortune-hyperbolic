@@ -5,31 +5,34 @@
 #include <fortune-hyperbolic/datastructures.hpp>
 
 namespace hyperbolic {
+    /**
+     * Abstraction class for allow for different implementations of the before method (for doing the binary search on the beach line) and the prediction of circle events
+     * */
     template<typename _float_T>
     class Kernel {
     public:
-        /*
-         * checks whether the angle theta is between the reference angle and the Beach Line intersection defined by the tuple of sites (s,t)
+        /**
+         * checks whether the angle theta is between the reference angle and the Beach Line intersection defined by the tuple of sites (p_s,p_t) in ccw direction
          * */
         virtual bool before (
                 _float_T theta, _float_T reference_angle,
                 Point<_float_T>& p_s, Point<_float_T>& p_t, _float_T r_sweep) = 0;
 
-        /*
-         * predict Circle Event
+        /**
+         * predicts the coordinates of a circle event
          * */
         virtual bool predict_circle_event(
                 Point<_float_T>& result,
                 Site<_float_T>& r, Site<_float_T>& s, Site<_float_T>& t)  = 0;
     };
 
+    /**
+     * Implementation of a kernel that fully works in the native (polar coordinate) model of hyperbolic space
+     * */
     template<typename _float_T>
     class FullNativeKernel: public Kernel<_float_T> {
         SiteTripleMap<_float_T> circleEventCache;
     public:
-        /*
-         * returns true if theta is between reference_angle and the beach line intersection (s,t) in ccw direction
-         * */
         bool before (
                 _float_T theta, _float_T reference_angle,
                 Point<_float_T>& p_s, Point<_float_T>& p_t, _float_T r_sweep) {

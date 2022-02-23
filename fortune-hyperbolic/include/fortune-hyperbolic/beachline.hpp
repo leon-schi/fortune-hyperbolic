@@ -6,7 +6,7 @@
 namespace hyperbolic {
     //TODO: ensure efficient access to neighbors
 
-    /*
+    /**
      * Elements that are within the beach line.
      * Represented as a tuple of sites (a,b) indicating that this element represents the point where the active segment changes from a to b in ccw direction
      * */
@@ -59,7 +59,7 @@ namespace hyperbolic {
         uint32_t priority;
     };
 
-    /*
+    /**
      * class implementing all operations on the beach line
      * currently implemented as a treap
      * */
@@ -214,7 +214,7 @@ namespace hyperbolic {
             delete root;
         }
 
-        /*
+        /**
          * returns the position of the first BeachLineElement clockwise of s.theta. first and second are set as
          * the first element clockwise and counterclockwise of s.theta, respectively
          * */
@@ -235,7 +235,7 @@ namespace hyperbolic {
             return position_first;
         };
 
-        /*
+        /**
          * inserts the elements firstNew and second new right after the position-th element.
          * It then re-arranges the beach line such that firstNew is the first element and
          * second new is the last element. firstNew.second must be equal to secondNew.first
@@ -255,7 +255,7 @@ namespace hyperbolic {
             reference_angle = firstNew.first.point.theta;
         };
 
-        /*
+        /**
          * removes the elements specified in e and replaces them with newElement.
          * leftNeighbor and rightNeighbor are set to be the left (clockwise) and right (counterclockwise)
          * neighbor of the new element.

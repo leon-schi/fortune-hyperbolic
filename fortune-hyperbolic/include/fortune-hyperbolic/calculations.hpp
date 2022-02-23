@@ -127,14 +127,12 @@ namespace hyperbolic {
         }
     };
 
-    /*
+    /**
      * struct representing a line bisector between two points used for geometric calculations and drawing
+     * the function is represented as r(theta) = atanh(numerator / denominator(theta))
      * */
     template <typename _float_T>
     struct Bisector {
-        /*
-         * the function is represented as r(theta) = atanh(numerator / denominator(theta))
-         * */
         _float_T numerator = 0;
         cosine<_float_T> denominator = {0, 0, 0};
 

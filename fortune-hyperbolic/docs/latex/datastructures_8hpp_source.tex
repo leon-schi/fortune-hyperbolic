@@ -1,0 +1,107 @@
+\hypertarget{datastructures_8hpp_source}{}\doxysection{datastructures.\+hpp}
+\label{datastructures_8hpp_source}\index{include/fortune-\/hyperbolic/datastructures.hpp@{include/fortune-\/hyperbolic/datastructures.hpp}}
+\mbox{\hyperlink{datastructures_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <random>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <unordered\_map>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geometry_8hpp}{fortune-\/hyperbolic/geometry.hpp}}>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{using} std::is\_base\_of, std::unique\_ptr, std::shared\_ptr, std::vector, std::priority\_queue, std::size\_t, std::string, std::to\_string, std::hash, std::unordered\_map;}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacehyperbolic}{hyperbolic}} \{}
+\DoxyCodeLine{15     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{16     \textcolor{keyword}{class }BeachLineElement;}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{21     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{22     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1Event}{Event}} \{}
+\DoxyCodeLine{23     \textcolor{keyword}{public}:}
+\DoxyCodeLine{24         \textcolor{keyword}{const} \_float\_T \mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}} \{0\};}
+\DoxyCodeLine{25         \mbox{\hyperlink{classhyperbolic_1_1Event_a58ada42ec54d7ec1d887b3a716e37e0f}{Event}}(\_float\_T \mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}}) : \mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}}(\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}}) \{\};}
+\DoxyCodeLine{26         \textcolor{keyword}{virtual} \mbox{\hyperlink{classhyperbolic_1_1Event_a6145098c33cc5aadd2c8d1157131a18f}{\string~Event}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{27     \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{30     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1SiteEvent}{SiteEvent}} : \textcolor{keyword}{public} \mbox{\hyperlink{classhyperbolic_1_1Event}{Event}}<\_float\_T> \{}
+\DoxyCodeLine{31     \textcolor{keyword}{public}:}
+\DoxyCodeLine{32         \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& \mbox{\hyperlink{classhyperbolic_1_1SiteEvent_a22731629bf0bea924fbe2e5460910d95}{site}};}
+\DoxyCodeLine{33         \textcolor{keyword}{explicit} \mbox{\hyperlink{classhyperbolic_1_1SiteEvent_ace0b4c20831ef15984dde908264ec3a7}{SiteEvent}}(\mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& s) : \mbox{\hyperlink{classhyperbolic_1_1Event}{Event}}<\_float\_T>(s.point.\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}}), \mbox{\hyperlink{classhyperbolic_1_1SiteEvent_a22731629bf0bea924fbe2e5460910d95}{site}}(s) \{\};}
+\DoxyCodeLine{34     \};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{37     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{CircleEvent}} : \textcolor{keyword}{public} \mbox{\hyperlink{classhyperbolic_1_1Event}{Event}}<\_float\_T> \{}
+\DoxyCodeLine{38     \textcolor{keyword}{private}:}
+\DoxyCodeLine{39         \textcolor{keywordtype}{bool} valid = \textcolor{keyword}{true};}
+\DoxyCodeLine{40     \textcolor{keyword}{public}:}
+\DoxyCodeLine{41         \textcolor{comment}{// references to the beach line elements that cause the circle event}}
+\DoxyCodeLine{42         \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}} \&\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}, \&\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}};}
+\DoxyCodeLine{43         \textcolor{comment}{// the point at which a Voronoi vertex is created when the event happens}}
+\DoxyCodeLine{44         \textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}} \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ab093b606fafdf0fb5c1f948679dd2eaf}{center}};}
+\DoxyCodeLine{45         \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a0b28869f478a5643261486bc3cff9138}{CircleEvent}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}\& \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}\& \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}}, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}} \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ab093b606fafdf0fb5c1f948679dd2eaf}{center}}, \_float\_T \mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}})}
+\DoxyCodeLine{46                 : \mbox{\hyperlink{classhyperbolic_1_1Event}{Event}}<\_float\_T>(\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}} + \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ab093b606fafdf0fb5c1f948679dd2eaf}{center}}.\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}}), \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}(\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}), \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}}(\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}}), \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ab093b606fafdf0fb5c1f948679dd2eaf}{center}}(\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ab093b606fafdf0fb5c1f948679dd2eaf}{center}}) \{\};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48         \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a2ff10034489d2113a60f8d180a88fd59}{invalidate}}() \{}
+\DoxyCodeLine{49             valid = \textcolor{keyword}{false};}
+\DoxyCodeLine{50         \}}
+\DoxyCodeLine{51         [[nodiscard]] \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a85349dcd13fd1d460a701a7fd39f9768}{isValid}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{52             \textcolor{keywordflow}{return} valid;}
+\DoxyCodeLine{53         \}}
+\DoxyCodeLine{54     \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{comment}{// comparison of events based on their radius}}
+\DoxyCodeLine{57     \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{58     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1CmpEvent}{CmpEvent}} \{}
+\DoxyCodeLine{59         \textcolor{keyword}{static\_assert}(is\_base\_of<Event<\_float\_T>, T>::value, \textcolor{stringliteral}{"{}template type T must inherit from Event"{}});}
+\DoxyCodeLine{60         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{structhyperbolic_1_1CmpEvent_ac5a0d08efc6bd222ced2be988e6b544f}{greater\_equal}}(\textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1Event}{Event<\_float\_T>}}* e1, \textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1Event}{Event<\_float\_T>}}* e2) \{}
+\DoxyCodeLine{61             \textcolor{keywordflow}{return} e1-\/>\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}} > e2-\/>\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}};}
+\DoxyCodeLine{62         \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64         \textcolor{keywordtype}{bool} \mbox{\hyperlink{structhyperbolic_1_1CmpEvent_a86cbd8265f2eaa4c6bd7f3568dc7af73}{operator()}}(\textcolor{keyword}{const} shared\_ptr<T>\& e1, \textcolor{keyword}{const} shared\_ptr<T> \&e2) \{}
+\DoxyCodeLine{65             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1CmpEvent_ac5a0d08efc6bd222ced2be988e6b544f}{greater\_equal}}(e1.get(), e2.get());}
+\DoxyCodeLine{66         \}}
+\DoxyCodeLine{67     \};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     \textcolor{comment}{// queue of events}}
+\DoxyCodeLine{70     \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{71     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1EventQueue}{EventQueue}} : \textcolor{keyword}{public} priority\_queue<shared\_ptr<T>, vector<shared\_ptr<T>>, CmpEvent<T, \_float\_T>> \{}
+\DoxyCodeLine{72     \textcolor{keyword}{public}:}
+\DoxyCodeLine{73         T* \mbox{\hyperlink{classhyperbolic_1_1EventQueue_a159f20f3d383c712ed6febe4e78060e6}{getTop}}() \{}
+\DoxyCodeLine{74             \textcolor{keywordflow}{return} (this-\/>empty()) ? nullptr : this-\/>top().get();}
+\DoxyCodeLine{75         \}}
+\DoxyCodeLine{76     \};}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78     \textcolor{keyword}{using} \mbox{\hyperlink{namespacehyperbolic_a01b5cb0ab64b9d592c31f48e667fe5f3}{ull}} = \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} long;}
+\DoxyCodeLine{79     \textcolor{comment}{// struct identifying a set of three sites based on their IDs. Used for caching the prediction of circle events}}
+\DoxyCodeLine{80     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1SiteTriple}{SiteTriple}} \{}
+\DoxyCodeLine{81         \mbox{\hyperlink{namespacehyperbolic_a01b5cb0ab64b9d592c31f48e667fe5f3}{ull}} \mbox{\hyperlink{structhyperbolic_1_1SiteTriple_a48db8e1d9d98f55ef81d06f2a8ff6b19}{ID1}}, \mbox{\hyperlink{structhyperbolic_1_1SiteTriple_aed4c16a6fcfebfbed613a34d23268b86}{ID2}}, \mbox{\hyperlink{structhyperbolic_1_1SiteTriple_ae6167b43caa18d871c2b7fbdb63f1e1b}{ID3}};}
+\DoxyCodeLine{82         \mbox{\hyperlink{structhyperbolic_1_1SiteTriple_af1a46dbae0a0402bf375bad4ffde6ad0}{SiteTriple}}(\mbox{\hyperlink{namespacehyperbolic_a01b5cb0ab64b9d592c31f48e667fe5f3}{ull}} a, \mbox{\hyperlink{namespacehyperbolic_a01b5cb0ab64b9d592c31f48e667fe5f3}{ull}} b, \mbox{\hyperlink{namespacehyperbolic_a01b5cb0ab64b9d592c31f48e667fe5f3}{ull}} c) \{}
+\DoxyCodeLine{83             vector<unsigned long long> ids = \{a, b, c\};}
+\DoxyCodeLine{84             std::sort(ids.begin(), ids.end());}
+\DoxyCodeLine{85             \mbox{\hyperlink{structhyperbolic_1_1SiteTriple_a48db8e1d9d98f55ef81d06f2a8ff6b19}{ID1}} = ids[0], \mbox{\hyperlink{structhyperbolic_1_1SiteTriple_aed4c16a6fcfebfbed613a34d23268b86}{ID2}} = ids[1], \mbox{\hyperlink{structhyperbolic_1_1SiteTriple_ae6167b43caa18d871c2b7fbdb63f1e1b}{ID3}} = ids[2];}
+\DoxyCodeLine{86         \}}
+\DoxyCodeLine{87     \};}
+\DoxyCodeLine{88     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1CmpSiteTriple}{CmpSiteTriple}} \{}
+\DoxyCodeLine{89         \textcolor{keywordtype}{bool} \mbox{\hyperlink{structhyperbolic_1_1CmpSiteTriple_a89d74fde3c967c4f971a138a22408097}{operator ()}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1SiteTriple}{SiteTriple}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1SiteTriple}{SiteTriple}}\& b)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{90             \textcolor{keywordflow}{return} a.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_a48db8e1d9d98f55ef81d06f2a8ff6b19}{ID1}} == b.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_a48db8e1d9d98f55ef81d06f2a8ff6b19}{ID1}} \&\& a.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_aed4c16a6fcfebfbed613a34d23268b86}{ID2}} == b.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_aed4c16a6fcfebfbed613a34d23268b86}{ID2}} \&\& a.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_ae6167b43caa18d871c2b7fbdb63f1e1b}{ID3}} == b.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_ae6167b43caa18d871c2b7fbdb63f1e1b}{ID3}};}
+\DoxyCodeLine{91         \}}
+\DoxyCodeLine{92     \};}
+\DoxyCodeLine{93     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1HashSiteTriple}{HashSiteTriple}} \{}
+\DoxyCodeLine{94         \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{structhyperbolic_1_1HashSiteTriple_a0a5cc9e7393ce5e315856513713be94a}{operator ()}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1SiteTriple}{SiteTriple}}\& a)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{95             \textcolor{keywordtype}{string} s = to\_string(a.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_a48db8e1d9d98f55ef81d06f2a8ff6b19}{ID1}}) + to\_string(a.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_aed4c16a6fcfebfbed613a34d23268b86}{ID2}}) + to\_string(a.\mbox{\hyperlink{structhyperbolic_1_1SiteTriple_ae6167b43caa18d871c2b7fbdb63f1e1b}{ID3}});}
+\DoxyCodeLine{96             \textcolor{keywordflow}{return} hash<string>\{\}(s);}
+\DoxyCodeLine{97         \}}
+\DoxyCodeLine{98     \};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{101     \textcolor{keyword}{using} \mbox{\hyperlink{namespacehyperbolic_aba10a62eb3ef0abbd094339bc65832f4}{SiteTripleMap}} = unordered\_map<SiteTriple, Point<\_float\_T>, \mbox{\hyperlink{structhyperbolic_1_1HashSiteTriple}{HashSiteTriple}}, \mbox{\hyperlink{structhyperbolic_1_1CmpSiteTriple}{CmpSiteTriple}}>;}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \}}
+
+\end{DoxyCode}

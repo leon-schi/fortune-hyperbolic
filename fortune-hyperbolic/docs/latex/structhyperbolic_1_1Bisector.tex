@@ -1,0 +1,121 @@
+\hypertarget{structhyperbolic_1_1Bisector}{}\doxysection{hyperbolic\+::Bisector\texorpdfstring{$<$}{<} \+\_\+float\+\_\+T \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{structhyperbolic_1_1Bisector}\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+
+
+{\ttfamily \#include $<$calculations.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{structhyperbolic_1_1Bisector_a138ad818f360fbc4b4e72795f8f2582f}{calc\+\_\+definition}} ()
+\item 
+\mbox{\hyperlink{structhyperbolic_1_1Bisector_a0d38aaa1e35d6aa6cb92c2a4ffbbbbb7}{Bisector}} (const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ $\ast$s, const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ $\ast$t)
+\item 
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector_ab98aa7c473df7abc86dc1cbd26a6776c}{operator()}} (\+\_\+float\+\_\+T theta) const
+\item 
+bool \mbox{\hyperlink{structhyperbolic_1_1Bisector_aeb42676ea449adda899e6cba7da709bc}{in\+\_\+definition}} (\+\_\+float\+\_\+T theta) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}} = 0
+\item 
+\mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine}}$<$ \+\_\+float\+\_\+T $>$ \mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}} = \{0, 0, 0\}
+\item 
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector_a5554c752ac5e49fbdd0bc4e7c591d5c1}{theta\+\_\+start}} = 0
+\item 
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector_a4fbbaca84a16b3d3253540148dc61b8c}{theta\+\_\+end}} = 0
+\item 
+bool \mbox{\hyperlink{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}{is\+\_\+straight}} = false
+\item 
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}{straight\+\_\+angle}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename \+\_\+float\+\_\+T$>$\newline
+struct hyperbolic\+::\+Bisector$<$ \+\_\+float\+\_\+\+T $>$}
+struct representing a line bisector between two points used for geometric calculations and drawing the function is represented as r(theta) = atanh(numerator / denominator(theta)) 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_a0d38aaa1e35d6aa6cb92c2a4ffbbbbb7}\label{structhyperbolic_1_1Bisector_a0d38aaa1e35d6aa6cb92c2a4ffbbbbb7}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!Bisector@{Bisector}}
+\index{Bisector@{Bisector}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{Bisector()}{Bisector()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::\+Bisector (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ $\ast$}]{s,  }\item[{const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ $\ast$}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_a138ad818f360fbc4b4e72795f8f2582f}\label{structhyperbolic_1_1Bisector_a138ad818f360fbc4b4e72795f8f2582f}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!calc\_definition@{calc\_definition}}
+\index{calc\_definition@{calc\_definition}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{calc\_definition()}{calc\_definition()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+void \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::calc\+\_\+definition (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_aeb42676ea449adda899e6cba7da709bc}\label{structhyperbolic_1_1Bisector_aeb42676ea449adda899e6cba7da709bc}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!in\_definition@{in\_definition}}
+\index{in\_definition@{in\_definition}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{in\_definition()}{in\_definition()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::in\+\_\+definition (\begin{DoxyParamCaption}\item[{\+\_\+float\+\_\+T}]{theta }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_ab98aa7c473df7abc86dc1cbd26a6776c}\label{structhyperbolic_1_1Bisector_ab98aa7c473df7abc86dc1cbd26a6776c}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::operator() (\begin{DoxyParamCaption}\item[{\+\_\+float\+\_\+T}]{theta }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}\label{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!denominator@{denominator}}
+\index{denominator@{denominator}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{denominator}{denominator}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine}}$<$\+\_\+float\+\_\+T$>$ \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::denominator = \{0, 0, 0\}}
+
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}\label{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!is\_straight@{is\_straight}}
+\index{is\_straight@{is\_straight}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_straight}{is\_straight}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::is\+\_\+straight = false}
+
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}\label{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!numerator@{numerator}}
+\index{numerator@{numerator}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{numerator}{numerator}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::numerator = 0}
+
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}\label{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!straight\_angle@{straight\_angle}}
+\index{straight\_angle@{straight\_angle}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{straight\_angle}{straight\_angle}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::straight\+\_\+angle = 0}
+
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_a4fbbaca84a16b3d3253540148dc61b8c}\label{structhyperbolic_1_1Bisector_a4fbbaca84a16b3d3253540148dc61b8c}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!theta\_end@{theta\_end}}
+\index{theta\_end@{theta\_end}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{theta\_end}{theta\_end}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::theta\+\_\+end = 0}
+
+\mbox{\Hypertarget{structhyperbolic_1_1Bisector_a5554c752ac5e49fbdd0bc4e7c591d5c1}\label{structhyperbolic_1_1Bisector_a5554c752ac5e49fbdd0bc4e7c591d5c1}} 
+\index{hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}!theta\_start@{theta\_start}}
+\index{theta\_start@{theta\_start}!hyperbolic::Bisector$<$ \_float\_T $>$@{hyperbolic::Bisector$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{theta\_start}{theta\_start}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\+\_\+float\+\_\+T \mbox{\hyperlink{structhyperbolic_1_1Bisector}{hyperbolic\+::\+Bisector}}$<$ \+\_\+float\+\_\+T $>$\+::theta\+\_\+start = 0}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/fortune-\/hyperbolic/\mbox{\hyperlink{calculations_8hpp}{calculations.\+hpp}}\end{DoxyCompactItemize}

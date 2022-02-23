@@ -1,0 +1,132 @@
+\hypertarget{kernels_8hpp_source}{}\doxysection{kernels.\+hpp}
+\label{kernels_8hpp_source}\index{include/fortune-\/hyperbolic/kernels.hpp@{include/fortune-\/hyperbolic/kernels.hpp}}
+\mbox{\hyperlink{kernels_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geometry_8hpp}{fortune-\/hyperbolic/geometry.hpp}}>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{calculations_8hpp}{fortune-\/hyperbolic/calculations.hpp}}>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{datastructures_8hpp}{fortune-\/hyperbolic/datastructures.hpp}}>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacehyperbolic}{hyperbolic}} \{}
+\DoxyCodeLine{11     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{12     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1Kernel}{Kernel}} \{}
+\DoxyCodeLine{13     \textcolor{keyword}{public}:}
+\DoxyCodeLine{17         \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1Kernel_a2d01cb4652ca5178555cf3388223a60f}{before}} (}
+\DoxyCodeLine{18                 \_float\_T theta, \_float\_T reference\_angle,}
+\DoxyCodeLine{19                 \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p\_s, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p\_t, \_float\_T r\_sweep) = 0;}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{24         \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1Kernel_a1bf67fc2784ce9d7a73a384d6acc8393}{predict\_circle\_event}}(}
+\DoxyCodeLine{25                 \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& result,}
+\DoxyCodeLine{26                 \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& r, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& s, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& t)  = 0;}
+\DoxyCodeLine{27     \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{32     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{33     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel}{FullNativeKernel}}: \textcolor{keyword}{public} \mbox{\hyperlink{classhyperbolic_1_1Kernel}{Kernel}}<\_float\_T> \{}
+\DoxyCodeLine{34         \mbox{\hyperlink{namespacehyperbolic_aba10a62eb3ef0abbd094339bc65832f4}{SiteTripleMap<\_float\_T>}} circleEventCache;}
+\DoxyCodeLine{35     \textcolor{keyword}{public}:}
+\DoxyCodeLine{36         \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_ad8026f38bb85ddc34dc8e32465a39c9d}{before}} (}
+\DoxyCodeLine{37                 \_float\_T theta, \_float\_T reference\_angle,}
+\DoxyCodeLine{38                 \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p\_s, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p\_t, \_float\_T r\_sweep) \{}
+\DoxyCodeLine{39             \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}} *s = \&p\_s, *t = \&p\_t;}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41             \textcolor{keyword}{auto} r\_sweep\_internal = \textcolor{keyword}{static\_cast<}\_float\_T\textcolor{keyword}{>}(r\_sweep);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43             \textcolor{keywordtype}{bool} use\_second = \textcolor{keyword}{false};}
+\DoxyCodeLine{44             \textcolor{keywordflow}{if} (s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} < t-\/>r) \{}
+\DoxyCodeLine{45                 std::swap(s, t);}
+\DoxyCodeLine{46                 use\_second = \textcolor{keyword}{true};}
+\DoxyCodeLine{47             \}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49             \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}} combined =}
+\DoxyCodeLine{50                     \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}} ((cosh(r\_sweep\_internal) -\/ cosh(t-\/>r)) * sinh(s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}), 0, (cosh(t-\/>r) -\/ cosh(s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}})) * sinh(r\_sweep\_internal)) +}
+\DoxyCodeLine{51                     \mbox{\hyperlink{structhyperbolic_1_1cosine}{cosine<\_float\_T>}} (-\/(cosh(r\_sweep\_internal) -\/ cosh(s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}})) * sinh(t-\/>r), s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} -\/ t-\/>theta, 0);}
+\DoxyCodeLine{52             \textcolor{keyword}{auto}[z1, z2] = combined.\mbox{\hyperlink{structhyperbolic_1_1cosine_a079da1895c757b44cd883e5c0bc3c454}{zeros}}();}
+\DoxyCodeLine{53             \textcolor{keywordflow}{if} (z1 > z2) std::swap(z1, z2);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55             z1 = clip<\_float\_T>(z1 + s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}});}
+\DoxyCodeLine{56             z2 = clip<\_float\_T>(z2 + s-\/>\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}});}
+\DoxyCodeLine{57             \textcolor{keyword}{auto} z = (use\_second) ? z2 : z1;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59             z = clip<\_float\_T>(z -\/ reference\_angle);}
+\DoxyCodeLine{60             \textcolor{keywordflow}{return} (z > theta);}
+\DoxyCodeLine{61         \};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63         \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_adf2bb548538ac32ba21f41709b7c216e}{assign\_result\_if\_in\_definiton}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& result, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector<\_float\_T>}}\& rs, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector<\_float\_T>}}\& st, \_float\_T z) \{}
+\DoxyCodeLine{64             \textcolor{keywordflow}{if} (rs.\mbox{\hyperlink{structhyperbolic_1_1Bisector_aeb42676ea449adda899e6cba7da709bc}{in\_definition}}(z) \&\& st.\mbox{\hyperlink{structhyperbolic_1_1Bisector_aeb42676ea449adda899e6cba7da709bc}{in\_definition}}(z)) \{}
+\DoxyCodeLine{65                 result.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} = rs(z);}
+\DoxyCodeLine{66                 result.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} = z;}
+\DoxyCodeLine{67                 \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{68             \}}
+\DoxyCodeLine{69             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{70         \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72         \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a2ca72423c8b271ce0dfd5a509ee43474}{assign\_result\_for\_straight\_bisector\_if\_exists}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& result, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector<\_float\_T>}}\& straight, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector<\_float\_T>}}\& not\_straight) \{}
+\DoxyCodeLine{73             \textcolor{comment}{// assigns the coordinate of the intersection of straight and not\_straight to result if it exists}}
+\DoxyCodeLine{74             \textcolor{comment}{// straight is a straight line and not\_straight is not}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76             \textcolor{keywordflow}{if} (not\_straight.\mbox{\hyperlink{structhyperbolic_1_1Bisector_aeb42676ea449adda899e6cba7da709bc}{in\_definition}}(straight.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}{straight\_angle}})) \{}
+\DoxyCodeLine{77                 result.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} = not\_straight(straight.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}{straight\_angle}});}
+\DoxyCodeLine{78                 result.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} = straight.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a3604edd27d6772e88ffe194eaab3cfdd}{straight\_angle}};}
+\DoxyCodeLine{79                 \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{80             \}}
+\DoxyCodeLine{81             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{82         \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84         \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a9f7ad516d0d7a8bbe3172f689c8b60ed}{calculate\_circle\_event\_center}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& result, \textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& r, \textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& t) \{}
+\DoxyCodeLine{85             \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector<\_float\_T>}} rs(\&r, \&s);}
+\DoxyCodeLine{86             \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector<\_float\_T>}} st(\&s, \&t);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88             \textcolor{comment}{// if one of the bisectors is a straight line, intersection calculation becomes straightforward}}
+\DoxyCodeLine{89             \textcolor{keywordflow}{if} (rs.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}{is\_straight}}) \{}
+\DoxyCodeLine{90                 \textcolor{keywordflow}{if} (st.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}{is\_straight}}) \{}
+\DoxyCodeLine{91                     result = \{0, 0\};}
+\DoxyCodeLine{92                     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{93                 \}}
+\DoxyCodeLine{94                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a2ca72423c8b271ce0dfd5a509ee43474}{assign\_result\_for\_straight\_bisector\_if\_exists}}(result, rs, st)) \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{95             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (st.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a42f97c6c66416f799177c503044ceef5}{is\_straight}}) \{}
+\DoxyCodeLine{96                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a2ca72423c8b271ce0dfd5a509ee43474}{assign\_result\_for\_straight\_bisector\_if\_exists}}(result, st, rs)) \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{97             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{98                 \textcolor{keyword}{auto} zeros = (rs.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}}*st.\mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}} -\/ st.\mbox{\hyperlink{structhyperbolic_1_1Bisector_a84dd73eadb577ff5bee7d9b403cb6aea}{denominator}}*rs.\mbox{\hyperlink{structhyperbolic_1_1Bisector_ae5a17bcf90ae93508afe4997decf77dd}{numerator}}).zeros();}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_adf2bb548538ac32ba21f41709b7c216e}{assign\_result\_if\_in\_definiton}}(result, rs, st, zeros.first))}
+\DoxyCodeLine{101                     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{102                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_adf2bb548538ac32ba21f41709b7c216e}{assign\_result\_if\_in\_definiton}}(result, rs, st, zeros.second))}
+\DoxyCodeLine{103                     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{104             \}}
+\DoxyCodeLine{105             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{106         \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108         \textcolor{comment}{// checks if p is on the active side of the beach line intersection a}}
+\DoxyCodeLine{109         \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a4a1f0ee516cf512636ffbb18388be0aa}{on\_active\_site}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& s, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& t, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p) \{}
+\DoxyCodeLine{110             \textcolor{keywordflow}{if} (p.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} == 0.0) \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{111             \mbox{\hyperlink{namespacehyperbolic_a80621ce4082484192912aac7266cd7e5}{\_float\_t}} outer\_theta = (s.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} >= t.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}) ? s.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} : t.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}};}
+\DoxyCodeLine{112             \mbox{\hyperlink{namespacehyperbolic_a80621ce4082484192912aac7266cd7e5}{\_float\_t}} p\_theta = clip<\_float\_T>(p.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} -\/ outer\_theta);}
+\DoxyCodeLine{113             \textcolor{keywordflow}{return} (s.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} >= t.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}) ? p\_theta <= M\_PI : p\_theta >= M\_PI;}
+\DoxyCodeLine{114         \}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116         \textcolor{keywordtype}{bool} \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_ae3cf29d55fca536fbf7163b02eed275d}{predict\_circle\_event}}(}
+\DoxyCodeLine{117                 \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& result,}
+\DoxyCodeLine{118                 \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& r, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& s, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\& t) \{}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120             \textcolor{keyword}{auto} siteTriple = \mbox{\hyperlink{structhyperbolic_1_1SiteTriple}{SiteTriple}}(r.\mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}}, s.\mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}}, t.\mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}});}
+\DoxyCodeLine{121             \textcolor{keywordflow}{if} (siteTriple.ID1 == siteTriple.ID2 || siteTriple.ID2 == siteTriple.ID3) \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123             \textcolor{keyword}{auto} it = circleEventCache.find(siteTriple);}
+\DoxyCodeLine{124             \textcolor{keywordflow}{if} (it != circleEventCache.end()) \{}
+\DoxyCodeLine{125                 \textcolor{comment}{// use cached value}}
+\DoxyCodeLine{126                 result = it-\/>second;}
+\DoxyCodeLine{127             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{128                 \textcolor{comment}{// calculate point and cache it if existent}}
+\DoxyCodeLine{129                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a9f7ad516d0d7a8bbe3172f689c8b60ed}{calculate\_circle\_event\_center}}(result, r.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, s.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, t.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}))}
+\DoxyCodeLine{130                     circleEventCache[siteTriple] = result;}
+\DoxyCodeLine{131                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{132             \}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134             \textcolor{keywordflow}{return} (\mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a4a1f0ee516cf512636ffbb18388be0aa}{on\_active\_site}}(r.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, s.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, result) \&\&}
+\DoxyCodeLine{135                     \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a4a1f0ee516cf512636ffbb18388be0aa}{on\_active\_site}}(s.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, t.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, result));}
+\DoxyCodeLine{136         \};}
+\DoxyCodeLine{137     \};}
+\DoxyCodeLine{138 \}}
+
+\end{DoxyCode}

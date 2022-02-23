@@ -1,0 +1,202 @@
+\hypertarget{classhyperbolic_1_1BeachLineElement}{}\doxysection{hyperbolic\+::Beach\+Line\+Element\texorpdfstring{$<$}{<} \+\_\+float\+\_\+T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classhyperbolic_1_1BeachLineElement}\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+
+
+{\ttfamily \#include $<$beachline.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}} = \mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$ \+\_\+float\+\_\+T $>$ \&
+\item 
+using \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_ab09b50229cb8d71fc6fc4c656c020f11}{r\+Point}} = \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ double $>$ \&
+\item 
+using \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a8084bd8407fab9170900a3217995e7f0}{p\+Point}} = \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ double $>$ $\ast$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a805f585bc128856298d2470df50e3fd7}{Beach\+Line\+Element}} (\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}, \mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}} $\ast$\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}{edge}}, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a8084bd8407fab9170900a3217995e7f0}{p\+Point}} \&v)
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_aa4f5960e3112c3820e1f2401ce994fe2}{$\sim$\+Beach\+Line\+Element}} ()
+\item 
+void \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_aa772ce646f09da68dbd63fba0835c271}{assign\+Vertex}} (\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_ab09b50229cb8d71fc6fc4c656c020f11}{r\+Point}} v) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}{del}} (\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}} $\ast$t)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}
+\item 
+shared\+\_\+ptr$<$ \mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{Circle\+Event}}$<$ \+\_\+float\+\_\+T $>$ $>$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_ae3d3f1890ab53e99b0f6c57102960947}{next}} = nullptr
+\item 
+shared\+\_\+ptr$<$ \mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{Circle\+Event}}$<$ \+\_\+float\+\_\+T $>$ $>$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a99f5fd9546ab261892f24dc9cee55934}{previous}} = nullptr
+\item 
+\mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}} $\ast$const \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}{edge}}
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a8084bd8407fab9170900a3217995e7f0}{p\+Point}} \& \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a73e06b88920436a691034dd71b6167b0}{assignable\+Vertex}}
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}} $\ast$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{left\+Child}} = nullptr
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}} $\ast$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{right\+Child}} = nullptr
+\item 
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}} $\ast$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}} = nullptr
+\item 
+int \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a3315b750b300cd223cb04ebeb20f885c}{count}} = 0
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a15995d8ffb2ef6853d315fdd89e4d9ca}{priority}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename \+\_\+float\+\_\+T$>$\newline
+class hyperbolic\+::\+Beach\+Line\+Element$<$ \+\_\+float\+\_\+\+T $>$}
+Elements that are within the beach line. Represented as a tuple of sites (a,b) indicating that this element represents the point where the active segment changes from a to b in ccw direction 
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a8084bd8407fab9170900a3217995e7f0}\label{classhyperbolic_1_1BeachLineElement_a8084bd8407fab9170900a3217995e7f0}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!pPoint@{pPoint}}
+\index{pPoint@{pPoint}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{pPoint}{pPoint}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+using \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::p\+Point =  \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$double$>$$\ast$}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_ab09b50229cb8d71fc6fc4c656c020f11}\label{classhyperbolic_1_1BeachLineElement_ab09b50229cb8d71fc6fc4c656c020f11}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!rPoint@{rPoint}}
+\index{rPoint@{rPoint}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{rPoint}{rPoint}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+using \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::r\+Point =  \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$double$>$\&}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}\label{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!rSite@{rSite}}
+\index{rSite@{rSite}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{rSite}{rSite}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+using \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::r\+Site =  \mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$\+\_\+float\+\_\+T$>$\&}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a805f585bc128856298d2470df50e3fd7}\label{classhyperbolic_1_1BeachLineElement_a805f585bc128856298d2470df50e3fd7}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!BeachLineElement@{BeachLineElement}}
+\index{BeachLineElement@{BeachLineElement}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{BeachLineElement()}{BeachLineElement()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::\+Beach\+Line\+Element (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}}}]{first,  }\item[{\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}}}]{second,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}} $\ast$}]{edge,  }\item[{\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a8084bd8407fab9170900a3217995e7f0}{p\+Point}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_aa4f5960e3112c3820e1f2401ce994fe2}\label{classhyperbolic_1_1BeachLineElement_aa4f5960e3112c3820e1f2401ce994fe2}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!````~BeachLineElement@{$\sim$BeachLineElement}}
+\index{````~BeachLineElement@{$\sim$BeachLineElement}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$BeachLineElement()}{~BeachLineElement()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::$\sim$\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_aa772ce646f09da68dbd63fba0835c271}\label{classhyperbolic_1_1BeachLineElement_aa772ce646f09da68dbd63fba0835c271}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!assignVertex@{assignVertex}}
+\index{assignVertex@{assignVertex}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{assignVertex()}{assignVertex()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+void \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::assign\+Vertex (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_ab09b50229cb8d71fc6fc4c656c020f11}{r\+Point}}}]{v }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}\label{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!del@{del}}
+\index{del@{del}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{del()}{del()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+static void \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::del (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$ $\ast$}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a73e06b88920436a691034dd71b6167b0}\label{classhyperbolic_1_1BeachLineElement_a73e06b88920436a691034dd71b6167b0}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!assignableVertex@{assignableVertex}}
+\index{assignableVertex@{assignableVertex}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{assignableVertex}{assignableVertex}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a8084bd8407fab9170900a3217995e7f0}{p\+Point}}\& \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::assignable\+Vertex}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a3315b750b300cd223cb04ebeb20f885c}\label{classhyperbolic_1_1BeachLineElement_a3315b750b300cd223cb04ebeb20f885c}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!count@{count}}
+\index{count@{count}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{count}{count}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+int \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::count = 0}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}\label{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!edge@{edge}}
+\index{edge@{edge}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{edge}{edge}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}}$\ast$ const \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::edge}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}\label{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!first@{first}}
+\index{first@{first}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{first}{first}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::first}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}\label{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!leftChild@{leftChild}}
+\index{leftChild@{leftChild}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{leftChild}{leftChild}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}}$\ast$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::left\+Child = nullptr}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_ae3d3f1890ab53e99b0f6c57102960947}\label{classhyperbolic_1_1BeachLineElement_ae3d3f1890ab53e99b0f6c57102960947}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!next@{next}}
+\index{next@{next}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{next}{next}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+shared\+\_\+ptr$<$\mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{Circle\+Event}}$<$\+\_\+float\+\_\+T$>$ $>$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::next = nullptr}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}\label{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!parent@{parent}}
+\index{parent@{parent}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{parent}{parent}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}}$\ast$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::parent = nullptr}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a99f5fd9546ab261892f24dc9cee55934}\label{classhyperbolic_1_1BeachLineElement_a99f5fd9546ab261892f24dc9cee55934}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!previous@{previous}}
+\index{previous@{previous}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{previous}{previous}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+shared\+\_\+ptr$<$\mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{Circle\+Event}}$<$\+\_\+float\+\_\+T$>$ $>$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::previous = nullptr}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a15995d8ffb2ef6853d315fdd89e4d9ca}\label{classhyperbolic_1_1BeachLineElement_a15995d8ffb2ef6853d315fdd89e4d9ca}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!priority@{priority}}
+\index{priority@{priority}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{priority}{priority}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+uint32\+\_\+t \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::priority}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}\label{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!rightChild@{rightChild}}
+\index{rightChild@{rightChild}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{rightChild}{rightChild}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{Beach\+Line\+Element}} $\ast$ \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::right\+Child = nullptr}
+
+\mbox{\Hypertarget{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}\label{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}} 
+\index{hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}!second@{second}}
+\index{second@{second}!hyperbolic::BeachLineElement$<$ \_float\_T $>$@{hyperbolic::BeachLineElement$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{second}{second}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b4e1ce7898f44105b40ee5b05ae62c1}{r\+Site}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{hyperbolic\+::\+Beach\+Line\+Element}}$<$ \+\_\+float\+\_\+T $>$\+::second}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/fortune-\/hyperbolic/\mbox{\hyperlink{beachline_8hpp}{beachline.\+hpp}}\end{DoxyCompactItemize}

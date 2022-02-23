@@ -1,0 +1,194 @@
+\hypertarget{fortune_8hpp_source}{}\doxysection{fortune.\+hpp}
+\label{fortune_8hpp_source}\index{include/fortune-\/hyperbolic/fortune.hpp@{include/fortune-\/hyperbolic/fortune.hpp}}
+\mbox{\hyperlink{fortune_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geometry_8hpp}{fortune-\/hyperbolic/geometry.hpp}}>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{datastructures_8hpp}{fortune-\/hyperbolic/datastructures.hpp}}>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{beachline_8hpp}{fortune-\/hyperbolic/beachline.hpp}}>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{kernels_8hpp}{fortune-\/hyperbolic/kernels.hpp}}>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <cmake.hpp>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{using} std::vector, std::make\_unique, std::make\_shared, std::to\_string;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacehyperbolic}{hyperbolic}} \{}
+\DoxyCodeLine{18     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1Utils}{Utils}} \{}
+\DoxyCodeLine{19     \textcolor{keyword}{public}:}
+\DoxyCodeLine{20         \textcolor{keyword}{static} \textcolor{keywordtype}{string} \mbox{\hyperlink{classhyperbolic_1_1Utils_ab5d11cb5c446912a5d648d07ccfb6f79}{get\_version}}() \{}
+\DoxyCodeLine{21             \textcolor{keywordflow}{return} to\_string(VERSION\_MAJOR) + \textcolor{stringliteral}{"{}."{}} + to\_string(VERSION\_MINOR);}
+\DoxyCodeLine{22         \}}
+\DoxyCodeLine{23     \};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{29     \textcolor{keyword}{template}<\textcolor{keyword}{class} K, \textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{30     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1FortuneHyperbolicImplementation}{FortuneHyperbolicImplementation}} \{}
+\DoxyCodeLine{31     \textcolor{keyword}{private}:}
+\DoxyCodeLine{32             \textcolor{keywordtype}{bool} verbose;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34             K kernel;}
+\DoxyCodeLine{35             \mbox{\hyperlink{classhyperbolic_1_1BeachLine}{BeachLine<K, \_float\_T>}} beachLine;}
+\DoxyCodeLine{36             \_float\_T r\_sweep;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38             \textcolor{keyword}{using} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} = \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}*;}
+\DoxyCodeLine{39             \textcolor{keyword}{using} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{rBeachLineElement}} = \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}\&;}
+\DoxyCodeLine{40             \textcolor{keyword}{using} \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} = \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\&;}
+\DoxyCodeLine{41             \textcolor{keyword}{using} \mbox{\hyperlink{structhyperbolic_1_1Site}{pSite}} = \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}*;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43             \mbox{\hyperlink{classhyperbolic_1_1EventQueue}{EventQueue<SiteEvent<\_float\_T>}}, \_float\_T> siteEventQueue;}
+\DoxyCodeLine{44             \mbox{\hyperlink{classhyperbolic_1_1EventQueue}{EventQueue<CircleEvent<\_float\_T>}}, \_float\_T> circleEventQueue;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46             vector<Site<\_float\_T>> sites;}
+\DoxyCodeLine{47             \mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram}{VoronoiDiagram}}\& voronoiDiagram;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49             \textcolor{keywordtype}{bool} isCalculated = \textcolor{keyword}{false};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51             \textcolor{keywordtype}{bool} eventsRemaining() \{}
+\DoxyCodeLine{52                 \textcolor{keywordflow}{return} !(siteEventQueue.empty() \&\& circleEventQueue.empty());}
+\DoxyCodeLine{53             \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55             \textcolor{keyword}{static} \textcolor{keywordtype}{void} invalidateCircleEvent(\mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{CircleEvent<\_float\_T>}}* e)\{}
+\DoxyCodeLine{56                 \textcolor{keywordflow}{if} (e) e-\/>\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a2ff10034489d2113a60f8d180a88fd59}{invalidate}}();}
+\DoxyCodeLine{57             \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{62             \textcolor{keywordtype}{void} addCircleEvent(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{rBeachLineElement}} first, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{rBeachLineElement}} second) \{}
+\DoxyCodeLine{63                 invalidateCircleEvent(first.\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_ae3d3f1890ab53e99b0f6c57102960947}{next}}.get());}
+\DoxyCodeLine{64                 invalidateCircleEvent(second.\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a99f5fd9546ab261892f24dc9cee55934}{previous}}.get());}
+\DoxyCodeLine{65                 \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}} centerCircleEvent;}
+\DoxyCodeLine{66                 \textcolor{keywordflow}{if} (kernel.predict\_circle\_event(centerCircleEvent, first.\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}, first.\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}, second.\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}})) \{}
+\DoxyCodeLine{67                     \_float\_T radius = distance<\_float\_T>(centerCircleEvent, first.\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}});}
+\DoxyCodeLine{68                     shared\_ptr<CircleEvent<\_float\_T>> ce = make\_shared<CircleEvent<\_float\_T>>(first, second, centerCircleEvent, radius);}
+\DoxyCodeLine{69                     \textcolor{keywordflow}{if} (ce-\/>r >= r\_sweep) \{}
+\DoxyCodeLine{70                         first.next = ce;}
+\DoxyCodeLine{71                         second.previous = ce;}
+\DoxyCodeLine{72                         circleEventQueue.push(ce);}
+\DoxyCodeLine{73                     \}}
+\DoxyCodeLine{74                 \}}
+\DoxyCodeLine{75             \};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80             \textcolor{keywordtype}{void} initializeBeachLine() \{}
+\DoxyCodeLine{81                 \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} a = siteEventQueue.top()-\/>site;}
+\DoxyCodeLine{82                 siteEventQueue.pop();}
+\DoxyCodeLine{83                 \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} b = siteEventQueue.top()-\/>site;}
+\DoxyCodeLine{84                 siteEventQueue.pop();}
+\DoxyCodeLine{85                 r\_sweep = b.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}.r;}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87                 \mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}}* edge = getNewEdge(b, a, \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda64184813df6e60f07c5e9c502fdd46c1}{EdgeType::BIDIRECTIONAL}});}
+\DoxyCodeLine{88                 \textcolor{keyword}{auto} first = \textcolor{keyword}{new} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}(b, a, edge, edge-\/>\mbox{\hyperlink{structhyperbolic_1_1Edge_a7af508b5c97bf086f572563365246767}{firstVertex}});}
+\DoxyCodeLine{89                 \textcolor{keyword}{auto} last = \textcolor{keyword}{new} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}(a, b, edge, edge-\/>\mbox{\hyperlink{structhyperbolic_1_1Edge_a6b2ab5b19443157ecc6d8df5368e00af}{secondVertex}});}
+\DoxyCodeLine{90                 beachLine.\mbox{\hyperlink{classhyperbolic_1_1BeachLine_afb448d7a2e50f1c5aab05ca1ac7be64b}{insert}}(0, *first, *last);}
+\DoxyCodeLine{91             \};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{96             \textcolor{keywordtype}{void} handleSiteEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1SiteEvent}{SiteEvent<\_float\_T>}}\& e) \{}
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#ifndef NDEBUG}}
+\DoxyCodeLine{98                 \textcolor{keywordflow}{if} (verbose)}
+\DoxyCodeLine{99                     std::cout << \textcolor{stringliteral}{"{}Handling Site Event with radius "{}} << e.\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}} << std::endl;}
+\DoxyCodeLine{100 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{101                 r\_sweep = e.\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103                 \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} first, second;}
+\DoxyCodeLine{104                 \textcolor{keywordtype}{int} positionFirst = beachLine.\mbox{\hyperlink{classhyperbolic_1_1BeachLine_aa477294bca192f5d2609056135f69d22}{search}}(e.\mbox{\hyperlink{classhyperbolic_1_1SiteEvent_a22731629bf0bea924fbe2e5460910d95}{site}}.point, e.\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}}, first, second);}
+\DoxyCodeLine{105                 \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} hitSite = first-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107                 \mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}}* edge = getNewEdge(e.\mbox{\hyperlink{classhyperbolic_1_1SiteEvent_a22731629bf0bea924fbe2e5460910d95}{site}}, hitSite, \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda64184813df6e60f07c5e9c502fdd46c1}{EdgeType::BIDIRECTIONAL}});}
+\DoxyCodeLine{108                 \textcolor{keyword}{auto} firstNew = \textcolor{keyword}{new} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}(e.\mbox{\hyperlink{classhyperbolic_1_1SiteEvent_a22731629bf0bea924fbe2e5460910d95}{site}}, hitSite, edge, edge-\/>\mbox{\hyperlink{structhyperbolic_1_1Edge_a7af508b5c97bf086f572563365246767}{firstVertex}});}
+\DoxyCodeLine{109                 \textcolor{keyword}{auto} secondNew = \textcolor{keyword}{new} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}(hitSite, e.\mbox{\hyperlink{classhyperbolic_1_1SiteEvent_a22731629bf0bea924fbe2e5460910d95}{site}}, edge, edge-\/>\mbox{\hyperlink{structhyperbolic_1_1Edge_a6b2ab5b19443157ecc6d8df5368e00af}{secondVertex}});}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111                 addCircleEvent(*first, *secondNew);}
+\DoxyCodeLine{112                 addCircleEvent(*firstNew, *second);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114                 beachLine.\mbox{\hyperlink{classhyperbolic_1_1BeachLine_afb448d7a2e50f1c5aab05ca1ac7be64b}{insert}}(positionFirst, *firstNew, *secondNew);}
+\DoxyCodeLine{115             \};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{120             \textcolor{keywordtype}{void} handleCircleEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{CircleEvent<\_float\_T>}}\& e) \{}
+\DoxyCodeLine{121 \textcolor{preprocessor}{\#ifndef NDEBUG}}
+\DoxyCodeLine{122                 \textcolor{keywordflow}{if} (verbose) \{}
+\DoxyCodeLine{123                     \textcolor{keywordflow}{if} (!e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a85349dcd13fd1d460a701a7fd39f9768}{isValid}}())}
+\DoxyCodeLine{124                         std::cout << \textcolor{stringliteral}{"{}Skipping invalid circle event"{}} << std::endl;}
+\DoxyCodeLine{125                     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{126                         std::cout << \textcolor{stringliteral}{"{}Handling Circle Event with radius "{}} << e.\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}} << \textcolor{stringliteral}{"{} concerning beach line elements ("{}}}
+\DoxyCodeLine{127                                   << e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}.first.ID << \textcolor{stringliteral}{"{}, "{}} << e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}.second.ID << \textcolor{stringliteral}{"{}) and ("{}} << e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}}.first.ID}
+\DoxyCodeLine{128                                   << \textcolor{stringliteral}{"{}, "{}} << e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}}.second.ID << \textcolor{stringliteral}{"{})"{}} << std::endl;}
+\DoxyCodeLine{129                 \}}
+\DoxyCodeLine{130 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132                 \textcolor{keywordflow}{if} (!e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a85349dcd13fd1d460a701a7fd39f9768}{isValid}}()) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{133                 r\_sweep = e.\mbox{\hyperlink{classhyperbolic_1_1Event_ad944f61ca0c7a3a817271e709007542f}{r}};}
+\DoxyCodeLine{134                 \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}* v = getNewVertex(e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ab093b606fafdf0fb5c1f948679dd2eaf}{center}});}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136                 e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}.assignVertex(*v);}
+\DoxyCodeLine{137                 e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}}.assignVertex(*v);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139                 \textcolor{comment}{// replace first and second with new beach line element}}
+\DoxyCodeLine{140                 \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} a = e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}}.first, b = e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_a76d0f44aeca296e3ea4dfa9083751433}{second}}.second;}
+\DoxyCodeLine{141                 \mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}}* edge = getNewEdge(a, b, (a.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}.r >= b.point.r) ? \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda4541f9306170e76aa7d00797ff2bdcdd}{EdgeType::CCW}} : \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda0be71875552adabb0a047561aec31eb9}{EdgeType::CW}});}
+\DoxyCodeLine{142                 edge-\/>\mbox{\hyperlink{structhyperbolic_1_1Edge_a7af508b5c97bf086f572563365246767}{firstVertex}} = v;}
+\DoxyCodeLine{143                 \textcolor{keyword}{auto} newElement = \textcolor{keyword}{new} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement}}(a, b, edge, edge-\/>\mbox{\hyperlink{structhyperbolic_1_1Edge_a6b2ab5b19443157ecc6d8df5368e00af}{secondVertex}});}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145                 \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} leftNeighbor, rightNeighbor;}
+\DoxyCodeLine{146                 beachLine.\mbox{\hyperlink{classhyperbolic_1_1BeachLine_ac6d536f5bf914a867fbd316817008ab5}{replace}}(e, *newElement, leftNeighbor, rightNeighbor);}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148                 \textcolor{comment}{// predict new circle events}}
+\DoxyCodeLine{149                 addCircleEvent(*leftNeighbor, *newElement);}
+\DoxyCodeLine{150                 addCircleEvent(*newElement, *rightNeighbor);}
+\DoxyCodeLine{151             \};}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153             \mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}}* getNewEdge(\mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} a, \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} b, \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fd}{EdgeType}} edgeType) \{}
+\DoxyCodeLine{154                 voronoiDiagram.\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram_a3cb1ed96756ef87631040def85c3c72d}{edges}}.emplace\_back(make\_unique<Edge>(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structhyperbolic_1_1Site}{Site<double>}}\textcolor{keyword}{>}(a), \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structhyperbolic_1_1Site}{Site<double>}}\textcolor{keyword}{>}(b), edgeType));}
+\DoxyCodeLine{155                 \textcolor{keywordflow}{return} voronoiDiagram.\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram_a3cb1ed96756ef87631040def85c3c72d}{edges}}.back().get();}
+\DoxyCodeLine{156             \};}
+\DoxyCodeLine{157             \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}* getNewVertex(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p) \{}
+\DoxyCodeLine{158                 voronoiDiagram.\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram_aaf1f9b98511e51965560b1bc19cda2a6}{vertices}}.push\_back(make\_unique<\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}>(p));}
+\DoxyCodeLine{159                 \textcolor{keywordflow}{return} voronoiDiagram.\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram_aaf1f9b98511e51965560b1bc19cda2a6}{vertices}}.back().get();}
+\DoxyCodeLine{160             \};}
+\DoxyCodeLine{161         \textcolor{keyword}{public}:}
+\DoxyCodeLine{169             \mbox{\hyperlink{classhyperbolic_1_1FortuneHyperbolicImplementation_a407bb7865d6b54c20dc5783c241949b4}{FortuneHyperbolicImplementation}}(\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram}{VoronoiDiagram}}\& v, \textcolor{keyword}{const} vector<\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}>\& sites, \textcolor{keywordtype}{bool} verbose=\textcolor{keyword}{false}) : verbose(verbose), beachLine(kernel), voronoiDiagram(v) \{}
+\DoxyCodeLine{170                 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} \textcolor{keywordtype}{id} = 0;}
+\DoxyCodeLine{171                 \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}\& p : sites) \{}
+\DoxyCodeLine{172                     this-\/>sites.emplace\_back(\mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}(p.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}, p.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}), \textcolor{keywordtype}{id}));}
+\DoxyCodeLine{173                     \textcolor{keywordtype}{id}++;}
+\DoxyCodeLine{174                 \}}
+\DoxyCodeLine{175                 r\_sweep = 0;}
+\DoxyCodeLine{176             \};}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{181             \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1FortuneHyperbolicImplementation_a4e014364c68fa03d5234c2a7afdac663}{calculate}}() \{}
+\DoxyCodeLine{182                 \textcolor{keywordflow}{if} (isCalculated) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{183                 isCalculated = \textcolor{keyword}{true};}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185                 \textcolor{keywordflow}{if} (sites.size() <= 1) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187                 \textcolor{keywordflow}{for} (\mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} s : sites) \{}
+\DoxyCodeLine{188                     siteEventQueue.push(make\_shared<\mbox{\hyperlink{classhyperbolic_1_1SiteEvent}{SiteEvent<\_float\_T>}}>(s));}
+\DoxyCodeLine{189                 \}}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191                 initializeBeachLine();}
+\DoxyCodeLine{192 \textcolor{preprocessor}{\#ifndef NDEBUG}}
+\DoxyCodeLine{193                 \textcolor{keywordflow}{if} (verbose) beachLine.\mbox{\hyperlink{classhyperbolic_1_1BeachLine_a4e63f5f3f3f1143ef6337a48d664a72b}{print}}(r\_sweep);}
+\DoxyCodeLine{194 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196                 \textcolor{keywordflow}{while} (eventsRemaining()) \{}
+\DoxyCodeLine{197                     \textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1SiteEvent}{SiteEvent<\_float\_T>}}* se = siteEventQueue.\mbox{\hyperlink{classhyperbolic_1_1EventQueue_a159f20f3d383c712ed6febe4e78060e6}{getTop}}();}
+\DoxyCodeLine{198                     \textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{CircleEvent<\_float\_T>}}* ce = circleEventQueue.\mbox{\hyperlink{classhyperbolic_1_1EventQueue_a159f20f3d383c712ed6febe4e78060e6}{getTop}}();}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200                     \textcolor{keywordflow}{if} (!ce || (se \&\& \mbox{\hyperlink{structhyperbolic_1_1CmpEvent}{CmpEvent}}<\mbox{\hyperlink{classhyperbolic_1_1Event}{Event<\_float\_T>}}, \_float\_T>::greater\_equal(ce, se))) \{}
+\DoxyCodeLine{201                         handleSiteEvent(*se);}
+\DoxyCodeLine{202                         siteEventQueue.pop();}
+\DoxyCodeLine{203                     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{204                         handleCircleEvent(*ce);}
+\DoxyCodeLine{205                         circleEventQueue.pop();}
+\DoxyCodeLine{206                     \}}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208 \textcolor{preprocessor}{\#ifndef NDEBUG}}
+\DoxyCodeLine{209                     \textcolor{keywordflow}{if} (verbose) beachLine.\mbox{\hyperlink{classhyperbolic_1_1BeachLine_a4e63f5f3f3f1143ef6337a48d664a72b}{print}}(r\_sweep);}
+\DoxyCodeLine{210 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{211                 \}}
+\DoxyCodeLine{212             \};}
+\DoxyCodeLine{213     \};}
+\DoxyCodeLine{214 \}}
+
+\end{DoxyCode}

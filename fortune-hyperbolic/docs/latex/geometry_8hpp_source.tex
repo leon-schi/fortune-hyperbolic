@@ -1,0 +1,70 @@
+\hypertarget{geometry_8hpp_source}{}\doxysection{geometry.\+hpp}
+\label{geometry_8hpp_source}\index{include/fortune-\/hyperbolic/geometry.hpp@{include/fortune-\/hyperbolic/geometry.hpp}}
+\mbox{\hyperlink{geometry_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{using} std::vector, std::max, std::min, std::unique\_ptr;}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacehyperbolic}{hyperbolic}} \{}
+\DoxyCodeLine{10     \textcolor{keyword}{typedef} \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacehyperbolic_a80621ce4082484192912aac7266cd7e5}{\_float\_t}};}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>  \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}};}
+\DoxyCodeLine{13     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T> \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec}};}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15     \textcolor{comment}{/*}}
+\DoxyCodeLine{16 \textcolor{comment}{     * Most basic class for representing a point in polar coordinates}}
+\DoxyCodeLine{17 \textcolor{comment}{     * */}}
+\DoxyCodeLine{18     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{19     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}} \{}
+\DoxyCodeLine{20         \_float\_T \mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} = 0, \mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}} = 0;}
+\DoxyCodeLine{21         \mbox{\hyperlink{structhyperbolic_1_1Point_a23108abf8a3a2ae423fe3d7cf1d039e7}{Point}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{22         \mbox{\hyperlink{structhyperbolic_1_1Point_af6ede0fd8081147f311f0485e3942762}{Point}}(\_float\_T \mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}, \_float\_T \mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}) : \mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}(\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}), \mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}(\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}) \{\}}
+\DoxyCodeLine{23         \textcolor{keyword}{explicit} \mbox{\hyperlink{structhyperbolic_1_1Point_a23108abf8a3a2ae423fe3d7cf1d039e7}{Point}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1HyperboloidVec}{HyperboloidVec<\_float\_T>}}\& p);}
+\DoxyCodeLine{24         \textcolor{keywordtype}{bool} \mbox{\hyperlink{structhyperbolic_1_1Point_a5ebc1a9a04592fa8d3471e22f35f1653}{operator < }}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& p)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{25             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}} < p.\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}};}
+\DoxyCodeLine{26         \}}
+\DoxyCodeLine{27         \textcolor{keyword}{explicit} \textcolor{keyword}{operator} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}} ()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{28             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(\mbox{\hyperlink{structhyperbolic_1_1Point_a29994364c6383368b1689c2a2df94707}{r}}), \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}));}
+\DoxyCodeLine{29         \}}
+\DoxyCodeLine{30     \};}
+\DoxyCodeLine{31     \textcolor{comment}{/*}}
+\DoxyCodeLine{32 \textcolor{comment}{     * Sites for internal use that assign an ID to a point which is used for caching}}
+\DoxyCodeLine{33 \textcolor{comment}{     * */}}
+\DoxyCodeLine{34     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{35     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1Site}{Site}} \{}
+\DoxyCodeLine{36         \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}} \mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}};}
+\DoxyCodeLine{37         \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} \mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}};}
+\DoxyCodeLine{38         \mbox{\hyperlink{structhyperbolic_1_1Site_a049524685913c082f8cea83bf684edb5}{Site}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}} \mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} \textcolor{keywordtype}{id}) : \mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}(\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}), \mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}}(id) \{\};}
+\DoxyCodeLine{39         \textcolor{keyword}{explicit} \textcolor{keyword}{operator} \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<double>}} ()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{40             \textcolor{keywordflow}{return} \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<double>}}(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}\textcolor{keyword}{>}(\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}), \mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}});}
+\DoxyCodeLine{41         \}}
+\DoxyCodeLine{42     \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{keyword}{enum} \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fd}{EdgeType}} \{\mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda4541f9306170e76aa7d00797ff2bdcdd}{CCW}}, \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda0be71875552adabb0a047561aec31eb9}{CW}}, \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fda64184813df6e60f07c5e9c502fdd46c1}{BIDIRECTIONAL}}\};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{comment}{/*}}
+\DoxyCodeLine{47 \textcolor{comment}{     * represents an edge of the Voronoi diagram}}
+\DoxyCodeLine{48 \textcolor{comment}{     * */}}
+\DoxyCodeLine{49     \textcolor{keyword}{struct }\mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}} \{}
+\DoxyCodeLine{50         \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fd}{EdgeType}} \mbox{\hyperlink{structhyperbolic_1_1Edge_afdb73b7283f84abed57f8f10e1b0cd13}{edgeType}};}
+\DoxyCodeLine{51         \textcolor{comment}{// the sites that define the bisector corresponding to the edge}}
+\DoxyCodeLine{52         \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<double>}} \mbox{\hyperlink{structhyperbolic_1_1Edge_a98f61aba092b9bb5b3ad74a53963ae30}{siteA}}, \mbox{\hyperlink{structhyperbolic_1_1Edge_a13a78668d02f20413fda7aa7158e5d21}{siteB}};}
+\DoxyCodeLine{53         \textcolor{comment}{// the vertices of the Voronoi diagram the edge is adjacent to}}
+\DoxyCodeLine{54         \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}} *\mbox{\hyperlink{structhyperbolic_1_1Edge_a7af508b5c97bf086f572563365246767}{firstVertex}} = \textcolor{keyword}{nullptr}, *\mbox{\hyperlink{structhyperbolic_1_1Edge_a6b2ab5b19443157ecc6d8df5368e00af}{secondVertex}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{55         \mbox{\hyperlink{structhyperbolic_1_1Edge_ad51f4bfdf6c1b3e83a1b827140feea1e}{Edge}}(\mbox{\hyperlink{structhyperbolic_1_1Site}{Site<double>}} a, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<double>}} b, \mbox{\hyperlink{namespacehyperbolic_aa5caf6bf6c2323a9e0b0ca7c16da71fd}{EdgeType}} \mbox{\hyperlink{structhyperbolic_1_1Edge_afdb73b7283f84abed57f8f10e1b0cd13}{edgeType}}) :}
+\DoxyCodeLine{56                 \mbox{\hyperlink{structhyperbolic_1_1Edge_afdb73b7283f84abed57f8f10e1b0cd13}{edgeType}}(\mbox{\hyperlink{structhyperbolic_1_1Edge_afdb73b7283f84abed57f8f10e1b0cd13}{edgeType}}), \mbox{\hyperlink{structhyperbolic_1_1Edge_a98f61aba092b9bb5b3ad74a53963ae30}{siteA}}(a), \mbox{\hyperlink{structhyperbolic_1_1Edge_a13a78668d02f20413fda7aa7158e5d21}{siteB}}(b) \{\};}
+\DoxyCodeLine{57     \};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram}{VoronoiDiagram}} \{}
+\DoxyCodeLine{60     \textcolor{keyword}{public}:}
+\DoxyCodeLine{61         vector<unique\_ptr<Point<double>>> \mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram_aaf1f9b98511e51965560b1bc19cda2a6}{vertices}};}
+\DoxyCodeLine{62         vector<unique\_ptr<Edge>> \mbox{\hyperlink{classhyperbolic_1_1VoronoiDiagram_a3cb1ed96756ef87631040def85c3c72d}{edges}};}
+\DoxyCodeLine{63     \};}
+\DoxyCodeLine{64 \}}
+
+\end{DoxyCode}

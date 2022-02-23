@@ -1,0 +1,90 @@
+\hypertarget{classhyperbolic_1_1FullNativeKernel}{}\doxysection{hyperbolic\+::Full\+Native\+Kernel\texorpdfstring{$<$}{<} \+\_\+float\+\_\+T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classhyperbolic_1_1FullNativeKernel}\index{hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}}
+
+
+{\ttfamily \#include $<$kernels.\+hpp$>$}
+
+Inheritance diagram for hyperbolic\+::Full\+Native\+Kernel\texorpdfstring{$<$}{<} \+\_\+float\+\_\+T \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classhyperbolic_1_1FullNativeKernel}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_ad8026f38bb85ddc34dc8e32465a39c9d}{before}} (\+\_\+float\+\_\+T theta, \+\_\+float\+\_\+T reference\+\_\+angle, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&p\+\_\+s, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&p\+\_\+t, \+\_\+float\+\_\+T r\+\_\+sweep)
+\item 
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_adf2bb548538ac32ba21f41709b7c216e}{assign\+\_\+result\+\_\+if\+\_\+in\+\_\+definiton}} (\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&result, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&rs, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&st, \+\_\+float\+\_\+T z)
+\item 
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a2ca72423c8b271ce0dfd5a509ee43474}{assign\+\_\+result\+\_\+for\+\_\+straight\+\_\+bisector\+\_\+if\+\_\+exists}} (\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&result, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&straight, \mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&not\+\_\+straight)
+\item 
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a9f7ad516d0d7a8bbe3172f689c8b60ed}{calculate\+\_\+circle\+\_\+event\+\_\+center}} (\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&result, const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&r, const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&s, const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&t)
+\item 
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_a4a1f0ee516cf512636ffbb18388be0aa}{on\+\_\+active\+\_\+site}} (\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&s, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&t, \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&p)
+\item 
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel_ae3cf29d55fca536fbf7163b02eed275d}{predict\+\_\+circle\+\_\+event}} (\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&result, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$ \+\_\+float\+\_\+T $>$ \&r, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$ \+\_\+float\+\_\+T $>$ \&s, \mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$ \+\_\+float\+\_\+T $>$ \&t)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename \+\_\+float\+\_\+T$>$\newline
+class hyperbolic\+::\+Full\+Native\+Kernel$<$ \+\_\+float\+\_\+\+T $>$}
+Implementation of a kernel that fully works in the native (polar coordinate) model of hyperbolic space 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperbolic_1_1FullNativeKernel_a2ca72423c8b271ce0dfd5a509ee43474}\label{classhyperbolic_1_1FullNativeKernel_a2ca72423c8b271ce0dfd5a509ee43474}} 
+\index{hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}!assign\_result\_for\_straight\_bisector\_if\_exists@{assign\_result\_for\_straight\_bisector\_if\_exists}}
+\index{assign\_result\_for\_straight\_bisector\_if\_exists@{assign\_result\_for\_straight\_bisector\_if\_exists}!hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{assign\_result\_for\_straight\_bisector\_if\_exists()}{assign\_result\_for\_straight\_bisector\_if\_exists()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel}{hyperbolic\+::\+Full\+Native\+Kernel}}$<$ \+\_\+float\+\_\+T $>$\+::assign\+\_\+result\+\_\+for\+\_\+straight\+\_\+bisector\+\_\+if\+\_\+exists (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{result,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&}]{straight,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&}]{not\+\_\+straight }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classhyperbolic_1_1FullNativeKernel_adf2bb548538ac32ba21f41709b7c216e}\label{classhyperbolic_1_1FullNativeKernel_adf2bb548538ac32ba21f41709b7c216e}} 
+\index{hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}!assign\_result\_if\_in\_definiton@{assign\_result\_if\_in\_definiton}}
+\index{assign\_result\_if\_in\_definiton@{assign\_result\_if\_in\_definiton}!hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{assign\_result\_if\_in\_definiton()}{assign\_result\_if\_in\_definiton()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel}{hyperbolic\+::\+Full\+Native\+Kernel}}$<$ \+\_\+float\+\_\+T $>$\+::assign\+\_\+result\+\_\+if\+\_\+in\+\_\+definiton (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{result,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&}]{rs,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Bisector}{Bisector}}$<$ \+\_\+float\+\_\+T $>$ \&}]{st,  }\item[{\+\_\+float\+\_\+T}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classhyperbolic_1_1FullNativeKernel_ad8026f38bb85ddc34dc8e32465a39c9d}\label{classhyperbolic_1_1FullNativeKernel_ad8026f38bb85ddc34dc8e32465a39c9d}} 
+\index{hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}!before@{before}}
+\index{before@{before}!hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{before()}{before()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel}{hyperbolic\+::\+Full\+Native\+Kernel}}$<$ \+\_\+float\+\_\+T $>$\+::before (\begin{DoxyParamCaption}\item[{\+\_\+float\+\_\+T}]{theta,  }\item[{\+\_\+float\+\_\+T}]{reference\+\_\+angle,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{p\+\_\+s,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{p\+\_\+t,  }\item[{\+\_\+float\+\_\+T}]{r\+\_\+sweep }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+checks whether the angle theta is between the reference angle and the Beach Line intersection defined by the tuple of sites (p\+\_\+s,p\+\_\+t) in ccw direction 
+
+Implements \mbox{\hyperlink{classhyperbolic_1_1Kernel_a2d01cb4652ca5178555cf3388223a60f}{hyperbolic\+::\+Kernel$<$ \+\_\+float\+\_\+\+T $>$}}.
+
+\mbox{\Hypertarget{classhyperbolic_1_1FullNativeKernel_a9f7ad516d0d7a8bbe3172f689c8b60ed}\label{classhyperbolic_1_1FullNativeKernel_a9f7ad516d0d7a8bbe3172f689c8b60ed}} 
+\index{hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}!calculate\_circle\_event\_center@{calculate\_circle\_event\_center}}
+\index{calculate\_circle\_event\_center@{calculate\_circle\_event\_center}!hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{calculate\_circle\_event\_center()}{calculate\_circle\_event\_center()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel}{hyperbolic\+::\+Full\+Native\+Kernel}}$<$ \+\_\+float\+\_\+T $>$\+::calculate\+\_\+circle\+\_\+event\+\_\+center (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{result,  }\item[{const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{r,  }\item[{const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{s,  }\item[{const \mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classhyperbolic_1_1FullNativeKernel_a4a1f0ee516cf512636ffbb18388be0aa}\label{classhyperbolic_1_1FullNativeKernel_a4a1f0ee516cf512636ffbb18388be0aa}} 
+\index{hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}!on\_active\_site@{on\_active\_site}}
+\index{on\_active\_site@{on\_active\_site}!hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{on\_active\_site()}{on\_active\_site()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel}{hyperbolic\+::\+Full\+Native\+Kernel}}$<$ \+\_\+float\+\_\+T $>$\+::on\+\_\+active\+\_\+site (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{s,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{t,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classhyperbolic_1_1FullNativeKernel_ae3cf29d55fca536fbf7163b02eed275d}\label{classhyperbolic_1_1FullNativeKernel_ae3cf29d55fca536fbf7163b02eed275d}} 
+\index{hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}!predict\_circle\_event@{predict\_circle\_event}}
+\index{predict\_circle\_event@{predict\_circle\_event}!hyperbolic::FullNativeKernel$<$ \_float\_T $>$@{hyperbolic::FullNativeKernel$<$ \_float\_T $>$}}
+\doxysubsubsection{\texorpdfstring{predict\_circle\_event()}{predict\_circle\_event()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+float\+\_\+T $>$ \\
+bool \mbox{\hyperlink{classhyperbolic_1_1FullNativeKernel}{hyperbolic\+::\+Full\+Native\+Kernel}}$<$ \+\_\+float\+\_\+T $>$\+::predict\+\_\+circle\+\_\+event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperbolic_1_1Point}{Point}}$<$ \+\_\+float\+\_\+T $>$ \&}]{result,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$ \+\_\+float\+\_\+T $>$ \&}]{r,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$ \+\_\+float\+\_\+T $>$ \&}]{s,  }\item[{\mbox{\hyperlink{structhyperbolic_1_1Site}{Site}}$<$ \+\_\+float\+\_\+T $>$ \&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+predicts the coordinates of a circle event 
+
+Implements \mbox{\hyperlink{classhyperbolic_1_1Kernel_a1bf67fc2784ce9d7a73a384d6acc8393}{hyperbolic\+::\+Kernel$<$ \+\_\+float\+\_\+\+T $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/fortune-\/hyperbolic/\mbox{\hyperlink{kernels_8hpp}{kernels.\+hpp}}\end{DoxyCompactItemize}

@@ -14,10 +14,10 @@ using std::is_base_of, std::unique_ptr, std::shared_ptr, std::vector, std::prior
 namespace hyperbolic {
     template<typename _float_T>
     class BeachLineElement;
-    /*
+
+    /**
      * base class for the events handled in the algorithm
      * */
-
     template<typename _float_T>
     class Event {
     public:

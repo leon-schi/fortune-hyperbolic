@@ -1,0 +1,300 @@
+\hypertarget{beachline_8hpp_source}{}\doxysection{beachline.\+hpp}
+\label{beachline_8hpp_source}\index{include/fortune-\/hyperbolic/beachline.hpp@{include/fortune-\/hyperbolic/beachline.hpp}}
+\mbox{\hyperlink{beachline_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{datastructures_8hpp}{fortune-\/hyperbolic/datastructures.hpp}}>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{calculations_8hpp}{fortune-\/hyperbolic/calculations.hpp}}>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacehyperbolic}{hyperbolic}} \{}
+\DoxyCodeLine{7     \textcolor{comment}{//TODO: ensure efficient access to neighbors}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{13     \textcolor{keyword}{template}<\textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{14     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement}} \{}
+\DoxyCodeLine{15     \textcolor{keyword}{public}:}
+\DoxyCodeLine{16         \textcolor{keyword}{using} \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} = \mbox{\hyperlink{structhyperbolic_1_1Site}{Site<\_float\_T>}}\&;}
+\DoxyCodeLine{17         \textcolor{keyword}{using} \mbox{\hyperlink{structhyperbolic_1_1Point}{rPoint}} = \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}\&;}
+\DoxyCodeLine{18         \textcolor{keyword}{using} \mbox{\hyperlink{structhyperbolic_1_1Point}{pPoint}} = \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<double>}}*;}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20         \textcolor{comment}{// the two sites defining the element}}
+\DoxyCodeLine{21         \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}};}
+\DoxyCodeLine{22         \textcolor{comment}{// pointer to circle element of this element with the next / previous element in the beach line}}
+\DoxyCodeLine{23         shared\_ptr<CircleEvent<\_float\_T>> \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_ae3d3f1890ab53e99b0f6c57102960947}{next}} = \textcolor{keyword}{nullptr}, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a99f5fd9546ab261892f24dc9cee55934}{previous}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{24         \textcolor{comment}{// pointer to an edge on which the element moves}}
+\DoxyCodeLine{25         \mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}}* \textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}{edge}};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27         \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a805f585bc128856298d2470df50e3fd7}{BeachLineElement}}(\mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}, \mbox{\hyperlink{structhyperbolic_1_1Site}{rSite}} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}, \mbox{\hyperlink{structhyperbolic_1_1Edge}{Edge}}* \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}{edge}}, \mbox{\hyperlink{structhyperbolic_1_1Point}{pPoint}}\& v) : \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}), \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}), \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}{edge}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a394916a8d33e834eabf41a0f91169361}{edge}}), \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a73e06b88920436a691034dd71b6167b0}{assignableVertex}}(v) \{}
+\DoxyCodeLine{28             std::random\_device d;}
+\DoxyCodeLine{29             std::mt19937 rng(d());}
+\DoxyCodeLine{30             \textcolor{comment}{//rng.seed(14232645);}}
+\DoxyCodeLine{31             std::uniform\_int\_distribution<uint32\_t> uint\_dist;}
+\DoxyCodeLine{32             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a15995d8ffb2ef6853d315fdd89e4d9ca}{priority}} = uint\_dist(rng);}
+\DoxyCodeLine{33         \};}
+\DoxyCodeLine{34         \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_aa4f5960e3112c3820e1f2401ce994fe2}{\string~BeachLineElement}}() \{}
+\DoxyCodeLine{35             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}{del}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}});}
+\DoxyCodeLine{36             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}{del}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}});}
+\DoxyCodeLine{37         \}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39         \textcolor{comment}{// used to assign a vertex to the right vertex from the stored edge when this element is involved in a circle event}}
+\DoxyCodeLine{40         \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_aa772ce646f09da68dbd63fba0835c271}{assignVertex}}(\mbox{\hyperlink{structhyperbolic_1_1Point}{rPoint}} v)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{41             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a73e06b88920436a691034dd71b6167b0}{assignableVertex}} = \&v;}
+\DoxyCodeLine{42         \}}
+\DoxyCodeLine{43         \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}{del}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement}}* t) \{}
+\DoxyCodeLine{44             \textcolor{keywordflow}{if} (!t) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{45             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}{del}}(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}});}
+\DoxyCodeLine{46             t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{47             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_afd524caf3a32cc819f151ff1c72b7848}{del}}(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}});}
+\DoxyCodeLine{48             t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{49             \textcolor{keyword}{delete} t;}
+\DoxyCodeLine{50         \};}
+\DoxyCodeLine{51         \textcolor{comment}{// pointer to a reference of one of the vertices int the stored edge}}
+\DoxyCodeLine{52         \mbox{\hyperlink{structhyperbolic_1_1Point}{pPoint}}\& \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a73e06b88920436a691034dd71b6167b0}{assignableVertex}};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54         \textcolor{comment}{// internal properties used for the data structure}}
+\DoxyCodeLine{55         \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement}} *\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}} = \textcolor{keyword}{nullptr}, *\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{56         \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement}}* \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58         \textcolor{keywordtype}{int} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a3315b750b300cd223cb04ebeb20f885c}{count}} = 0;}
+\DoxyCodeLine{59         uint32\_t \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a15995d8ffb2ef6853d315fdd89e4d9ca}{priority}};}
+\DoxyCodeLine{60     \};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{66     \textcolor{keyword}{template}<\textcolor{keyword}{class} K, \textcolor{keyword}{typename} \_\textcolor{keywordtype}{float}\_T>}
+\DoxyCodeLine{67     \textcolor{keyword}{class }\mbox{\hyperlink{classhyperbolic_1_1BeachLine}{BeachLine}} \{}
+\DoxyCodeLine{68     \textcolor{keyword}{private}:}
+\DoxyCodeLine{69         \textcolor{keyword}{using} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} = \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}*;}
+\DoxyCodeLine{70         \textcolor{keyword}{using} \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{rBeachLineElement}} = \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{BeachLineElement<\_float\_T>}}\&;}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72         K\& kernel;}
+\DoxyCodeLine{73         \textcolor{comment}{// root of the treap}}
+\DoxyCodeLine{74         \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} root = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{75         \textcolor{comment}{// angular coordinate of the last inserted vertex}}
+\DoxyCodeLine{76         \_float\_T reference\_angle = 0;}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78         \textcolor{comment}{// transforms an angle to the corresponding angle under the perspective of reference\_angle}}
+\DoxyCodeLine{79         [[nodiscard]] \_float\_T transformAngle(\_float\_T theta)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{80             \textcolor{keywordflow}{return} clip<\_float\_T>(theta -\/ reference\_angle);}
+\DoxyCodeLine{81         \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83         \textcolor{comment}{// functions for updating properties of BeachLineElements}}
+\DoxyCodeLine{84         \textcolor{keyword}{static} \textcolor{keywordtype}{void} setParent(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} e, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} p) \{}
+\DoxyCodeLine{85             \textcolor{keywordflow}{if} (e) e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}} = p;}
+\DoxyCodeLine{86         \};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88         [[nodiscard]] \textcolor{keyword}{static} \textcolor{keywordtype}{int} getCount(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} e) \{}
+\DoxyCodeLine{89             \textcolor{keywordflow}{return} (e) ? e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a3315b750b300cd223cb04ebeb20f885c}{count}} : 0;}
+\DoxyCodeLine{90         \};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92         \textcolor{keyword}{static} \textcolor{keywordtype}{void} update(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} e) \{}
+\DoxyCodeLine{93             \textcolor{keywordflow}{if} (e) \{}
+\DoxyCodeLine{94                 e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a3315b750b300cd223cb04ebeb20f885c}{count}} = 1 + getCount(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}) + getCount(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}});}
+\DoxyCodeLine{95                 setParent(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, e);}
+\DoxyCodeLine{96                 setParent(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, e);}
+\DoxyCodeLine{97                 e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{98             \}}
+\DoxyCodeLine{99         \};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101         \textcolor{comment}{// split and merge as fundamental operation of the treap}}
+\DoxyCodeLine{102         \textcolor{keyword}{static} \textcolor{keywordtype}{void} split(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} t, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&l, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&r, \textcolor{keywordtype}{int} pos, \textcolor{keywordtype}{int} add=0) \{}
+\DoxyCodeLine{103             \textcolor{comment}{// splits such that l holds elements from positions [0 .. pos-\/1], and r from [pos .. n]}}
+\DoxyCodeLine{104             \textcolor{keywordflow}{if} (!t) \{}
+\DoxyCodeLine{105                 l = r = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{106                 \textcolor{keywordflow}{return};}
+\DoxyCodeLine{107             \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109             \textcolor{keywordtype}{int} current\_position = getCount(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}) + add;}
+\DoxyCodeLine{110             \textcolor{keywordflow}{if} (pos > current\_position) \{}
+\DoxyCodeLine{111                 split(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, r, pos, current\_position + 1);}
+\DoxyCodeLine{112                 l = t;}
+\DoxyCodeLine{113             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (pos < current\_position) \{}
+\DoxyCodeLine{114                 split(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, l, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, pos, add);}
+\DoxyCodeLine{115                 r = t;}
+\DoxyCodeLine{116             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{117                 l = t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}};}
+\DoxyCodeLine{118                 t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{119                 r = t;}
+\DoxyCodeLine{120             \}}
+\DoxyCodeLine{121             update(t);}
+\DoxyCodeLine{122         \};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124         \textcolor{keyword}{static} \textcolor{keywordtype}{void} merge(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&t, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} l, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} r) \{}
+\DoxyCodeLine{125             \textcolor{keywordflow}{if} (!l || !r)}
+\DoxyCodeLine{126                 t = l ? l : r;}
+\DoxyCodeLine{127             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (l-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a15995d8ffb2ef6853d315fdd89e4d9ca}{priority}} > r-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a15995d8ffb2ef6853d315fdd89e4d9ca}{priority}}) \{}
+\DoxyCodeLine{128                 merge(l-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, l-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, r);}
+\DoxyCodeLine{129                 t = l;}
+\DoxyCodeLine{130             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{131                 merge(r-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, l, r-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}});}
+\DoxyCodeLine{132                 t = r;}
+\DoxyCodeLine{133             \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135             update(t);}
+\DoxyCodeLine{136         \};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138         \textcolor{comment}{// returns the position of a given BeachLineElement}}
+\DoxyCodeLine{139         \textcolor{keyword}{static} \textcolor{keywordtype}{int} getPosition(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} e) \{}
+\DoxyCodeLine{140             \textcolor{keywordtype}{int} pos = getCount(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}});}
+\DoxyCodeLine{141             \textcolor{keywordflow}{while} (e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}}) \{}
+\DoxyCodeLine{142                 \textcolor{keywordflow}{if} (e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}}-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}} != e)}
+\DoxyCodeLine{143                     pos += getCount(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}}-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}) + 1;}
+\DoxyCodeLine{144                 e = e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a07daccffdd1b756df1f1978fca417301}{parent}};}
+\DoxyCodeLine{145             \}}
+\DoxyCodeLine{146             \textcolor{keywordflow}{return} pos;}
+\DoxyCodeLine{147         \};}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149         \textcolor{comment}{// copies a pointer to all remaining elements in the tree rooted at e into v}}
+\DoxyCodeLine{150         \textcolor{keyword}{static} \textcolor{keywordtype}{void} getRemainingElements(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} e, vector<pBeachLineElement> \&v) \{}
+\DoxyCodeLine{151             \textcolor{keywordflow}{if} (!e) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{152             getRemainingElements(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, v);}
+\DoxyCodeLine{153             v.push\_back(e);}
+\DoxyCodeLine{154             getRemainingElements(e-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, v);}
+\DoxyCodeLine{155         \};}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157         \textcolor{comment}{// search for the element at position pos in the tree rooted at t}}
+\DoxyCodeLine{158         \textcolor{keywordtype}{void} find(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&result, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} t, \textcolor{keywordtype}{int} pos, \textcolor{keywordtype}{int} add=0) \{}
+\DoxyCodeLine{159             \textcolor{keywordflow}{if} (!t) \{}
+\DoxyCodeLine{160                 result = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{161                 \textcolor{keywordflow}{return};}
+\DoxyCodeLine{162             \}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164             \textcolor{keywordtype}{int} current\_position = getCount(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}) + add;}
+\DoxyCodeLine{165             \textcolor{keywordflow}{if} (pos == current\_position)}
+\DoxyCodeLine{166                 result = t;}
+\DoxyCodeLine{167             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (pos > current\_position)}
+\DoxyCodeLine{168                 find(result, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, pos, current\_position + 1);}
+\DoxyCodeLine{169             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{170                 find(result, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, pos, add);}
+\DoxyCodeLine{171         \};}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173         \textcolor{comment}{// binary search returning the last BeachLineElement with an angular coordinate smaller than theta + its position at a sweep circle radius of r\_sweep}}
+\DoxyCodeLine{174         \textcolor{keywordtype}{void} find(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&result, \textcolor{keywordtype}{int} \&pos, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} t, \_float\_T theta, \_float\_T r\_sweep, \textcolor{keywordtype}{int} add=0) \{}
+\DoxyCodeLine{175             \textcolor{comment}{// returns the first element clockwise of theta in t (i.e. with a angular coordinate smaller/equal theta)}}
+\DoxyCodeLine{176             \textcolor{keywordflow}{if} (!t) \{}
+\DoxyCodeLine{177                 result = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{178                 \textcolor{keywordflow}{return};}
+\DoxyCodeLine{179             \}}
+\DoxyCodeLine{180             \textcolor{keywordtype}{int} current\_position = getCount(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}) + add;}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182             \textcolor{keywordflow}{if} (kernel.before(theta, reference\_angle, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}, r\_sweep)) \{}
+\DoxyCodeLine{183                 find(result, pos, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, theta, r\_sweep, add);}
+\DoxyCodeLine{184             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{185                 find(result, pos, t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, theta, r\_sweep, current\_position + 1);}
+\DoxyCodeLine{186                 \textcolor{keywordflow}{if} (result == \textcolor{keyword}{nullptr}) \{}
+\DoxyCodeLine{187                     result = t;}
+\DoxyCodeLine{188                     pos = current\_position;}
+\DoxyCodeLine{189                 \}}
+\DoxyCodeLine{190                 \textcolor{keywordflow}{return};}
+\DoxyCodeLine{191             \}}
+\DoxyCodeLine{192         \};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194         \textcolor{comment}{// finds the leftmost/rightmost child of the tree rooted at e}}
+\DoxyCodeLine{195         \textcolor{keywordtype}{void} getLeftmostChild(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&result, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} e) \{}
+\DoxyCodeLine{196             \textcolor{keywordflow}{if} (!e) \{}
+\DoxyCodeLine{197                 result = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{198                 \textcolor{keywordflow}{return};}
+\DoxyCodeLine{199             \}}
+\DoxyCodeLine{200             find(result, e, 0);}
+\DoxyCodeLine{201         \};}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203         \textcolor{keywordtype}{void} getRightmostChild(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&result, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} e) \{}
+\DoxyCodeLine{204             \textcolor{keywordflow}{if} (!e) \{}
+\DoxyCodeLine{205                 result = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{206                 \textcolor{keywordflow}{return};}
+\DoxyCodeLine{207             \}}
+\DoxyCodeLine{208             find(result, e, getCount(e) -\/ 1);}
+\DoxyCodeLine{209         \};}
+\DoxyCodeLine{210     \textcolor{keyword}{public}:}
+\DoxyCodeLine{211         \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a439ab712a204682d5bb3423a157ea6db}{BeachLine}}(K\& k) : kernel(k) \{\};}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213         \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a43a1bfcc18a99f23552d8f1c3436b3ce}{\string~BeachLine}}() \{}
+\DoxyCodeLine{214             \textcolor{keyword}{delete} root;}
+\DoxyCodeLine{215         \}}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{221         \textcolor{keywordtype}{int} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_aa477294bca192f5d2609056135f69d22}{search}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhyperbolic_1_1Point}{Point<\_float\_T>}}\& s, \_float\_T r\_sweep, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&first, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&second) \{}
+\DoxyCodeLine{222             first = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{223             \textcolor{keywordtype}{int} position\_first;}
+\DoxyCodeLine{224             find(first, position\_first, root, transformAngle(s.\mbox{\hyperlink{structhyperbolic_1_1Point_a89a065bdf8aa811e45648496260401ab}{theta}}), r\_sweep);}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226             \textcolor{keyword}{auto} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_ae3087c393c9e158ab58dda8be41dd421}{size}} = BeachLine::getCount(root);}
+\DoxyCodeLine{227             \textcolor{keywordflow}{if} (!first) \{}
+\DoxyCodeLine{228                 position\_first = getCount(root) -\/ 1;}
+\DoxyCodeLine{229                 BeachLine::find(first, root, position\_first);}
+\DoxyCodeLine{230             \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232             second = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{233             BeachLine::find(second, root, (position\_first + 1) \% \mbox{\hyperlink{classhyperbolic_1_1BeachLine_ae3087c393c9e158ab58dda8be41dd421}{size}});}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235             \textcolor{keywordflow}{return} position\_first;}
+\DoxyCodeLine{236         \};}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{243         \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_afb448d7a2e50f1c5aab05ca1ac7be64b}{insert}}(\textcolor{keywordtype}{int} position, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{rBeachLineElement}} firstNew, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{rBeachLineElement}} secondNew) \{}
+\DoxyCodeLine{244             \textcolor{comment}{// inserts the neighboring beach line elements firstNew and second new after position positionFirst and rearranges the order such that firstNew is the first element and secondNew is the last element}}
+\DoxyCodeLine{245             \textcolor{keyword}{auto} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_ae3087c393c9e158ab58dda8be41dd421}{size}} = BeachLine::getCount(root);}
+\DoxyCodeLine{246             position = (\mbox{\hyperlink{classhyperbolic_1_1BeachLine_ae3087c393c9e158ab58dda8be41dd421}{size}} > 0) ? (position + 1) \% \mbox{\hyperlink{classhyperbolic_1_1BeachLine_ae3087c393c9e158ab58dda8be41dd421}{size}} : 0;}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} left, right;}
+\DoxyCodeLine{249             split(root, left, right, position);}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251             BeachLine::merge(right, \&firstNew, right);}
+\DoxyCodeLine{252             BeachLine::merge(left, left, \&secondNew);}
+\DoxyCodeLine{253             BeachLine::merge(root, right, left);}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255             reference\_angle = firstNew.\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}.\mbox{\hyperlink{structhyperbolic_1_1Site_a12dd3383cdaae4e72d0ccdc830e277f2}{point}}.theta;}
+\DoxyCodeLine{256         \};}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{263         \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_ac6d536f5bf914a867fbd316817008ab5}{replace}}(\textcolor{keyword}{const} \mbox{\hyperlink{classhyperbolic_1_1CircleEvent}{CircleEvent<\_float\_T>}} \&e, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{rBeachLineElement}} newElement, \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&leftNeighbor,}
+\DoxyCodeLine{264                      \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \&rightNeighbor) \{}
+\DoxyCodeLine{265             \textcolor{comment}{// replaces the elements specified in e and replaces them with newElement}}
+\DoxyCodeLine{266             \textcolor{comment}{// Note that we can safely assume that e does not refer to the last and first element as our arrangement can never have these two involved in a circle event}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268             \textcolor{keywordtype}{int} position = BeachLine::getPosition(\&e.\mbox{\hyperlink{classhyperbolic_1_1CircleEvent_ad266d329978a87568e9b745da02d56f2}{first}});}
+\DoxyCodeLine{269             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} left, middle, right;}
+\DoxyCodeLine{270             split(root, left, middle, position);}
+\DoxyCodeLine{271             split(middle, middle, right, 2);}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273             \textcolor{keyword}{delete} middle;}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275             \textcolor{comment}{// get left and right neighbors}}
+\DoxyCodeLine{276             BeachLine::getRightmostChild(leftNeighbor, left);}
+\DoxyCodeLine{277             BeachLine::getLeftmostChild(rightNeighbor, right);}
+\DoxyCodeLine{278             \textcolor{keywordflow}{if} (leftNeighbor == \textcolor{keyword}{nullptr}) BeachLine::getRightmostChild(leftNeighbor, right);}
+\DoxyCodeLine{279             \textcolor{keywordflow}{if} (rightNeighbor == \textcolor{keyword}{nullptr}) BeachLine::getLeftmostChild(rightNeighbor, left);}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281             BeachLine::merge(left, left, \&newElement);}
+\DoxyCodeLine{282             BeachLine::merge(root, left, right);}
+\DoxyCodeLine{283         \};}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285         \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a58dac4d58a5ea7f71efb7b2729602bac}{getFirstElement}}() \{}
+\DoxyCodeLine{286             \mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} result;}
+\DoxyCodeLine{287             getLeftmostChild(result, root);}
+\DoxyCodeLine{288             \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{289         \}}
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291         [[nodiscard]] \textcolor{keywordtype}{int} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_ae3087c393c9e158ab58dda8be41dd421}{size}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{292             \textcolor{keywordflow}{return} BeachLine::getCount(root);}
+\DoxyCodeLine{293         \};}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295         \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a84db612fd2d846221ad073da57cc3ab9}{getRemainingElements}}(vector<pBeachLineElement>\& v) \{}
+\DoxyCodeLine{296             getRemainingElements(root, v);}
+\DoxyCodeLine{297         \}}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299 \textcolor{preprocessor}{\#ifndef NDEBUG}}
+\DoxyCodeLine{300 }
+\DoxyCodeLine{301         \textcolor{comment}{// methods for printing the beach line when debugging}}
+\DoxyCodeLine{302         \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a4e63f5f3f3f1143ef6337a48d664a72b}{print}}(\_float\_T r\_sweep) \{}
+\DoxyCodeLine{303             \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a4e63f5f3f3f1143ef6337a48d664a72b}{print}}(root, r\_sweep, 0);}
+\DoxyCodeLine{304             std::cout << std::endl;}
+\DoxyCodeLine{305         \};}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307         \textcolor{keywordtype}{void} \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a359fe3955c8f3f0425bbc163760b6de0}{print}}(\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement}{pBeachLineElement}} t, \_float\_T r\_sweep, \textcolor{keywordtype}{int} add) \{}
+\DoxyCodeLine{308             \textcolor{keywordflow}{if} (!t) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{309             \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a4e63f5f3f3f1143ef6337a48d664a72b}{print}}(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}, r\_sweep, add);}
+\DoxyCodeLine{310             \textcolor{keywordtype}{int} cur\_pos = getCount(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a85d0d1e9b1bb0dba1f8549ba6cb380a6}{leftChild}}) + add;}
+\DoxyCodeLine{311             std::cout << \textcolor{stringliteral}{"{}(("{}} << t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a52d4c0627097ea733c115b0e7e23881e}{first}}.\mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}} << \textcolor{stringliteral}{"{}, "{}} << t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a1b2c91d93e3707e8c0efb74205c92783}{second}}.\mbox{\hyperlink{structhyperbolic_1_1Site_a62a7c548bf836d0c72cf1e8fa5517dd9}{ID}} << \textcolor{stringliteral}{"{}), "{}} << cur\_pos << \textcolor{stringliteral}{"{}) "{}};}
+\DoxyCodeLine{312             \mbox{\hyperlink{classhyperbolic_1_1BeachLine_a4e63f5f3f3f1143ef6337a48d664a72b}{print}}(t-\/>\mbox{\hyperlink{classhyperbolic_1_1BeachLineElement_a7156a87cff9fc5f5c8d35f3c9abdf8d0}{rightChild}}, r\_sweep, cur\_pos + 1);}
+\DoxyCodeLine{313         \};}
+\DoxyCodeLine{314 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{315     \};}
+\DoxyCodeLine{316 \}}
+
+\end{DoxyCode}
