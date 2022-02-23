@@ -1,21 +1,33 @@
-#include <cmath>
-#include <vector>
-#include <list>
+#pragma once
 
-#include <lib.hpp>
-#include <calculations.hpp>
-#include <cmake.hpp>
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <cfloat>
+#include <list>
+#include <cmath>
+#include <vector>
 
-using std::vector, std::list;
+#include <fortune-hyperbolic/geometry.hpp>
+#include <fortune-hyperbolic/calculations.hpp>
+
+using std::string, std::max_element, std::list;
 
 namespace hyperbolic {
+    struct VoronoiCanvasOptions {
+        double width = 300, height = 300;
+        double line_width = 0.01, point_width = 0.02;
+        double resolution = 0.01;
+        string voronoi_edge_color = "black";
+        string delaunay_edge_color = "red";
+        string point_color = "black";
+        bool draw_delaunay = true;
+    };
+
     struct CartesianPoint {
         double x, y;
         CartesianPoint() = default;
-        explicit CartesianPoint(Point p) {
+        explicit CartesianPoint(Point<double> p) {
             x = cos(p.theta)*p.r;
             y = sin(p.theta)*p.r;
         }
@@ -29,29 +41,31 @@ namespace hyperbolic {
     using Path = vector<CartesianPoint>;
 
     class VoronoiCanvas {
-    public:
+    private:
         VoronoiDiagram& voronoiDiagram;
-        vector<Point>& sites;
-        double width = 300;
-        double max_r, scale;
-        CartesianPoint offset;
+        vector<Point<double>>& sites;
 
-        explicit VoronoiCanvas(VoronoiDiagram& v, vector<Point>& sites) : voronoiDiagram(v), sites(sites) {
-            max_r = (std::max_element(sites.begin(), sites.end()))->r;
-            scale = width/(2*max_r);
-            offset = CartesianPoint(width/2, width/2);
+        VoronoiCanvasOptions options;
 
-        };
+        double max_r = 0, scale = 0;
+        CartesianPoint offset = {0, 0};
 
         static void add_delaunay_edge(const Edge& e, Path& p) {
             p.push_back(CartesianPoint(e.siteA.point));
             p.push_back(CartesianPoint(e.siteB.point));
         }
 
-        void render_edge(pPoint from, pPoint to, HyperboloidBisector<double>& b, list<CartesianPoint>& p, bool ccw=true) const {
-            double dt = 0.01 * scale;
-            double t = (from) ? distance<double>(*from, Point(b.u)) : 0;
-            double t_end = (to) ? distance<double>(*to, Point(b.u)) : DBL_MAX;
+        bool out_of_bounds(Point<double>& p) const {
+            return
+                (std::abs(cos(p.theta)*p.r) + offset.x > options.width) ||
+                (std::abs(sin(p.theta)*p.r) + offset.y > options.height);
+        }
+
+        void render_edge(Point<double>* from, Point<double>* to, HyperboloidBisector<double>& b, list<CartesianPoint>& p, bool ccw=true) const {
+            double dt = options.resolution * scale;
+            Point u_native(b.u);
+            double t = (from) ? distance<double>(*from, u_native) : 0;
+            double t_end = (to) ? distance<double>(*to, u_native) : DBL_MAX;
 
             HyperboloidVec<double> v = b.v;
             Point v_polar(v);
@@ -64,7 +78,8 @@ namespace hyperbolic {
                 Point point(b.u*cosh(t) + v*sinh(t));
                 p.emplace_back(point);
                 t += dt;
-                if (point.r*scale*1.414 > width) break;
+                if (out_of_bounds(point)) break;
+                //if (point.r*scale*1.414 > width) break;
             }
 
             if (from)
@@ -73,7 +88,7 @@ namespace hyperbolic {
                 p.emplace_back(*to);
         }
 
-        void add_edge(const Edge& e, Path& p) const {
+        void add_edge(Edge& e, Path& p) const {
             HyperboloidBisector<double> b(e.siteA.point, e.siteB.point);
             Point q(b.u);
             if (e.edgeType == EdgeType::BIDIRECTIONAL) {
@@ -111,8 +126,8 @@ namespace hyperbolic {
                     "xmlns:ev=\"http://www.w3.org/2001/xml-events\"\nversion=\"1.1\" ";
 
             svg_representation += std::string("baseProfile=\"full\"\nwidth=\"") +
-                                  std::to_string(width) + "\" height=\"" +
-                                  std::to_string(width) + "\">\n\n";
+                                  std::to_string(options.width) + "\" height=\"" +
+                                  std::to_string(options.height) + "\">\n\n";
 
 
             for (auto& e : voronoiDiagram.edges) {
@@ -120,23 +135,25 @@ namespace hyperbolic {
                 Path p;
 
                 add_edge(*e, p);
-                svg_path_representation(p, path_representation, offset, scale);
+                svg_path_representation(p, path_representation, offset, scale, options.voronoi_edge_color);
                 svg_representation += path_representation;
 
-                p.clear();
-                add_delaunay_edge(*e, p);
-                svg_path_representation(p, path_representation, offset, scale, "red");
-                svg_representation += path_representation;
+                if (options.draw_delaunay) {
+                    p.clear();
+                    add_delaunay_edge(*e, p);
+                    svg_path_representation(p, path_representation, offset, scale, options.delaunay_edge_color);
+                    svg_representation += path_representation;
+                }
             }
 
-            for (const Point& s : sites) {
+            for (const Point<double>& s : sites) {
                 std::string point_representation;
-                svg_point_representation(CartesianPoint(s), 0.02, point_representation, offset, scale);
+                svg_point_representation(CartesianPoint(s), options.point_width, point_representation, options.point_color);
                 svg_representation += point_representation;
             }
 
             std::string point_representation;
-            svg_point_representation(CartesianPoint(0, 0), 0.01, point_representation, offset, scale);
+            svg_point_representation(CartesianPoint(0, 0), options.point_width/2, point_representation, options.point_color);
             svg_representation += point_representation;
 
             svg_representation += "\n</svg>\n";
@@ -152,7 +169,7 @@ namespace hyperbolic {
                 point.x += offset.x;
                 point.y += offset.y;
                 path_representation += std::string("M ") + std::to_string(point.x) +
-                                           "," + std::to_string(point.y) + " ";
+                                       "," + std::to_string(point.y) + " ";
 
                 //Print the remaining points.
                 for (size_t index = 1; index < path.size(); ++index) {
@@ -169,34 +186,46 @@ namespace hyperbolic {
             }
         }
 
-        static void svg_point_representation(const CartesianPoint& p, double radius, std::string &svg_point_representation, const CartesianPoint& offset, double scale) {
+        void svg_point_representation(const CartesianPoint& p, double radius, std::string &svg_point_representation, const string& color) const {
             CartesianPoint center(p*scale);
             center.x += offset.x;
             center.y += offset.y;
 
-            double stroke_width = 0.01 * scale;
+            double stroke_width = options.line_width * scale;
             svg_point_representation =
                     std::string("<circle cx=\"") + std::to_string(center.x) + "\" cy=\"" +
                     std::to_string(center.y) + "\" r=\"" +
-                    std::to_string(radius * scale) + "\" fill=\"" + "black" +
-                    "\" stroke=\"" + "black" + "\" stroke-width=\"" +
+                    std::to_string(radius * scale) + "\" fill=\"" + color +
+                    "\" stroke=\"" + color + "\" stroke-width=\"" +
                     std::to_string(stroke_width) + "\"/>\n";
         }
-    };
 
-    void draw_diagram(string& filename, VoronoiDiagram& voronoiDiagram, vector<Point>& sites) {
-        VoronoiCanvas canvas(voronoiDiagram, sites);
-        canvas.save_to_file(filename);
-    };
+    public:
+        explicit VoronoiCanvas(VoronoiDiagram& v, vector<Point<double>>& sites) : voronoiDiagram(v), sites(sites) {};
 
-    void write_delaunay(string& filename, VoronoiDiagram& v) {
-        std::fstream output_file_stream(filename, std::fstream::out);
-        for (auto& e : v.edges) {
-            output_file_stream << e->siteA.ID << " " << e->siteB.ID << "\n";
+        void set_options(VoronoiCanvasOptions& opt) {
+            options = opt;
         }
-    }
 
-    string get_version() {
-        return to_string(VERSION_MAJOR) + "." + to_string(VERSION_MINOR);
-    }
+        /*
+        * writes a calculated Voronoi diagram and the corresponding sites to a file
+        * */
+        void draw_diagram(string filename) {
+            max_r = (max_element(sites.begin(), sites.end()))->r;
+            double min_hw = min(options.width, options.height);
+            scale = min_hw/(2*max_r);
+            offset = CartesianPoint(options.width/2, options.height / 2);
+            save_to_file(filename);
+        }
+
+        /*
+         * writes the Delaunay triangulation of a Voronoi diagram to a file
+         * */
+        void write_delaunay_triangulation(string filename) {
+            std::fstream output_file_stream(filename, std::fstream::out);
+            for (auto& e : voronoiDiagram.edges) {
+                output_file_stream << e->siteA.ID << " " << e->siteB.ID << "\n";
+            }
+        }
+    };
 }

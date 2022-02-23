@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11...3.22)
 
 project(
-    fortune-hyperbolic
+    fortune-hyperbolic-sample-application
     VERSION 1.0
     LANGUAGES CXX
 )
@@ -9,7 +9,6 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-configure_file(include/cmake.hpp.in include/cmake.hpp)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 
@@ -26,13 +25,22 @@ if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     endif()
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-
-add_subdirectory(src)
 add_subdirectory(generator)
 add_subdirectory(experiments)
 
 add_executable(main main.cpp)
 
-target_link_libraries(main fortune_hyperbolic)
+set(FORTUNE_USE_MPFR TRUE)
+list(APPEND CMAKE_PREFIX_PATH fortune-hyperbolic)
+find_package(Fortune_Hyperbolic)
+
+target_include_directories(main PRIVATE ${Fortune_Hyperbolic_INCLUDE_DIRS})
+target_include_directories(main PRIVATE ${PROJECT_SOURCE_DIR}/include)
+
+message(STATUS ${Fortune_Hyperbolic_INCLUDE_DIRS})
+message(STATUS ${Fortune_Hyperbolic_LIBRARIES})
+
+target_link_libraries(main ${Fortune_Hyperbolic_LIBRARIES})
 target_compile_options(main PUBLIC -Wall)
+
+add_subdirectory(tests)

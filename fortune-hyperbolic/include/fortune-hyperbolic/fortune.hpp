@@ -6,25 +6,40 @@
 #include <memory>
 #include <type_traits>
 
-#include <lib.hpp>
-#include <datastructures.hpp>
-#include <beachline.hpp>
-#include <kernels.hpp>
+#include <fortune-hyperbolic/geometry.hpp>
+#include <fortune-hyperbolic/datastructures.hpp>
+#include <fortune-hyperbolic/beachline.hpp>
+#include <fortune-hyperbolic/kernels.hpp>
+#include <cmake.hpp>
 
-using std::vector, std::make_unique, std::make_shared;
+using std::vector, std::make_unique, std::make_shared, std::to_string;
 
 namespace hyperbolic {
-    template<class K>
+    class Utils {
+    public:
+        static string get_version() {
+            return to_string(VERSION_MAJOR) + "." + to_string(VERSION_MINOR);
+        }
+    };
+
+    template<class K, typename _float_T>
     class FortuneHyperbolicImplementation {
     private:
+            bool verbose;
+
             K kernel;
-            BeachLine<K> beachLine;
-            double r_sweep;
+            BeachLine<K, _float_T> beachLine;
+            _float_T r_sweep;
 
-            EventQueue<SiteEvent> siteEventQueue;
-            EventQueue<CircleEvent> circleEventQueue;
+            using pBeachLineElement = BeachLineElement<_float_T>*;
+            using rBeachLineElement = BeachLineElement<_float_T>&;
+            using rSite = Site<_float_T>&;
+            using pSite = Site<_float_T>*;
 
-            vector<Site> sites;
+            EventQueue<SiteEvent<_float_T>, _float_T> siteEventQueue;
+            EventQueue<CircleEvent<_float_T>, _float_T> circleEventQueue;
+
+            vector<Site<_float_T>> sites;
             VoronoiDiagram& voronoiDiagram;
 
             bool isCalculated = false;
@@ -33,17 +48,17 @@ namespace hyperbolic {
                 return !(siteEventQueue.empty() && circleEventQueue.empty());
             };
 
-            static void invalidateCircleEvent(CircleEvent* e){
+            static void invalidateCircleEvent(CircleEvent<_float_T>* e){
                 if (e) e->invalidate();
             }
 
             void addCircleEvent(rBeachLineElement first, rBeachLineElement second) {
                 invalidateCircleEvent(first.next.get());
                 invalidateCircleEvent(second.previous.get());
-                Point centerCircleEvent;
+                Point<_float_T> centerCircleEvent;
                 if (kernel.predict_circle_event(centerCircleEvent, first.first, first.second, second.second)) {
-                    _float_t radius = distance<_float_t>(centerCircleEvent, first.first.point);
-                    shared_ptr<CircleEvent> ce = make_shared<CircleEvent>(first, second, centerCircleEvent, radius);
+                    _float_T radius = distance<_float_T>(centerCircleEvent, first.first.point);
+                    shared_ptr<CircleEvent<_float_T>> ce = make_shared<CircleEvent<_float_T>>(first, second, centerCircleEvent, radius);
                     if (ce->r >= r_sweep) {
                         first.next = ce;
                         second.previous = ce;
@@ -62,14 +77,15 @@ namespace hyperbolic {
                 r_sweep = b.point.r;
 
                 Edge* edge = getNewEdge(b, a, EdgeType::BIDIRECTIONAL);
-                auto first = new BeachLineElement(b, a, edge, edge->firstVertex);
-                auto last = new BeachLineElement(a, b, edge, edge->secondVertex);
+                auto first = new BeachLineElement<_float_T>(b, a, edge, edge->firstVertex);
+                auto last = new BeachLineElement<_float_T>(a, b, edge, edge->secondVertex);
                 beachLine.insert(0, *first, *last);
             };
 
-            void handleSiteEvent(const SiteEvent& e) {
+            void handleSiteEvent(const SiteEvent<_float_T>& e) {
 #ifndef NDEBUG
-                std::cout << "Handling Site Event with radius " << e.r << std::endl;
+                if (verbose)
+                    std::cout << "Handling Site Event with radius " << e.r << std::endl;
 #endif
                 r_sweep = e.r;
 
@@ -78,26 +94,30 @@ namespace hyperbolic {
                 rSite hitSite = first->second;
 
                 Edge* edge = getNewEdge(e.site, hitSite, EdgeType::BIDIRECTIONAL);
-                auto firstNew = new BeachLineElement(e.site, hitSite, edge, edge->firstVertex);
-                auto secondNew = new BeachLineElement(hitSite, e.site, edge, edge->secondVertex);
+                auto firstNew = new BeachLineElement<_float_T>(e.site, hitSite, edge, edge->firstVertex);
+                auto secondNew = new BeachLineElement<_float_T>(hitSite, e.site, edge, edge->secondVertex);
 
                 addCircleEvent(*first, *secondNew);
                 addCircleEvent(*firstNew, *second);
 
                 beachLine.insert(positionFirst, *firstNew, *secondNew);
             };
-            void handleCircleEvent(const CircleEvent& e) {
+
+            void handleCircleEvent(const CircleEvent<_float_T>& e) {
 #ifndef NDEBUG
-                if (!e.isValid())
-                    std::cout << "Skipping invalid circle event" << std::endl;
-                else
-                    std::cout << "Handling Circle Event with radius " << e.r << " concerning beach line elements (" << e.first.first.ID << ", " << e.first.second.ID << ") and (" << e.second.first.ID << ", " << e.second.second.ID << ")" << std::endl;
+                if (verbose) {
+                    if (!e.isValid())
+                        std::cout << "Skipping invalid circle event" << std::endl;
+                    else
+                        std::cout << "Handling Circle Event with radius " << e.r << " concerning beach line elements ("
+                                  << e.first.first.ID << ", " << e.first.second.ID << ") and (" << e.second.first.ID
+                                  << ", " << e.second.second.ID << ")" << std::endl;
+                }
 #endif
 
                 if (!e.isValid()) return;
                 r_sweep = e.r;
-
-                pPoint v = getNewVertex(e.center);
+                Point<double>* v = getNewVertex(e.center);
 
                 e.first.assignVertex(*v);
                 e.second.assignVertex(*v);
@@ -117,18 +137,18 @@ namespace hyperbolic {
             };
 
             Edge* getNewEdge(rSite a, rSite b, EdgeType edgeType) {
-                voronoiDiagram.edges.emplace_back(make_unique<Edge>(a, b, edgeType));
+                voronoiDiagram.edges.emplace_back(make_unique<Edge>(static_cast<Site<double>>(a), static_cast<Site<double>>(b), edgeType));
                 return voronoiDiagram.edges.back().get();
             };
-            Point* getNewVertex(rPoint p) {
-                voronoiDiagram.vertices.push_back(make_unique<Point>(p));
+            Point<double>* getNewVertex(const Point<_float_T>& p) {
+                voronoiDiagram.vertices.push_back(make_unique<Point<double>>(p));
                 return voronoiDiagram.vertices.back().get();
             };
         public:
-            FortuneHyperbolicImplementation(VoronoiDiagram& v, const vector<Point>& sites) : voronoiDiagram(v), beachLine(kernel) {
+            FortuneHyperbolicImplementation(VoronoiDiagram& v, const vector<Point<double>>& sites, bool verbose=false) : verbose(verbose), beachLine(kernel), voronoiDiagram(v) {
                 unsigned long long id = 0;
-                for (const Point& p : sites) {
-                    this->sites.emplace_back(Site(p, id));
+                for (const Point<double>& p : sites) {
+                    this->sites.emplace_back(Site<_float_T>(Point<_float_T>(p.r, p.theta), id));
                     id++;
                 }
                 r_sweep = 0;
@@ -141,19 +161,19 @@ namespace hyperbolic {
                 if (sites.size() <= 1) return;
 
                 for (rSite s : sites) {
-                    siteEventQueue.push(make_shared<SiteEvent>(s));
+                    siteEventQueue.push(make_shared<SiteEvent<_float_T>>(s));
                 }
 
                 initializeBeachLine();
 #ifndef NDEBUG
-                beachLine.print(r_sweep);
+                if (verbose) beachLine.print(r_sweep);
 #endif
 
                 while (eventsRemaining()) {
-                    const SiteEvent* se = siteEventQueue.getTop();
-                    const CircleEvent* ce = circleEventQueue.getTop();
+                    const SiteEvent<_float_T>* se = siteEventQueue.getTop();
+                    const CircleEvent<_float_T>* ce = circleEventQueue.getTop();
 
-                    if (!ce || (se && CmpEvent<Event>::greater_equal(ce, se))) {
+                    if (!ce || (se && CmpEvent<Event<_float_T>, _float_T>::greater_equal(ce, se))) {
                         handleSiteEvent(*se);
                         siteEventQueue.pop();
                     } else {
@@ -162,7 +182,7 @@ namespace hyperbolic {
                     }
 
 #ifndef NDEBUG
-                    beachLine.print(r_sweep);
+                    if (verbose) beachLine.print(r_sweep);
 #endif
                 }
             };

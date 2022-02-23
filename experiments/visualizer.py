@@ -4,8 +4,8 @@ import numpy as np
 
 from utils import read_graph
 
-line_width = 0.001
-point_radius = 0.002
+line_width = 0.0005
+point_radius = 0.0005
 offset = 0.5
 scale = 0.5
 twopi = 2*math.pi
@@ -60,7 +60,7 @@ def draw_edges(context, adj1, adj2, coordinates):
 
 def draw(coordinates, adj1, adj2):
     dim = 700
-    with cairo.SVGSurface("out-funny.svg", dim, dim) as surface:
+    with cairo.SVGSurface("out.svg", dim, dim) as surface:
         context = cairo.Context(surface)
         context.scale(dim, dim)
 
@@ -69,7 +69,7 @@ def draw(coordinates, adj1, adj2):
 
 
 if __name__ == "__main__":
-    adj1 = read_graph('../cmake-build-debug/bin/delaunay-funny.txt')
-    adj2 = read_graph('../cmake-build-debug/bin/delaunay-funny-old.txt')
+    adj1 = read_graph('../cmake-build-debug/bin/delaunay_lp.txt')
+    adj2 = read_graph('../cmake-build-debug/bin/delaunay_hp.txt')
     coordinates = read_sites('../cmake-build-debug/bin/sample.txt')
     draw(coordinates, adj1, adj2)

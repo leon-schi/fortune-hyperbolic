@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
-#include <datastructures.hpp>
-#include <calculations.hpp>
+#include <fortune-hyperbolic/datastructures.hpp>
+#include <fortune-hyperbolic/calculations.hpp>
 
 namespace hyperbolic {
     //TODO: ensure efficient access to neighbors
@@ -10,12 +10,17 @@ namespace hyperbolic {
      * Elements that are within the beach line.
      * Represented as a tuple of sites (a,b) indicating that this element represents the point where the active segment changes from a to b in ccw direction
      * */
+    template<typename _float_T>
     class BeachLineElement {
     public:
+        using rSite = Site<_float_T>&;
+        using rPoint = Point<double>&;
+        using pPoint = Point<double>*;
+
         // the two sites defining the element
         rSite first, second;
         // pointer to circle element of this element with the next / previous element in the beach line
-        shared_ptr<CircleEvent> next = nullptr, previous = nullptr;
+        shared_ptr<CircleEvent<_float_T>> next = nullptr, previous = nullptr;
         // pointer to an edge on which the element moves
         Edge* const edge;
 
@@ -35,7 +40,7 @@ namespace hyperbolic {
         void assignVertex(rPoint v) const {
             assignableVertex = &v;
         }
-        static void del(pBeachLineElement t) {
+        static void del(BeachLineElement* t) {
             if (!t) return;
             del(t->leftChild);
             t->leftChild = nullptr;
@@ -47,8 +52,8 @@ namespace hyperbolic {
         pPoint& assignableVertex;
 
         // internal properties used for the data structure
-        pBeachLineElement leftChild = nullptr, rightChild = nullptr;
-        pBeachLineElement parent = nullptr;
+        BeachLineElement *leftChild = nullptr, *rightChild = nullptr;
+        BeachLineElement* parent = nullptr;
 
         int count = 0;
         uint32_t priority;
@@ -58,18 +63,21 @@ namespace hyperbolic {
      * class implementing all operations on the beach line
      * currently implemented as a treap
      * */
-    template<class K>
+    template<class K, typename _float_T>
     class BeachLine {
     private:
+        using pBeachLineElement = BeachLineElement<_float_T>*;
+        using rBeachLineElement = BeachLineElement<_float_T>&;
+
         K& kernel;
         // root of the treap
         pBeachLineElement root = nullptr;
         // angular coordinate of the last inserted vertex
-        _float_t reference_angle = 0;
+        _float_T reference_angle = 0;
 
         // transforms an angle to the corresponding angle under the perspective of reference_angle
-        [[nodiscard]] _float_t transformAngle(_float_t theta) const {
-            return clip<_float_t>(theta - reference_angle);
+        [[nodiscard]] _float_T transformAngle(_float_T theta) const {
+            return clip<_float_T>(theta - reference_angle);
         };
 
         // functions for updating properties of BeachLineElements
@@ -163,7 +171,7 @@ namespace hyperbolic {
         };
 
         // binary search returning the last BeachLineElement with an angular coordinate smaller than theta + its position at a sweep circle radius of r_sweep
-        void find(pBeachLineElement &result, int &pos, pBeachLineElement t, _float_t theta, _float_t r_sweep, int add=0) {
+        void find(pBeachLineElement &result, int &pos, pBeachLineElement t, _float_T theta, _float_T r_sweep, int add=0) {
             // returns the first element clockwise of theta in t (i.e. with a angular coordinate smaller/equal theta)
             if (!t) {
                 result = nullptr;
@@ -199,19 +207,6 @@ namespace hyperbolic {
             }
             find(result, e, getCount(e) - 1);
         };
-
-        _float_t calculateAngularCoordinate(pBeachLineElement e, _float_t r_sweep, int pos) const {
-            // if e is the first or last element and if the sweep circle is very close to one of its sites, we have to be careful
-            rPoint outer = (e->first.point.r >= e->second.point.r) ? e->first.point : e->second.point;
-            if (r_sweep - outer.r <= 1e-20) {
-                if (pos == 0) return 0;
-                else if (pos == size() -1) return 2*M_PI;
-                else return outer.theta;
-            }
-
-            _float_t theta = calculate_beach_line_intersection(&e->first, &e->second, r_sweep);
-            return transformAngle(theta);
-        }
     public:
         BeachLine(K& k) : kernel(k) {};
 
@@ -223,7 +218,7 @@ namespace hyperbolic {
          * returns the position of the first BeachLineElement clockwise of s.theta. first and second are set as
          * the first element clockwise and counterclockwise of s.theta, respectively
          * */
-        int search(rPoint s, _float_t r_sweep, pBeachLineElement &first, pBeachLineElement &second) {
+        int search(const Point<_float_T>& s, _float_T r_sweep, pBeachLineElement &first, pBeachLineElement &second) {
             first = nullptr;
             int position_first;
             find(first, position_first, root, transformAngle(s.theta), r_sweep);
@@ -265,7 +260,7 @@ namespace hyperbolic {
          * leftNeighbor and rightNeighbor are set to be the left (clockwise) and right (counterclockwise)
          * neighbor of the new element.
          * */
-        void replace(const CircleEvent &e, rBeachLineElement newElement, pBeachLineElement &leftNeighbor,
+        void replace(const CircleEvent<_float_T> &e, rBeachLineElement newElement, pBeachLineElement &leftNeighbor,
                      pBeachLineElement &rightNeighbor) {
             // replaces the elements specified in e and replaces them with newElement
             // Note that we can safely assume that e does not refer to the last and first element as our arrangement can never have these two involved in a circle event
@@ -287,24 +282,33 @@ namespace hyperbolic {
             BeachLine::merge(root, left, right);
         };
 
+        pBeachLineElement getFirstElement() {
+            pBeachLineElement result;
+            getLeftmostChild(result, root);
+            return result;
+        }
+
         [[nodiscard]] int size() const {
             return BeachLine::getCount(root);
         };
 
+        void getRemainingElements(vector<pBeachLineElement>& v) {
+            getRemainingElements(root, v);
+        }
+
 #ifndef NDEBUG
 
         // methods for printing the beach line when debugging
-        void print(_float_t r_sweep) {
+        void print(_float_T r_sweep) {
             print(root, r_sweep, 0);
             std::cout << std::endl;
         };
 
-        void print(pBeachLineElement t, _float_t r_sweep, int add) {
+        void print(pBeachLineElement t, _float_T r_sweep, int add) {
             if (!t) return;
             print(t->leftChild, r_sweep, add);
             int cur_pos = getCount(t->leftChild) + add;
-            std::cout << "((" << t->first.ID << ", " << t->second.ID << "), " << cur_pos << ", "
-                      << calculateAngularCoordinate(t, r_sweep, cur_pos) << ") ";
+            std::cout << "((" << t->first.ID << ", " << t->second.ID << "), " << cur_pos << ") ";
             print(t->rightChild, r_sweep, cur_pos + 1);
         };
 #endif

@@ -18,7 +18,7 @@
 
 # find the mpfr include directory
 find_path(MPFR_INCLUDE_DIR mpfr.h
-    PATH_SUFFIXES include mpfr/include mpfr
+    PATH_SUFFIXES ../include mpfr/include mpfr
     PATHS
     ${MPFR_INCLUDE_LOC}
     "C:/Program Files/mpfr/"

@@ -1,49 +1,39 @@
 #pragma once
 
-#include <geometry.hpp>
-#include <calculations.hpp>
-#include <datastructures.hpp>
+#include <fortune-hyperbolic/geometry.hpp>
+#include <fortune-hyperbolic/calculations.hpp>
+#include <fortune-hyperbolic/datastructures.hpp>
 
 namespace hyperbolic {
     template<typename _float_T>
     class Kernel {
     public:
         /*
-         * checks whether the angle theta is between the reference angle and the Beach Line intersection defined by the tuple of sites (a,b)
+         * checks whether the angle theta is between the reference angle and the Beach Line intersection defined by the tuple of sites (s,t)
          * */
         virtual bool before (
-                double theta, double reference_angle,
-                Point siteS, Point siteT, double r_sweep) = 0;
+                _float_T theta, _float_T reference_angle,
+                Point<_float_T>& p_s, Point<_float_T>& p_t, _float_T r_sweep) = 0;
 
         /*
          * predict Circle Event
          * */
         virtual bool predict_circle_event(
-                Point& result,
-                rSite r, rSite s, rSite t)  = 0;
+                Point<_float_T>& result,
+                Site<_float_T>& r, Site<_float_T>& s, Site<_float_T>& t)  = 0;
     };
 
     template<typename _float_T>
     class FullNativeKernel: public Kernel<_float_T> {
-        typedef _Point<_float_T> Point_internal;
-
-        static Point_internal convert(const Point& p) {
-            return Point_internal(static_cast<_float_T>(p.r), static_cast<_float_T>(p.theta));
-        }
-        static Point convert_back(const Point_internal& p) {
-            return Point(static_cast<double>(p.r), static_cast<double>(p.theta));
-        }
         SiteTripleMap<_float_T> circleEventCache;
     public:
         /*
-         * returns true if theta is between reference_angle and the beach line intersection (a,b) in ccw direction
+         * returns true if theta is between reference_angle and the beach line intersection (s,t) in ccw direction
          * */
         bool before (
-                double theta, double reference_angle,
-                Point siteS, Point siteT, double r_sweep) {
-            // find the angular coordinate of the intersection (s, t) under a sweep circle radius of r_sweep
-            Point_internal p_s = convert(siteS), p_t = convert(siteT);
-            Point_internal *s = &p_s, *t = &p_t;
+                _float_T theta, _float_T reference_angle,
+                Point<_float_T>& p_s, Point<_float_T>& p_t, _float_T r_sweep) {
+            Point<_float_T> *s = &p_s, *t = &p_t;
 
             auto r_sweep_internal = static_cast<_float_T>(r_sweep);
 
@@ -67,7 +57,7 @@ namespace hyperbolic {
             return (z > theta);
         };
 
-        bool assign_result_if_in_definiton(Point_internal& result, Bisector<_float_T>& rs, Bisector<_float_T>& st, _float_T z) {
+        bool assign_result_if_in_definiton(Point<_float_T>& result, Bisector<_float_T>& rs, Bisector<_float_T>& st, _float_T z) {
             if (rs.in_definition(z) && st.in_definition(z)) {
                 result.r = rs(z);
                 result.theta = z;
@@ -76,7 +66,7 @@ namespace hyperbolic {
             return false;
         }
 
-        bool assign_result_for_straight_bisector_if_exists(Point_internal& result, Bisector<_float_T>& straight, Bisector<_float_T>& not_straight) {
+        bool assign_result_for_straight_bisector_if_exists(Point<_float_T>& result, Bisector<_float_T>& straight, Bisector<_float_T>& not_straight) {
             // assigns the coordinate of the intersection of straight and not_straight to result if it exists
             // straight is a straight line and not_straight is not
 
@@ -88,7 +78,7 @@ namespace hyperbolic {
             return false;
         }
 
-        bool calculate_circle_event_center(Point_internal& result, Point_internal& r, Point_internal& s, Point_internal& t) {
+        bool calculate_circle_event_center(Point<_float_T>& result, const Point<_float_T>& r, const Point<_float_T>& s, const Point<_float_T>& t) {
             Bisector<_float_T> rs(&r, &s);
             Bisector<_float_T> st(&s, &t);
 
@@ -113,7 +103,7 @@ namespace hyperbolic {
         }
 
         // checks if p is on the active side of the beach line intersection a
-        bool on_active_site(Point_internal& s, Point_internal& t, Point_internal& p) {
+        bool on_active_site(Point<_float_T>& s, Point<_float_T>& t, Point<_float_T>& p) {
             if (p.r == 0.0) return true;
             _float_t outer_theta = (s.r >= t.r) ? s.theta : t.theta;
             _float_t p_theta = clip<_float_T>(p.theta - outer_theta);
@@ -121,38 +111,25 @@ namespace hyperbolic {
         }
 
         bool predict_circle_event(
-                Point& result,
-                rSite r, rSite s, rSite t) {
-            // TODO: refactor this and make
-            auto siteTriple = SiteTriple(r, s, t);
+                Point<_float_T>& result,
+                Site<_float_T>& r, Site<_float_T>& s, Site<_float_T>& t) {
+
+            auto siteTriple = SiteTriple(r.ID, s.ID, t.ID);
             if (siteTriple.ID1 == siteTriple.ID2 || siteTriple.ID2 == siteTriple.ID3) return false;
 
-            Point_internal p_r = convert(r.point), p_s = convert(s.point), p_t = convert(t.point);
-
-            Point_internal result_internal;
             auto it = circleEventCache.find(siteTriple);
             if (it != circleEventCache.end()) {
                 // use cached value
-                result_internal = it->second;
+                result = it->second;
             } else {
                 // calculate point and cache it if existent
-
-                if (calculate_circle_event_center(result_internal, p_r, p_s, p_t))
-                    circleEventCache[siteTriple] = result_internal;
+                if (calculate_circle_event_center(result, r.point, s.point, t.point))
+                    circleEventCache[siteTriple] = result;
                 else return false;
             }
 
-            /*Point_internal result_internal;
-            calculate_circle_event_center(result_internal, &r, &s, &t);*/
-
-            if (
-                    on_active_site(p_r, p_s, result_internal) &&
-                    on_active_site(p_s, p_t, result_internal) ) {
-                result = convert_back(result_internal);
-                return true;
-            }
-
-            return false;
+            return (on_active_site(r.point, s.point, result) &&
+                    on_active_site(s.point, t.point, result));
         };
     };
 }

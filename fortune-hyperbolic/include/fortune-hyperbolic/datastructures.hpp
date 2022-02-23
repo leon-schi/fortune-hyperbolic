@@ -7,41 +7,43 @@
 #include <type_traits>
 #include <unordered_map>
 
-#include <lib.hpp>
+#include <fortune-hyperbolic/geometry.hpp>
 
 using std::is_base_of, std::unique_ptr, std::shared_ptr, std::vector, std::priority_queue, std::size_t, std::string, std::to_string, std::hash, std::unordered_map;
 
 namespace hyperbolic {
+    template<typename _float_T>
     class BeachLineElement;
-    typedef BeachLineElement* pBeachLineElement;
-    typedef BeachLineElement& rBeachLineElement;
-
     /*
      * base class for the events handled in the algorithm
      * */
+
+    template<typename _float_T>
     class Event {
     public:
-        const _float_t r {0};
-        explicit Event(_float_t r) : r(r) {};
+        const _float_T r {0};
+        Event(_float_T r) : r(r) {};
         virtual ~Event() = default;
     };
 
-    class SiteEvent : public Event {
+    template<typename _float_T>
+    class SiteEvent : public Event<_float_T> {
     public:
-        rSite site;
-        explicit SiteEvent(const Site& s) : Event(s.point.r), site(s) {};
+        Site<_float_T>& site;
+        explicit SiteEvent(Site<_float_T>& s) : Event<_float_T>(s.point.r), site(s) {};
     };
 
-    class CircleEvent : public Event {
+    template<typename _float_T>
+    class CircleEvent : public Event<_float_T> {
     private:
         bool valid = true;
     public:
         // references to the beach line elements that cause the circle event
-        rBeachLineElement first, second;
+        BeachLineElement<_float_T> &first, &second;
         // the point at which a Voronoi vertex is created when the event happens
-        const Point center;
-        CircleEvent(rBeachLineElement first, rBeachLineElement second, Point center, _float_t r)
-                : Event(r + center.r), first(first), second(second), center(center) {};
+        const Point<_float_T> center;
+        CircleEvent(BeachLineElement<_float_T>& first, BeachLineElement<_float_T>& second, Point<_float_T> center, _float_T r)
+                : Event<_float_T>(r + center.r), first(first), second(second), center(center) {};
 
         void invalidate() {
             valid = false;
@@ -52,10 +54,10 @@ namespace hyperbolic {
     };
 
     // comparison of events based on their radius
-    template <class T>
+    template <class T, typename _float_T>
     struct CmpEvent {
-        static_assert(is_base_of<Event, T>::value, "template type T must inherit from Event");
-        static bool greater_equal(const Event* e1, const Event* e2) {
+        static_assert(is_base_of<Event<_float_T>, T>::value, "template type T must inherit from Event");
+        static bool greater_equal(const Event<_float_T>* e1, const Event<_float_T>* e2) {
             return e1->r > e2->r;
         }
 
@@ -65,19 +67,20 @@ namespace hyperbolic {
     };
 
     // queue of events
-    template <class T>
-    class EventQueue : public priority_queue<shared_ptr<T>, vector<shared_ptr<T>>, CmpEvent<T>> {
+    template <class T, typename _float_T>
+    class EventQueue : public priority_queue<shared_ptr<T>, vector<shared_ptr<T>>, CmpEvent<T, _float_T>> {
     public:
-        const T* getTop() {
+        T* getTop() {
             return (this->empty()) ? nullptr : this->top().get();
         }
     };
 
+    using ull = unsigned long long;
     // struct identifying a set of three sites based on their IDs. Used for caching the prediction of circle events
     struct SiteTriple {
-        unsigned long long ID1, ID2, ID3;
-        SiteTriple(rSite a, rSite b, rSite c) {
-            vector<unsigned long long> ids = {a.ID, b.ID, c.ID};
+        ull ID1, ID2, ID3;
+        SiteTriple(ull a, ull b, ull c) {
+            vector<unsigned long long> ids = {a, b, c};
             std::sort(ids.begin(), ids.end());
             ID1 = ids[0], ID2 = ids[1], ID3 = ids[2];
         }
@@ -95,7 +98,7 @@ namespace hyperbolic {
     };
 
     template<typename _float_T>
-    using SiteTripleMap = unordered_map<SiteTriple, _Point<_float_T>, HashSiteTriple, CmpSiteTriple>;
+    using SiteTripleMap = unordered_map<SiteTriple, Point<_float_T>, HashSiteTriple, CmpSiteTriple>;
 
 
 }

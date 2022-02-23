@@ -3,8 +3,8 @@
 #include <cmath>
 #include <utility>
 
-#include <lib.hpp>
-#include <datastructures.hpp>
+#include <fortune-hyperbolic/geometry.hpp>
+#include <fortune-hyperbolic/datastructures.hpp>
 
 /*
  * functions used for doing important geometric calculations
@@ -17,7 +17,7 @@ namespace hyperbolic {
     struct HyperboloidVec {
         _float_T x, y, z;
         HyperboloidVec() = default;
-        explicit HyperboloidVec(const Point& p) {
+        explicit HyperboloidVec(const Point<_float_T>& p) {
             x = sinh(p.r) * cos(p.theta);
             y = sinh(p.r) * sin(p.theta);
             z = cosh(p.r);
@@ -51,7 +51,7 @@ namespace hyperbolic {
     template<typename _float_T>
     struct HyperboloidBisector {
         HyperboloidVec<_float_T> u, v;
-        void find_u(pPoint a, pPoint b) {
+        void find_u(Point<_float_T>* a, Point<_float_T>* b) {
             if (a->r > b->r) std::swap(a, b);
             HyperboloidVec<_float_T> v_a(*a), v_b(*b);
 
@@ -61,7 +61,7 @@ namespace hyperbolic {
             u = p_b.cross(p_ab);
             u.normalize();
         };
-        HyperboloidBisector(rPoint a, rPoint b) {
+        HyperboloidBisector(Point<_float_T>& a, Point<_float_T>& b) {
             find_u(&a, &b);
             HyperboloidVec<_float_T> v_a(a), v_b(b);
             HyperboloidVec<_float_T> v_ab = v_b - v_a;
@@ -80,7 +80,7 @@ namespace hyperbolic {
 
     // calculates the hyperbolic distance between two points
     template <typename _float_T>
-    _float_T distance(rPoint s, rPoint t) {
+    _float_T distance(const Point<_float_T>& s, const Point<_float_T>& t) {
         auto x = cosh(s.r)*cosh(t.r) - sinh(s.r)*cos(s.theta - t.theta)*sinh(t.r);
         return acosh(x);
     };
@@ -153,7 +153,7 @@ namespace hyperbolic {
         }
 
         // constructs the object from the two points that define it
-        Bisector(const _Point<_float_T>* s, const _Point<_float_T>* t) {
+        Bisector(const Point<_float_T>* s, const Point<_float_T>* t) {
             if (s->r > t->r)
                 std::swap(s, t);
             numerator = cosh(t->r) - cosh(s->r);
@@ -184,11 +184,7 @@ namespace hyperbolic {
     };
 
     template<typename _float_T>
-    _Point<_float_T>::_Point(const HyperboloidVec<_float_T>& p) {
+    Point<_float_T>::Point(const HyperboloidVec<_float_T>& p) {
         r = acosh(p.z); theta = clip(atan2(p.y, p.x));
     }
-
-    // calculates the angular coordinate of the intersection of the beach curves of s and t at a sweep circle radius of r_sweep
-    _float_t calculate_beach_line_intersection(pSite s, pSite  t, _float_t r_sweep);
-    bool predict_circle_event(Point& result, pSite r, pSite s, pSite t);
 }
