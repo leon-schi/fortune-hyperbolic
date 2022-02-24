@@ -24,6 +24,7 @@ namespace hyperbolic {
         string voronoi_edge_color = "black";
         string delaunay_edge_color = "red";
         string point_color = "black";
+        string background_color = "white";
         bool draw_delaunay = true;
     };
 
@@ -85,7 +86,6 @@ namespace hyperbolic {
                 p.emplace_back(point);
                 t += dt;
                 if (out_of_bounds(point)) break;
-                //if (point.r*scale*1.414 > width) break;
             }
 
             if (from)
@@ -135,19 +135,22 @@ namespace hyperbolic {
                                   std::to_string(options.width) + "\" height=\"" +
                                   std::to_string(options.height) + "\">\n\n";
 
+            std::string background_representation;
+            svg_background_representation(background_representation, options.background_color);
+            svg_representation += background_representation;
 
             for (auto& e : voronoiDiagram.edges) {
                 std::string path_representation;
                 Path p;
 
                 add_edge(*e, p);
-                svg_path_representation(p, path_representation, offset, scale, options.voronoi_edge_color);
+                svg_path_representation(p, path_representation, options.voronoi_edge_color);
                 svg_representation += path_representation;
 
                 if (options.draw_delaunay) {
                     p.clear();
                     add_delaunay_edge(*e, p);
-                    svg_path_representation(p, path_representation, offset, scale, options.delaunay_edge_color);
+                    svg_path_representation(p, path_representation, options.delaunay_edge_color);
                     svg_representation += path_representation;
                 }
             }
@@ -165,7 +168,11 @@ namespace hyperbolic {
             svg_representation += "\n</svg>\n";
         }
 
-        static void svg_path_representation(const Path& path, string& path_representation, const CartesianPoint& offset, double scale, const string& color="black") {
+        void svg_background_representation(string& background_representation, const string& color) const {
+            background_representation = R"(<rect width="100%" height="100%" fill=")" + color + "\"/>";
+        }
+
+        void svg_path_representation(const Path& path, string& path_representation, const string& color="black") const {
             path_representation = string("");
 
             if (!path.empty()) {
