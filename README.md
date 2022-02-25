@@ -9,6 +9,7 @@ Voronoi diagram of N=500 points uniformly distributed across a disk in the hyper
 <p align="center">
 <img src="voronoi_example.svg" width="600" height="600" />
 </p>
+
 ## How to use
 
 This is a header only library that you can easily include to your project. Place the `fortune-hyperbolic` folder
