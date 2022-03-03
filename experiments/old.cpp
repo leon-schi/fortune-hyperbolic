@@ -11,7 +11,7 @@
 #include <fstream>
 #include <random>
 
-#include "cxxopts.hpp"
+#include <cxxopts.hpp>
 
 typedef CGAL::Hyperbolic_Delaunay_triangulation_traits_2<>  Gt;
 typedef Gt::Point_2                                         Point_2;

@@ -37,6 +37,8 @@ find_package(Fortune_Hyperbolic)
 target_include_directories(main PRIVATE ${Fortune_Hyperbolic_INCLUDE_DIRS})
 target_include_directories(main PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
+message(STATUS ${PROJECT_SOURCE_DIR}/include)
+
 message(STATUS ${Fortune_Hyperbolic_INCLUDE_DIRS})
 message(STATUS ${Fortune_Hyperbolic_LIBRARIES})
 

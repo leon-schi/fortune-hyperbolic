@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iomanip>
 
-#include "cxxopts.hpp"
+#include <cxxopts.hpp>
 
 using namespace std;
 

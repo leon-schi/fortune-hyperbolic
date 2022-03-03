@@ -7,8 +7,6 @@
 using std::vector, std::max, std::min, std::unique_ptr;
 
 namespace hyperbolic {
-    typedef double _float_t;
-
     template<typename _float_T>  struct Point;
     template<typename _float_T> struct HyperboloidVec;
 

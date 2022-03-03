@@ -9,7 +9,7 @@
 
 #include <boost/multiprecision/mpfr.hpp>
 
-#include "cxxopts.hpp"
+#include <cxxopts.hpp>
 
 using namespace std;
 using namespace hyperbolic;
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
         if (input_stream.is_open()) {
             string line;
             while (getline(input_stream, line)) {
-                _float_t theta, r;
+                double theta, r;
                 auto pos = line.find(' ');
                 theta = stod(line.substr(0, pos));
                 r = stod(line.substr(pos));

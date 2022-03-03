@@ -108,8 +108,8 @@ namespace hyperbolic {
         // checks if p is on the active side of the beach line intersection a
         bool on_active_site(Point<_float_T>& s, Point<_float_T>& t, Point<_float_T>& p) {
             if (p.r == 0.0) return true;
-            _float_t outer_theta = (s.r >= t.r) ? s.theta : t.theta;
-            _float_t p_theta = clip<_float_T>(p.theta - outer_theta);
+            _float_T outer_theta = (s.r >= t.r) ? s.theta : t.theta;
+            _float_T p_theta = clip<_float_T>(p.theta - outer_theta);
             return (s.r >= t.r) ? p_theta <= M_PI : p_theta >= M_PI;
         }
 
